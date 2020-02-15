@@ -15,6 +15,43 @@
  */
 
 /**
+ * 根据路径和参考节点获取节点
+ * @param path 节点相对路径
+ * @param referenceNode 参考节点
+ */
+export function findNode(path: string, referenceNode?: cc.Node): cc.Node {
+  return cc.find(path, referenceNode);
+}
+
+/**
+ * 根据路径和参考节点和组件类型获取节点下的组件
+ * @param path 节点相对路径
+ * @param component 组件类型
+ * @param referenceNode 参考节点
+ */
+export function findComponent<T extends cc.Component>(
+  path: string,
+  component: { prototype: T },
+  referenceNode?: cc.Node
+) {
+  return cc.find(path, referenceNode).getComponent(component);
+}
+
+/**
+ * 根据路径和参考节点和组件名称获取节点下的组件
+ * @param path 节点相对路径
+ * @param component 组件名称
+ * @param referenceNode 参考节点
+ */
+export function findComponentByName(
+  path: string,
+  component: string,
+  referenceNode?: cc.Node
+): cc.Component {
+  return cc.find(path, referenceNode).getComponent(component);
+}
+
+/**
  * 是否触发按钮点击事件
  * @param e 按钮点击事件
  * @param sound 是否触发点击音效
