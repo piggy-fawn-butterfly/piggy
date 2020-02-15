@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/piggy-fawn-butterfly/piggy/issues"
   },
-  "homepage": "https://github.com/piggy-fawn-butterfly/piggy#readme"
+  "homepage": "https://github.com/piggy-fawn-butterfly/piggy#readme",
+  "dependencies": {
+    "bluebird": "^3.7.2"
+  }
 }
