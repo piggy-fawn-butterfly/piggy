@@ -439,3 +439,72 @@ export function isNest(rule: object, str: string) {
   }
   return stack.length === 0;
 }
+
+/**
+ * 正则表达式
+ */
+const PATTERNS = {
+  //中国电信号码段
+  CHINA_TELECOM: /^(?:\+86)?1(?:33|53|7[37]|8[019])\d{8}$|^(?:\+86)?1700\d{7}$/,
+  //中国联通号码段
+  CHINA_UNICOM: /^(?:\+86)?1(?:3[0-2]|4[5]|5[56]|7[56]|8[56])\d{8}$|^(?:\+86)?170[7-9]\d{7}$/,
+  //中国移动号码段
+  CHINA_MOBILE: /^(?:\+86)?1(?:3[4-9]|4[7]|5[0-27-9]|7[8]|8[2-478])\d{8}$|^(?:\+86)?1705\d{7}$/,
+  //电话座机号码段
+  PHONE_CALL: /^(?:\(\d{3,4}\)|\d{3,4}-)?\d{7,8}(?:-\d{1,4})?$/,
+  //手机号码
+  PHONE_MOBILE: /^(?:\+86)?(?:13\d|14[57]|15[0-35-9]|17[35-8]|18\d)\d{8}$|^(?:\+86)?170[057-9]\d{7}$/,
+  //手机号简单校验，不根据运营商分类
+  PHONE_SIMPLE: /^(?:\+86)?1\d{10}$/,
+  //邮箱地址
+  EMAIL_ADDRESS: /^[-\w\+]+(?:\.[-\w]+)*@[-a-z0-9]+(?:\.[a-z0-9]+)*(?:\.[a-z]{2,})$/i
+};
+
+/**
+ * 是否手机号码
+ */
+export function isPhoneNumber(input: string) {
+  return PATTERNS.PHONE_SIMPLE.test(input);
+}
+
+/**
+ * 是否手机号码
+ */
+export function isPhoneMobile(input: string) {
+  return PATTERNS.PHONE_MOBILE.test(input);
+}
+
+/**
+ * 是否座机号码
+ */
+export function isPhoneCall(input: string) {
+  return PATTERNS.PHONE_CALL.test(input);
+}
+
+/**
+ * 是否移动号码
+ */
+export function isChinaTelecom(input: string) {
+  return PATTERNS.CHINA_TELECOM.test(input);
+}
+
+/**
+ * 是否移动号码
+ */
+export function isChinaUnicom(input: string) {
+  return PATTERNS.CHINA_UNICOM.test(input);
+}
+
+/**
+ * 是否移动号码
+ */
+export function isChinaMobile(input: string) {
+  return PATTERNS.CHINA_MOBILE.test(input);
+}
+
+/**
+ * 邮箱格式校验
+ */
+export function isEmail(input: string) {
+  return PATTERNS.EMAIL_ADDRESS.test(input);
+}
