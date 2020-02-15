@@ -443,7 +443,7 @@ export function isNest(rule: object, str: string) {
 /**
  * 正则表达式
  */
-const PATTERNS = {
+const VALIDATOR_PATTERNS = {
   //中国电信号码段
   CHINA_TELECOM: /^(?:\+86)?1(?:33|53|7[37]|8[019])\d{8}$|^(?:\+86)?1700\d{7}$/,
   //中国联通号码段
@@ -457,54 +457,98 @@ const PATTERNS = {
   //手机号简单校验，不根据运营商分类
   PHONE_SIMPLE: /^(?:\+86)?1\d{10}$/,
   //邮箱地址
-  EMAIL_ADDRESS: /^[-\w\+]+(?:\.[-\w]+)*@[-a-z0-9]+(?:\.[a-z0-9]+)*(?:\.[a-z]{2,})$/i
+  EMAIL_ADDRESS: /^[-\w\+]+(?:\.[-\w]+)*@[-a-z0-9]+(?:\.[a-z0-9]+)*(?:\.[a-z]{2,})$/i,
+  //18位身份证编码
+  ID_CARD_18_SIMPLE: /^(?:1[1-5]|2[1-3]|3[1-7]|4[1-6]|5[0-4]|6[1-5])\d{4}(?:1[89]|20)\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])\d{3}(?:\d|[xX])$/
 };
 
 /**
  * 是否手机号码
  */
 export function isPhoneNumber(input: string) {
-  return PATTERNS.PHONE_SIMPLE.test(input);
+  return VALIDATOR_PATTERNS.PHONE_SIMPLE.test(input);
 }
 
 /**
  * 是否手机号码
  */
 export function isPhoneMobile(input: string) {
-  return PATTERNS.PHONE_MOBILE.test(input);
+  return VALIDATOR_PATTERNS.PHONE_MOBILE.test(input);
 }
 
 /**
  * 是否座机号码
  */
 export function isPhoneCall(input: string) {
-  return PATTERNS.PHONE_CALL.test(input);
+  return VALIDATOR_PATTERNS.PHONE_CALL.test(input);
 }
 
 /**
  * 是否移动号码
  */
 export function isChinaTelecom(input: string) {
-  return PATTERNS.CHINA_TELECOM.test(input);
+  return VALIDATOR_PATTERNS.CHINA_TELECOM.test(input);
 }
 
 /**
  * 是否移动号码
  */
 export function isChinaUnicom(input: string) {
-  return PATTERNS.CHINA_UNICOM.test(input);
+  return VALIDATOR_PATTERNS.CHINA_UNICOM.test(input);
 }
 
 /**
  * 是否移动号码
  */
 export function isChinaMobile(input: string) {
-  return PATTERNS.CHINA_MOBILE.test(input);
+  return VALIDATOR_PATTERNS.CHINA_MOBILE.test(input);
 }
 
 /**
  * 邮箱格式校验
  */
 export function isEmail(input: string) {
-  return PATTERNS.EMAIL_ADDRESS.test(input);
+  return VALIDATOR_PATTERNS.EMAIL_ADDRESS.test(input);
+}
+
+/**
+ * 18位身份证简单校验
+ */
+export function isSimpleIdCard18(idCard: string) {
+  return VALIDATOR_PATTERNS.ID_CARD_18_SIMPLE.test(idCard);
+}
+
+/**
+ * 18位身份证校验码校验
+ */
+export function checkIdCardCode(idCard: string) {
+  var multiplier = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
+  var idData = idCard.split("");
+  var len = 17;
+  var sum = 0;
+  for (var i = 0; i < len; i++) {
+    sum += parseInt(idData[i]) * multiplier[i];
+  }
+  var remainder = sum % 11;
+  var checkCodeArr = ["1", "0", "X", "9", "8", "7", "6", "5", "4", "3", "2"];
+  var checkCode = checkCodeArr[remainder];
+  return checkCode === idCard[17];
+}
+
+/**
+ * 18位身份证严格校验
+ */
+export function isIdCard18(idCard: string) {
+  //先校验格式
+  if (isSimpleIdCard18(idCard)) {
+    //校验日期时间是否合法
+    var dateStr = idCard.substr(6, 8);
+    var dateStrNew = dateStr.replace(/(\d{4})(\d{2})(\d{2})/, "$1/$2/$3");
+    var dateObj = new Date(dateStrNew);
+    var month = dateObj.getMonth() + 1;
+    if (parseInt(dateStr.substr(4, 2)) === month) {
+      return checkIdCardCode(idCard);
+    }
+  }
+  return false;
 }
