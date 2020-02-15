@@ -15,5 +15,6 @@
  */
 
 import { App as app } from "./App";
+import { i18n } from "./i18n";
 
-export { app };
+export { app, i18n };
