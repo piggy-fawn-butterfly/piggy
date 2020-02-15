@@ -13,3 +13,11 @@
  *             ╨━━━┻━━━┗┛┗┛━━┗┛┗┛━━━┻━━━╨
  * ```
  */
+
+import * as arr from "./Arr";
+import * as cocos from "./Cocos";
+import * as date from "./DateTime";
+import * as math from "./Mathematics";
+import * as str from "./Str";
+
+export { arr, cocos, date, math, str };

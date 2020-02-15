@@ -16,5 +16,6 @@
  * ╨━━━┻━━━┗┛┗┛━━┗┛┗┛━━━┻━━━╨
  */
 import * as core from "./Core/_Core";
+import * as utils from "./Utils/_Utils";
 
 export { core };
