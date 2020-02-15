@@ -18,7 +18,8 @@ import * as arr from "./Arr";
 import * as cocos from "./Cocos";
 import * as date from "./DateTime";
 import * as math from "./Mathematics";
+import { Prando as prando } from "./Prando";
 import * as str from "./Str";
 import * as url from "./Url";
 
-export { arr, cocos, date, math, str, url };
+export { arr, cocos, date, math, prando, str, url };
