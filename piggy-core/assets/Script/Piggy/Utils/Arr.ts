@@ -103,3 +103,26 @@ export function mapToObject<T>(map: Map<string, T>): object {
   });
   return obj;
 }
+
+/**
+ * 获得数组最大值
+ * @param arr 数组
+ */
+export function getMaxValue(arr: [number]): number {
+  return Math.max.apply(Math, arr);
+}
+
+/**
+ * 获得最大值
+ * @param arr 数组
+ */
+export function getMinValue(arr: [number]): number {
+  return Math.min.apply(Math, arr);
+}
+
+/**
+ * 判断某个值是否在数组
+ */
+export function inArray<T>(arr: [T], ele: T): boolean {
+  return arr.indexOf(ele) > -1;
+}

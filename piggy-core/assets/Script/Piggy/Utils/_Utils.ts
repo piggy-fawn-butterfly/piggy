@@ -19,5 +19,6 @@ import * as cocos from "./Cocos";
 import * as date from "./DateTime";
 import * as math from "./Mathematics";
 import * as str from "./Str";
+import * as url from "./Url";
 
-export { arr, cocos, date, math, str };
+export { arr, cocos, date, math, str, url };
