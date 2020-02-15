@@ -522,16 +522,16 @@ export function isSimpleIdCard18(idCard: string) {
  * 18位身份证校验码校验
  */
 export function checkIdCardCode(idCard: string) {
-  var multiplier = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
-  var idData = idCard.split("");
-  var len = 17;
-  var sum = 0;
-  for (var i = 0; i < len; i++) {
+  let multiplier = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
+  let idData = idCard.split("");
+  let len = 17;
+  let sum = 0;
+  for (let i = 0; i < len; i++) {
     sum += parseInt(idData[i]) * multiplier[i];
   }
-  var remainder = sum % 11;
-  var checkCodeArr = ["1", "0", "X", "9", "8", "7", "6", "5", "4", "3", "2"];
-  var checkCode = checkCodeArr[remainder];
+  let remainder = sum % 11;
+  let checkCodeArr = ["1", "0", "X", "9", "8", "7", "6", "5", "4", "3", "2"];
+  let checkCode = checkCodeArr[remainder];
   return checkCode === idCard[17];
 }
 
@@ -542,10 +542,10 @@ export function isIdCard18(idCard: string) {
   //先校验格式
   if (isSimpleIdCard18(idCard)) {
     //校验日期时间是否合法
-    var dateStr = idCard.substr(6, 8);
-    var dateStrNew = dateStr.replace(/(\d{4})(\d{2})(\d{2})/, "$1/$2/$3");
-    var dateObj = new Date(dateStrNew);
-    var month = dateObj.getMonth() + 1;
+    let dateStr = idCard.substr(6, 8);
+    let dateStrNew = dateStr.replace(/(\d{4})(\d{2})(\d{2})/, "$1/$2/$3");
+    let dateObj = new Date(dateStrNew);
+    let month = dateObj.getMonth() + 1;
     if (parseInt(dateStr.substr(4, 2)) === month) {
       return checkIdCardCode(idCard);
     }
