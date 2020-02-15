@@ -19,5 +19,14 @@ export enum E_Text_Key {
   editor_version_state,
   editor_invalid_version_number,
   editor_choose_language,
-  unknown_language
+  unknown_language,
+  date_week_1,
+  date_week_2,
+  date_week_3,
+  date_week_4,
+  date_week_5,
+  date_week_6,
+  date_week_7,
+  date_am,
+  date_pm
 }

@@ -21,5 +21,14 @@ export const EN = {
   [E_Text_Key.editor_version_code]: "version string",
   [E_Text_Key.editor_version_state]: "version state",
   [E_Text_Key.editor_invalid_version_number]: `[fixed] version numbers can only consist of positive integers`,
-  [E_Text_Key.editor_choose_language]: "choose language"
+  [E_Text_Key.editor_choose_language]: "choose language",
+  [E_Text_Key.date_week_1]: "Sunday",
+  [E_Text_Key.date_week_2]: "Monday",
+  [E_Text_Key.date_week_3]: "Tuesday",
+  [E_Text_Key.date_week_4]: "Wednesday",
+  [E_Text_Key.date_week_5]: "Thursday",
+  [E_Text_Key.date_week_6]: "Friday",
+  [E_Text_Key.date_week_7]: "Saturday",
+  [E_Text_Key.date_am]: "AM",
+  [E_Text_Key.date_pm]: "PM"
 };
