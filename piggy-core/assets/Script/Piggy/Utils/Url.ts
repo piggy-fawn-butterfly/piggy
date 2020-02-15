@@ -3,9 +3,9 @@
  * @param url
  */
 export function toObject(url: string) {
-  var regex = /(\w+)=([^&#]*)/gim;
-  var matchStr = null;
-  var obj = {};
+  let regex = /(\w+)=([^&#]*)/gim;
+  let matchStr = null;
+  let obj = {};
   while ((matchStr = regex.exec(url)) != null) {
     obj[matchStr[1]] = matchStr[2];
   }
@@ -18,9 +18,9 @@ export function toObject(url: string) {
  * @param obj
  */
 export function fromObject(baseUrl: string, obj: object) {
-  var parameters = "";
-  var url = "";
-  for (var key in obj) {
+  let parameters = "";
+  let url = "";
+  for (let key in obj) {
     parameters += key + "=" + obj[key] + "&";
   }
   parameters = parameters.replace(/&$/, "");
@@ -34,24 +34,24 @@ export function fromObject(baseUrl: string, obj: object) {
  * @param url
  */
 export function parseQueryString(url: string) {
-  var obj = {};
+  let obj = {};
   if (url) {
     url = url.replace(/#[^#]*$/, "");
-    var index = url.indexOf("?");
+    let index = url.indexOf("?");
     if (index != -1) {
-      var queryStr = url.substr(index + 1);
-      var marchResult = null;
-      var regex = /(\w+)(=([^&#]+)?)?/g;
+      let queryStr = url.substr(index + 1);
+      let marchResult = null;
+      let regex = /(\w+)(=([^&#]+)?)?/g;
       while ((marchResult = regex.exec(queryStr)) != null) {
         if (marchResult[1] in obj) {
-          var values = obj[marchResult[1]];
+          let values = obj[marchResult[1]];
           if (values instanceof Array) {
             values.push(
               marchResult[2] ? (marchResult[3] ? marchResult[3] : "") : null
             );
             obj[marchResult[1]] = values;
           } else {
-            var arr = [];
+            let arr = [];
             arr.push(values);
             arr.push(
               marchResult[2] ? (marchResult[3] ? marchResult[3] : "") : null
