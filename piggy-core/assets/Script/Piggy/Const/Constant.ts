@@ -28,6 +28,7 @@ export const EVENT_NAME = {
   //system
   ON_BUTTON_CLICKED: "click",
   ON_CANVAS_RESIZE: "canvas-resize",
+  ON_RESOLUTION_RESIZE: "design-resolution-changed",
   ON_APP_SHOW: "game_on_show",
   ON_APP_HIDE: "game_on_hide",
   //internal
