@@ -1,4 +1,4 @@
-export class Prando {
+class Prando {
   public static random: Prando = new Prando();
   private static MIN: number = -2147483648; // Int32 min
   private static MAX: number = 2147483647; // Int32 max
@@ -194,3 +194,5 @@ export class Prando {
     return seed;
   }
 }
+
+export { Prando as prando };
