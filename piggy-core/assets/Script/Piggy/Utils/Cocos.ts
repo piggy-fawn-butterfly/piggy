@@ -143,10 +143,12 @@ export function resumeNode(node: cc.Node) {
 /**
  * 获得真实窗口尺寸
  */
-export function getVisibleRealSize(): cc.Size {
+export function getCanvasRealSize(): cc.Size {
   let fs = cc.view.getFrameSize();
   let sc = cc.view.getDevicePixelRatio();
   let scx = cc.view.getScaleX();
   let scy = cc.view.getScaleY();
-  return cc.size((fs.width / scx) * sc, (fs.height / scy) * sc);
+  let width = Math.ceil((fs.width / scx) * sc);
+  let height = Math.ceil((fs.height / scy) * sc);
+  return cc.size(width, height);
 }
