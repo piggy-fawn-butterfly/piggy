@@ -67,11 +67,12 @@ export namespace GAME_DATE {
 export function getLocaleDateTime(): string {
   return new Date(Date.now()).toLocaleString();
 }
+
 /**
  * 日期格式
  * @interface
  */
-export interface IDate {
+export interface I_Date_Time {
   year?: number;
   month?: number;
   day?: number;
@@ -84,7 +85,7 @@ export interface IDate {
  * 格式化日期参数
  * @interface
  */
-export interface IDateFmt {
+export interface I_Date_Fmt {
   year?: boolean;
   month?: boolean;
   day?: boolean;
@@ -98,8 +99,8 @@ export interface IDateFmt {
  * @param time 时间数值
  * @returns IDate
  */
-export function time2gt(time: number): IDate {
-  let date: IDate = {
+export function time2gt(time: number): I_Date_Time {
+  let date: I_Date_Time = {
     year: 0,
     month: 0,
     day: 0,
@@ -120,14 +121,14 @@ export function time2gt(time: number): IDate {
  */
 export function format2gt(
   time: number,
-  fmt: IDateFmt = {
+  fmt: I_Date_Fmt = {
     hour: true,
     day: true,
     month: false,
     year: false
   }
 ): string {
-  let date: IDate = time2gt(time);
+  let date: I_Date_Time = time2gt(time);
   let str: string = "";
   fmt.year && date.year > 0 && (str += `${date.year}年`);
   fmt.month && date.month > 0 && (str += `${date.month}月`);
@@ -140,8 +141,8 @@ export function format2gt(
  * 将时间数值转为普通日期
  * @param time 时间数值
  */
-export function time2dt(time: number): IDate {
-  let date: IDate = {
+export function time2dt(time: number): I_Date_Time {
+  let date: I_Date_Time = {
     year: 0,
     month: 0,
     day: 0,
@@ -166,13 +167,13 @@ export function time2dt(time: number): IDate {
  */
 export function format2dt(
   time: number,
-  fmt: IDateFmt = {
+  fmt: I_Date_Fmt = {
     hour: true,
     min: true,
     sec: true
   }
 ): string {
-  let date: IDate = time2dt(time);
+  let date: I_Date_Time = time2dt(time);
   let str: string = "";
   fmt.year && date.year > 0 && (str += `${date.year}年`);
   fmt.month && date.month > 0 && (str += `${date.month}月`);
@@ -426,7 +427,7 @@ export function format(dateTime: number | string | Date, pattern: string) {
 
 /**
  * 计算一个日期是当年的第几天
- * @param {Object} date
+ * @param date
  */
 export function dayOfTheYear(date: Date | string | number): number {
   let obj = new Date(date);
