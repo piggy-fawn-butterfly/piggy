@@ -36,7 +36,7 @@ const {
 @disallowMultiple
 @executeInEditMode
 @requireComponent(cc.Canvas)
-export class App extends cc.Component {
+class App extends cc.Component {
   resetInEditor() {
     this._init();
     this._p_version_string = constants.VERSION_STRING;
@@ -151,3 +151,5 @@ export class App extends cc.Component {
     canvas.fitHeight = true;
   }
 }
+
+export { App as app };
