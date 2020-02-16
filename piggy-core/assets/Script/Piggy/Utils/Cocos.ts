@@ -141,62 +141,6 @@ export function resumeNode(node: cc.Node) {
 }
 
 /**
- * 对象观察回调
- * @interface
- * @param new_val 新值
- * @param old_val 旧值
- * @param obj 被观察的对象
- */
-interface I_Watch_Callback {
-  (new_val?: any, old_val?: any, obj?: Object): void;
-}
-
-/**
- * 观察对象属性改变
- * @param obj 对象
- * @param prop 属性
- * @param callback 回调
- * @example
- * let node = new cc.Node();
- * this.node.addChild(node);
- * onPropertyChanged(node, "_parent", (val, old) => {
- *   val === null && console.log(old === null ? "onCleanUp" : "onRemove");
- * });
- * this.scheduleOnce(() => {
- *   node.removeFromParent();
- * }, 1);
- * this.scheduleOnce(() => {
- *   node.destroy();
- * }, 2);
- */
-export function watchProperty(
-  obj: Object,
-  prop: string,
-  callback: I_Watch_Callback
-) {
-  if (prop in obj) {
-    let old_val = obj[prop];
-    cc.js.getset(
-      obj,
-      prop,
-      function getter() {
-        return old_val;
-      },
-      function setter(new_val: any) {
-        let temp = old_val;
-        old_val = new_val;
-        callback(new_val, temp, obj);
-      },
-      true,
-      true
-    );
-  } else {
-    throw new Error("no such property: " + prop);
-  }
-}
-export let onPropertyChanged = watchProperty;
-
-/**
  * 获得真实窗口尺寸
  */
 export function getVisibleRealSize(): cc.Size {
