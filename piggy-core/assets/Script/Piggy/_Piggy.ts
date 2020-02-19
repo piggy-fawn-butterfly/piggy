@@ -15,7 +15,9 @@
  * ╢━O━┣ ┊┊┃┏┳┳━━┓┏┳┫┊┊ ┣━N━╢
  * ╨━━━┻━━━┗┛┗┛━━┗┛┗┛━━━┻━━━╨
  */
+
 import * as core from "./Core/_Core";
 import * as utils from "./Utils/_Utils";
+import * as constant from "./Const/_Const";
 
-export { core, utils };
+export { core, utils, constant };
