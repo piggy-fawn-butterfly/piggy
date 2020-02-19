@@ -14,7 +14,9 @@
  * ```
  */
 
-import { App as app } from "./App";
+import { app } from "./App";
 import { i18n } from "./i18n";
+import { eventCenter } from "./EventCenter";
+import { canvasAdapter } from "./CanvasAdapter";
 
-export { app, i18n };
+export { app, i18n, eventCenter, canvasAdapter };
