@@ -15,7 +15,7 @@
  */
 
 import * as piggy from "../Piggy/_Piggy";
-const { ccclass, property } = cc._decorator;
+const { ccclass } = cc._decorator;
 
 /**
  * @class GameEntry
@@ -25,6 +25,6 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class GameEntry extends piggy.core.app {
   onLoad() {
-    console.log("==", piggy);
+    super.onLoad();
   }
 }
