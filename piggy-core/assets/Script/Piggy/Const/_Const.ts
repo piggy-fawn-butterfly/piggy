@@ -18,7 +18,8 @@ import * as constants from "./Constant";
 import * as enums from "./Declare/Enums";
 import * as types from "./Declare/Types";
 import * as interfaces from "./Declare/Interfaces";
-import { AssetPath as assetPath } from "./AssetPath";
 import * as locales from "./Locale/_Locale";
+import { assetPath } from "./AssetPath";
+import { colors } from "./Colors";
 
-export { constants, enums, types, interfaces, locales, assetPath };
+export { constants, enums, types, interfaces, locales, assetPath, colors };
