@@ -255,7 +255,7 @@
     "_p_i18n_language": 0,
     "_p_version_string": "1.0.0",
     "p_version_state": 0,
-    "p_auto_resize_for_browser": true,
+    "p_auto_resize_for_browser": false,
     "_id": "54X7GPWGNDqIDruKeOj6I8"
   }
 ]

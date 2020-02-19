@@ -22,6 +22,8 @@ export const CN = {
   [E_Text_Key.editor_version_state]: "版本选择",
   [E_Text_Key.editor_invalid_version_number]: `[已修正] 版本号只能由正整数组成`,
   [E_Text_Key.editor_choose_language]: "选择语言",
+  [E_Text_Key.editor_auto_resize_for_browser]: "浏览器自动满屏",
+  [E_Text_Key.editor_browser_only]: "仅适用于浏览器",
   [E_Text_Key.date_week_1]: "星期一",
   [E_Text_Key.date_week_2]: "星期二",
   [E_Text_Key.date_week_3]: "星期三",

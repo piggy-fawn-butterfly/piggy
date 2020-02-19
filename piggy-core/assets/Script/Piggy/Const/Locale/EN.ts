@@ -22,6 +22,8 @@ export const EN = {
   [E_Text_Key.editor_version_state]: "version state",
   [E_Text_Key.editor_invalid_version_number]: `[fixed] version numbers can only consist of positive integers`,
   [E_Text_Key.editor_choose_language]: "choose language",
+  [E_Text_Key.editor_auto_resize_for_browser]: "page auto resize for browser",
+  [E_Text_Key.editor_browser_only]: "browser only",
   [E_Text_Key.date_week_1]: "Sunday",
   [E_Text_Key.date_week_2]: "Monday",
   [E_Text_Key.date_week_3]: "Tuesday",

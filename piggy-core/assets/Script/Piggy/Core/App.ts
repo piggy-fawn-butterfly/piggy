@@ -18,6 +18,7 @@ import { i18n } from "./i18n";
 import { locales, constants, enums } from "../Const/_Const";
 import { eventCenter } from "./EventCenter";
 import { logger } from "./Logger";
+import { E_Text_Key } from "../Const/Locale/TextKey";
 
 const {
   ccclass,
@@ -118,7 +119,10 @@ class App extends cc.Component {
   /**
    * 浏览器自动满屏
    */
-  @property({ displayName: "浏览器自动满屏", tooltip: "仅适用于浏览器" })
+  @property({
+    displayName: i18n.text(E_Text_Key.editor_auto_resize_for_browser),
+    tooltip: i18n.text(E_Text_Key.editor_browser_only)
+  })
   p_auto_resize_for_browser: boolean = false;
 
   //----------------------组件方法----------------------
