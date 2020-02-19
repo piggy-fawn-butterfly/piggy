@@ -14,4 +14,8 @@
  * ```
  */
 
-export const AssetPath = {};
+const AssetPath = {
+  Testcase_CanvasAdapter: "Prefab/Testcase_CanvasAdapter"
+};
+
+export { AssetPath as assetPath };
