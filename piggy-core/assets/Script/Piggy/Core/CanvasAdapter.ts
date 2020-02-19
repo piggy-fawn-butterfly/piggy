@@ -6,7 +6,12 @@ const { ccclass, requireComponent } = cc._decorator;
 
 /**
  * @file CanvasAdapter
- * @description 屏幕适配方案：SHOW_ALL + 根据屏幕尺寸适配
+ * @extends cc.Component
+ * @requires cc.Widget
+ * @description 屏幕适配方案
+ * - 开启此组件时 `Canvas` 的适配模式将被强制设置为 `SHOW_ALL`
+ * - 开启此组件意味着组件节点将会根据屏幕尺寸而非设计尺寸适配
+ * - 此组件的适配方式依赖于 `cc.Widget` 的配置
  * @author DoooReyn <jl88744653@gmail.com>
  * @license MIT
  * @identifier
@@ -22,22 +27,34 @@ const { ccclass, requireComponent } = cc._decorator;
 @ccclass
 @requireComponent(cc.Widget)
 class CanvasAdapter extends cc.Component {
-  onLoad() {
+  /**
+   * 启用
+   */
+  onEnable() {
     this.adapt();
     eventCenter.on(constants.EVENT_NAME.ON_CANVAS_RESIZE, this.adapt, this);
   }
 
+  /**
+   * 禁用
+   */
   onDisable() {
     eventCenter.off(constants.EVENT_NAME.ON_CANVAS_RESIZE, this.adapt, this);
   }
 
-  adapt() {
+  /**
+   * 准备适配
+   */
+  private adapt(): void {
     this.scheduleOnce(() => {
-      this._adapt();
+      this.doAdapt();
     }, 0);
   }
 
-  _adapt() {
+  /**
+   * 执行适配
+   */
+  public doAdapt(): void {
     let widget = this.node.getComponent(cc.Widget);
     widget.alignMode = cc.Widget.AlignMode.ONCE;
 
