@@ -16,6 +16,7 @@
 
 import { i18n } from "./i18n";
 import { locales, constants, enums } from "../Const/_Const";
+import { eventCenter } from "./EventCenter";
 
 const {
   ccclass,
@@ -37,18 +38,20 @@ const {
 @executeInEditMode
 @requireComponent(cc.Canvas)
 class App extends cc.Component {
+  //----------------------组件属性----------------------
+
   resetInEditor() {
-    this._init();
+    this.resetEditor();
     this._p_version_string = constants.VERSION_STRING;
   }
   onFocusInEditor() {
-    this._init();
+    this.resetEditor();
   }
   onLostFocusInEditor() {
-    this._init();
+    this.resetEditor();
   }
   onRestore() {
-    this._init();
+    this.resetEditor();
   }
 
   /**
@@ -112,6 +115,33 @@ class App extends cc.Component {
   p_version_state: enums.E_Version_Choice = enums.E_Version_Choice.Dev;
 
   /**
+   * 浏览器自动满屏
+   */
+  @property({ displayName: "浏览器自动满屏", tooltip: "仅适用于浏览器" })
+  p_auto_resize_for_browser: boolean = false;
+
+  //----------------------组件方法----------------------
+
+  /**
+   * 初始化
+   */
+  private resetEditor() {
+    this.lockCanvasAdapter();
+  }
+
+  /**
+   * 锁定Canvas适配
+   * 采用新的屏幕适配方案：SHOW_ALL + CanvasAdapter
+   * @see {@link CanvasAdapter} for further information.
+   * @see CanvasAdapter
+   */
+  private lockCanvasAdapter() {
+    let canvas = this.node.getComponent(cc.Canvas);
+    canvas.fitWidth = true;
+    canvas.fitHeight = true;
+  }
+
+  /**
    * 是否开发版本
    */
   isDev() {
@@ -133,22 +163,50 @@ class App extends cc.Component {
   }
 
   /**
-   * 初始化
+   * App首次加载
    */
-  private _init() {
+  onLoad() {
     this.lockCanvasAdapter();
+    this.registerCanvasResizeEvent();
   }
 
   /**
-   * 锁定Canvas适配
-   * 采用新的屏幕适配方案：SHOW_ALL + CanvasAdapter
-   * @see {@link CanvasAdapter} for further information.
-   * @see CanvasAdapter
+   * App销毁
    */
-  private lockCanvasAdapter() {
-    let canvas = this.node.getComponent(cc.Canvas);
-    canvas.fitWidth = true;
-    canvas.fitHeight = true;
+  onDestroy() {
+    this.unschedule(this.refreshFrameSize);
+  }
+
+  /**
+   * 监听Canvas尺寸变化
+   */
+  registerCanvasResizeEvent() {
+    if (this.p_auto_resize_for_browser && cc.sys.isBrowser) {
+      cc.view.enableAutoFullScreen(this.p_auto_resize_for_browser);
+      let toolbar = document.getElementsByClassName("toolbar")[0];
+      toolbar && (toolbar["style"]["display"] = "none");
+      this.schedule(this.refreshFrameSize, 1);
+      this.refreshFrameSize();
+    } else {
+      cc.view.on(constants.EVENT_NAME.ON_CANVAS_RESIZE, () => {
+        eventCenter.dispatch(constants.EVENT_NAME.ON_CANVAS_RESIZE);
+      });
+    }
+  }
+
+  /**
+   * 自动更新FrameSize
+   */
+  refreshFrameSize() {
+    let frameSize = cc.view.getFrameSize();
+    let { clientWidth, clientHeight } = document.body;
+    if (
+      Math.floor(frameSize.width - clientWidth) !== 0 ||
+      Math.floor(frameSize.height - clientHeight) !== 0
+    ) {
+      cc.view.setFrameSize(clientWidth, clientHeight);
+      eventCenter.dispatch(constants.EVENT_NAME.ON_CANVAS_RESIZE);
+    }
   }
 }
 
