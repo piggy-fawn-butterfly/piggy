@@ -17,6 +17,7 @@
 import { i18n } from "./i18n";
 import { locales, constants, enums } from "../Const/_Const";
 import { eventCenter } from "./EventCenter";
+import { logger } from "./Logger";
 
 const {
   ccclass,
@@ -166,6 +167,9 @@ class App extends cc.Component {
    * App首次加载
    */
   onLoad() {
+    logger.setLevel(
+      this.isRelease() ? enums.E_Log_Level.Trace : enums.E_Log_Level.Error
+    );
     this.lockCanvasAdapter();
     this.registerCanvasResizeEvent();
   }

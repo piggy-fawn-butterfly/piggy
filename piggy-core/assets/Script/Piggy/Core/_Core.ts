@@ -18,5 +18,6 @@ import { app } from "./App";
 import { i18n } from "./i18n";
 import { eventCenter } from "./EventCenter";
 import { canvasAdapter } from "./CanvasAdapter";
+import { logger } from "./Logger";
 
-export { app, i18n, eventCenter, canvasAdapter };
+export { app, i18n, eventCenter, canvasAdapter, logger };

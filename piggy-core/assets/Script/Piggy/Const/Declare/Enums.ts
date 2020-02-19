@@ -43,3 +43,14 @@ export enum E_Version_Choice {
   Beta,
   Release
 }
+
+/**
+ * 日志等级枚举
+ */
+export enum E_Log_Level {
+  Trace = 0,
+  Info,
+  Warn,
+  Error,
+  Silence
+}

@@ -9,9 +9,9 @@ const { ccclass, requireComponent } = cc._decorator;
  * @extends cc.Component
  * @requires cc.Widget
  * @description 屏幕适配方案
- * - 开启此组件时 `Canvas` 的适配模式将被强制设置为 `SHOW_ALL`
- * - 开启此组件意味着组件节点将会根据屏幕尺寸而非设计尺寸适配
- * - 此组件的适配方式依赖于 `cc.Widget` 的配置
+ * - 开启此组件时要求 `Canvas` 的适配模式必须是 `SHOW_ALL`
+ * - 开启此组件意味着组件节点将会根据屏幕尺寸而非设计尺寸进行适配
+ * - 此组件的适配方式基于 `cc.Widget` 的配置，跟普通适配一样操作即可
  * @author DoooReyn <jl88744653@gmail.com>
  * @license MIT
  * @identifier
