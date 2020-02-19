@@ -13,8 +13,6 @@
  *             ╨━━━┻━━━┗┛┗┛━━┗┛┗┛━━━┻━━━╨
  * ```
  */
-const AssetPath = {
-  "Testcase_CanvasAdapter": "Testcase_CanvasAdapter"
-};
+const AssetPath = __CONTENT__;
 
 export { AssetPath as assetPath };

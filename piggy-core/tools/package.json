@@ -1,0 +1,15 @@
+{
+  "name": "piggy-tools",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "keywords": [
+    "piggy",
+    "tools"
+  ],
+  "author": "reyn",
+  "license": "ISC"
+}
