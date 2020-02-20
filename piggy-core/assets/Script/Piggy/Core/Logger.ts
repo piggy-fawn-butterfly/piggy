@@ -1,4 +1,4 @@
-import { shortDay } from "../Utils/DateTime";
+import { datetime } from "../Utils/DateTime";
 import { enums } from "../Const/Declare/Enums";
 
 /**
@@ -93,7 +93,7 @@ class Logger {
     //渲染日志前置标记
     let color = Logger.s_method_colors[level];
     let args = [
-      `%c${label} %c${shortDay()}`,
+      `%c${label} %c${datetime.shortDay()}`,
       `font-weight:bold;background:${color};`,
       `font-weight:bold;background:#ffb;`
     ];
