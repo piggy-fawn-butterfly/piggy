@@ -144,6 +144,6 @@ class EventCenter {
   }
 }
 
-let eventCenter = EventCenter.s_instance;
+let event_center = EventCenter.s_instance;
 
-export { eventCenter };
+export { event_center };

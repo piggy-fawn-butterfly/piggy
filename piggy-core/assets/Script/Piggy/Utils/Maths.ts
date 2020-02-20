@@ -1,6 +1,6 @@
 /**
- * @file _Core
- * @description Core核心包内容整合
+ * @file Maths
+ * @description 数学库扩展
  * @author DoooReyn <jl88744653@gmail.com>
  * @license MIT
  * @identifier
@@ -13,11 +13,24 @@
  *             ╨━━━┻━━━┗┛┗┛━━┗┛┗┛━━━┻━━━╨
  * ```
  */
+namespace maths {
+  /**
+   * 随机整数 [min, max]
+   * @param min 下限
+   * @param max 上限
+   */
+  export function randomInt(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
 
-import { app } from "./App";
-import { i18n } from "./i18n";
-import { eventCenter } from "./EventCenter";
-import { canvasAdapter } from "./CanvasAdapter";
-import { logger } from "./Logger";
+  /**
+   * 随机浮点数 [min, max]
+   * @param min 下限
+   * @param max 上限
+   */
+  export function randomFloat(min: number, max: number): number {
+    return Math.random() * (max - min + 1) + min;
+  }
+}
 
-export { app, i18n, eventCenter, canvasAdapter, logger };
+export { maths };

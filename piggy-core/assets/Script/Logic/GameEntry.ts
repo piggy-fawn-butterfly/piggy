@@ -14,7 +14,7 @@
  * ```
  */
 
-import * as piggy from "../Piggy/_Piggy";
+import { app } from "../Piggy/Core/App";
 const { ccclass } = cc._decorator;
 
 /**
@@ -23,8 +23,10 @@ const { ccclass } = cc._decorator;
  * @summary 用户自定义的游戏入口
  */
 @ccclass
-export default class GameEntry extends piggy.core.app {
+class GameEntry extends app {
   onLoad() {
     super.onLoad();
   }
 }
+
+export { GameEntry };

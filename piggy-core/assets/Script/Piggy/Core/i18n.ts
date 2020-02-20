@@ -1,4 +1,13 @@
-import { locales, enums } from "../Const/_Const";
+import { enums } from "../Const/Declare/Enums";
+import { E_Text_Key } from "../Const/Locale/TextKey";
+import { EN } from "../Const/Locale/EN";
+import { CN } from "../Const/Locale/CN";
+import { TC } from "../Const/Locale/TC";
+const locales = {
+  EN: EN,
+  CN: CN,
+  TC: TC
+};
 
 /**
  * @file i18n
@@ -40,10 +49,7 @@ class i18n {
    * @param key i18n text key
    * @param lang i18n target language, default as `CN`
    */
-  public text(
-    key: locales.E_Text_Key,
-    lang: enums.E_Language_Choice = this.m_lang
-  ) {
+  public text(key: E_Text_Key, lang: enums.E_Language_Choice = this.m_lang) {
     try {
       return locales[enums.E_Language_Choice[lang]][key];
     } catch (e) {
@@ -52,6 +58,10 @@ class i18n {
   }
 }
 
-let _i18n = i18n.s_instance;
+namespace i18n {
+  export const TextKey = E_Text_Key;
+}
 
-export { _i18n as i18n };
+const i18ns = i18n.s_instance;
+
+export { i18n, i18ns };

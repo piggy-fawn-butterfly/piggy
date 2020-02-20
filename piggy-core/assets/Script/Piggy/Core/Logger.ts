@@ -1,5 +1,5 @@
 import { shortDay } from "../Utils/DateTime";
-import { E_Log_Level } from "../Const/Declare/Enums";
+import { enums } from "../Const/Declare/Enums";
 
 /**
  * @file Logger
@@ -20,15 +20,15 @@ import { E_Log_Level } from "../Const/Declare/Enums";
  */
 class Logger {
   private static readonly s_call_chains = [
-    E_Log_Level.Trace,
-    E_Log_Level.Warn,
-    E_Log_Level.Error
+    enums.E_Log_Level.Trace,
+    enums.E_Log_Level.Warn,
+    enums.E_Log_Level.Error
   ];
   private static readonly s_call_methods = ["trace", "log", "warn", "error"];
   private static readonly s_method_colors = ["#cbd", "#afa", "#ff5", "#f88"];
 
   /** 当前日志等级 */
-  private static s_log_level: E_Log_Level = E_Log_Level.Trace;
+  private static s_log_level: enums.E_Log_Level = enums.E_Log_Level.Trace;
 
   /**
    * 隐藏构造器
@@ -39,7 +39,7 @@ class Logger {
    * 设置日志等级
    * @param level
    */
-  public static setLevel(level: E_Log_Level) {
+  public static setLevel(level: enums.E_Log_Level) {
     this.s_log_level = level;
   }
 
@@ -47,7 +47,7 @@ class Logger {
    * 获得日志等级
    * @returns LOG_LEVEL
    */
-  public static getLevel(): E_Log_Level {
+  public static getLevel(): enums.E_Log_Level {
     return this.s_log_level;
   }
 
@@ -56,7 +56,7 @@ class Logger {
    * @returns boolean
    */
   public static isFullOpen(): boolean {
-    return this.s_log_level === E_Log_Level.Trace;
+    return this.s_log_level === enums.E_Log_Level.Trace;
   }
 
   /**
@@ -64,14 +64,14 @@ class Logger {
    * @returns boolean
    */
   public static isSilence(): boolean {
-    return this.s_log_level === E_Log_Level.Silence;
+    return this.s_log_level === enums.E_Log_Level.Silence;
   }
 
   /**
    * 根据日志等级判定是否可用
    * @param level 日志等级
    */
-  private static isValid(level: E_Log_Level): boolean {
+  private static isValid(level: enums.E_Log_Level): boolean {
     return !this.isSilence() && level >= this.s_log_level;
   }
 
@@ -81,7 +81,11 @@ class Logger {
    * @param label 分组标签
    * @param groups 分组数据
    */
-  private static applyGroup(level: E_Log_Level, label: string, ...groups: any) {
+  private static applyGroup(
+    level: enums.E_Log_Level,
+    label: string,
+    ...groups: any
+  ) {
     if (!this.isValid(level)) {
       return;
     }
@@ -118,8 +122,8 @@ class Logger {
    * @param args
    */
   public static trace(label: string, ...args: any): void {
-    this.isValid(E_Log_Level.Trace) &&
-      this.applyGroup(E_Log_Level.Trace, label, ...args);
+    this.isValid(enums.E_Log_Level.Trace) &&
+      this.applyGroup(enums.E_Log_Level.Trace, label, ...args);
   }
 
   /**
@@ -127,8 +131,8 @@ class Logger {
    * @param args
    */
   public static info(label: string, ...args: any): void {
-    this.isValid(E_Log_Level.Info) &&
-      this.applyGroup(E_Log_Level.Info, label, ...args);
+    this.isValid(enums.E_Log_Level.Info) &&
+      this.applyGroup(enums.E_Log_Level.Info, label, ...args);
   }
 
   /**
@@ -136,8 +140,8 @@ class Logger {
    * @param args
    */
   public static warn(label: string, ...args: any): void {
-    this.isValid(E_Log_Level.Warn) &&
-      this.applyGroup(E_Log_Level.Warn, label, ...args);
+    this.isValid(enums.E_Log_Level.Warn) &&
+      this.applyGroup(enums.E_Log_Level.Warn, label, ...args);
   }
 
   /**
@@ -145,8 +149,8 @@ class Logger {
    * @param args
    */
   public static error(label: string, ...args: any): void {
-    this.isValid(E_Log_Level.Error) &&
-      this.applyGroup(E_Log_Level.Error, label, ...args);
+    this.isValid(enums.E_Log_Level.Error) &&
+      this.applyGroup(enums.E_Log_Level.Error, label, ...args);
   }
 }
 

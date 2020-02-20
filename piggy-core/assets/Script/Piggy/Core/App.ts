@@ -14,11 +14,11 @@
  * ```
  */
 
-import { i18n } from "./i18n";
-import { locales, constants, enums } from "../Const/_Const";
-import { eventCenter } from "./EventCenter";
+import { i18n, i18ns } from "./i18n";
 import { logger } from "./Logger";
-import { E_Text_Key } from "../Const/Locale/TextKey";
+import { event_center } from "./EventCenter";
+import { enums } from "../Const/Declare/Enums";
+import { constants } from "../Const/Constant";
 
 const {
   ccclass,
@@ -62,15 +62,14 @@ class App extends cc.Component {
   @property()
   _p_i18n_language: enums.E_Language_Choice = enums.E_Language_Choice.CN;
   @property({
-    displayName: i18n.text(locales.E_Text_Key.editor_choose_language),
+    displayName: i18ns.text(i18n.TextKey.editor_choose_language),
     type: cc.Enum(enums.E_Language_Choice)
   })
   get p_i18n_language(): enums.E_Language_Choice {
     return this._p_i18n_language;
   }
   set p_i18n_language(lang: enums.E_Language_Choice) {
-    this._p_i18n_language = lang;
-    i18n.language = lang;
+    i18ns.language = this._p_i18n_language = lang;
   }
 
   /**
@@ -82,7 +81,7 @@ class App extends cc.Component {
   @property()
   _p_version_string: string = constants.VERSION_STRING;
   @property({
-    displayName: i18n.text(locales.E_Text_Key.editor_version_code),
+    displayName: i18ns.text(i18n.TextKey.editor_version_code),
     type: cc.String
   })
   get p_version_string(): string {
@@ -91,7 +90,7 @@ class App extends cc.Component {
   set p_version_string(str: string) {
     let arr = str.split(".");
     if (arr.length !== 3) {
-      cc.warn(i18n.text(locales.E_Text_Key.editor_invalid_version_rule));
+      cc.warn(i18ns.text(i18n.TextKey.editor_invalid_version_rule));
       this.p_version_string = constants.VERSION_STRING;
     } else {
       let ret = [];
@@ -100,7 +99,7 @@ class App extends cc.Component {
         let meet = !isNaN(num) && num >= 0 && code[0] !== "-";
         num = meet ? num : 0;
         !meet &&
-          cc.warn(i18n.text(locales.E_Text_Key.editor_invalid_version_number));
+          cc.warn(i18ns.text(i18n.TextKey.editor_invalid_version_number));
         ret.push(num);
       });
       this._p_version_string = ret.join(".");
@@ -111,7 +110,7 @@ class App extends cc.Component {
    * 版本状态
    */
   @property({
-    displayName: i18n.text(locales.E_Text_Key.editor_version_state),
+    displayName: i18ns.text(i18n.TextKey.editor_version_state),
     type: cc.Enum(enums.E_Version_Choice)
   })
   p_version_state: enums.E_Version_Choice = enums.E_Version_Choice.Dev;
@@ -120,8 +119,8 @@ class App extends cc.Component {
    * 浏览器自动满屏
    */
   @property({
-    displayName: i18n.text(E_Text_Key.editor_auto_resize_for_browser),
-    tooltip: i18n.text(E_Text_Key.editor_browser_only)
+    displayName: i18ns.text(i18n.TextKey.editor_auto_resize_for_browser),
+    tooltip: i18ns.text(i18n.TextKey.editor_browser_only)
   })
   p_auto_resize_for_browser: boolean = false;
 
@@ -197,7 +196,7 @@ class App extends cc.Component {
       this.refreshFrameSize();
     } else {
       cc.view.on(constants.EVENT_NAME.ON_CANVAS_RESIZE, () => {
-        eventCenter.dispatch(constants.EVENT_NAME.ON_CANVAS_RESIZE);
+        event_center.dispatch(constants.EVENT_NAME.ON_CANVAS_RESIZE);
       });
     }
   }
@@ -213,7 +212,7 @@ class App extends cc.Component {
       Math.floor(frameSize.height - clientHeight) !== 0
     ) {
       cc.view.setFrameSize(clientWidth, clientHeight);
-      eventCenter.dispatch(constants.EVENT_NAME.ON_CANVAS_RESIZE);
+      event_center.dispatch(constants.EVENT_NAME.ON_CANVAS_RESIZE);
     }
   }
 }

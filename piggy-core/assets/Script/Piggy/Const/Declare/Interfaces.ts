@@ -13,21 +13,24 @@
  *             ╨━━━┻━━━┗┛┗┛━━┗┛┗┛━━━┻━━━╨
  * ```
  */
+namespace interfaces {
+  /**
+   * 数字类型的存储值
+   */
+  export interface I_User_Value_Number {
+    min: number;
+    max: number;
+    val: number;
+  }
 
-/**
- * 数字类型的存储值
- */
-export interface I_User_Value_Number {
-  min: number;
-  max: number;
-  val: number;
+  /**
+   * 布尔类型的存储值
+   */
+  export interface I_User_Value_Boolean {
+    on(): void;
+    off(): void;
+    val: boolean;
+  }
 }
 
-/**
- * 布尔类型的存储值
- */
-export interface I_User_Value_Boolean {
-  on(): void;
-  off(): void;
-  val: boolean;
-}
+export { interfaces };

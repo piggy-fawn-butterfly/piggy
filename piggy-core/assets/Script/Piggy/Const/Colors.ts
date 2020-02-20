@@ -19,7 +19,7 @@
  * @summary
  * 色值定义来自于 [Material Palette](https://www.materialpalette.com/colors)
  */
-namespace Colors {
+namespace colors {
   /**
    * 红色
    * @enum
@@ -416,4 +416,4 @@ namespace Colors {
   }
 }
 
-export { Colors as colors };
+export { colors };
