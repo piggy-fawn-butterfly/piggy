@@ -17,15 +17,18 @@ class generate_asset_paths {
       let stat = fs.statSync(filePath);
       if (stat.isDirectory()) {
         this.walk_dir(filePath);
-      } else if (stat.isFile() && !filePath.endsWith(".meta")) {
-        let val = filePath
+      } else if (
+        stat.isFile() &&
+        !filePath.endsWith(".meta") &&
+        files[i] !== ".DS_Store"
+      ) {
+        let paths = filePath
           .split(this.rootPath + "/")
           .pop()
           .split(".")[0]
-          .split("/")
-          .pop();
-        let key = val.replace("/", "_");
-        this.paths[key] = val;
+          .split("/");
+        let key = paths.join("_");
+        this.paths[key] = paths.join("/");
       }
     }
   }
