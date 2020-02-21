@@ -121,8 +121,6 @@
     }
   });
 
-  console.log(devices_after);
-
   // coockie
   // =======================
   function setCookie(name, value, days) {
