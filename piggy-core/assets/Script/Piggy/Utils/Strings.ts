@@ -146,14 +146,14 @@ namespace strings {
   }
 
   /**
-   * 向右补齐
+   * 添加后缀
    */
   export function rightPad(input: string, size: number, padStr: string) {
     return input + this.repeat(padStr, size);
   }
 
   /**
-   * 向左补齐
+   * 添加前缀
    */
   export function leftPad(input: string, size: number, padStr: string) {
     return this.repeat(padStr, size) + input;
