@@ -86,14 +86,13 @@ class Logger {
     label: string,
     ...groups: any
   ) {
-    if (!this.isValid(level)) {
-      return;
-    }
+    if (!this.isValid(level)) return;
 
     //渲染日志前置标记
+    let collapse = label.indexOf("@") === 0;
     let color = Logger.s_method_colors[level];
     let args = [
-      `%c${label} %c${datetime.shortDay()}`,
+      `%c${collapse ? label.slice(1) : label} %c${datetime.shortDay()}`,
       `font-weight:bold;background:${color};`,
       `font-weight:bold;background:#ffb;`
     ];
@@ -103,10 +102,7 @@ class Logger {
       console[Logger.s_call_methods[level]](...args);
       return;
     }
-    let group_method =
-      label.length === 0 || label.indexOf("@") >= 0
-        ? "group"
-        : "groupCollapsed";
+    let group_method = label.indexOf("@") >= 0 ? "group" : "groupCollapsed";
     console[group_method](...args);
     for (let group of groups) {
       console.log(group);
