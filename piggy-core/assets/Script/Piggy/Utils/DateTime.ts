@@ -188,10 +188,15 @@ namespace datetime {
    */
   export function shortDay(): string {
     let date: Date = new Date();
-    let h = date.getHours(),
-      m = date.getMinutes(),
-      s = date.getSeconds(),
-      ms = date.getMilliseconds();
+    let arr = [
+      date.getHours(),
+      date.getMinutes(),
+      date.getSeconds(),
+      date.getMilliseconds()
+    ].map(v => {
+      return strings.prefixZero(v, 2);
+    });
+    let [h, m, s, ms] = arr;
     return `${h}:${m}:${s}.${ms}`;
   }
 
