@@ -171,7 +171,7 @@ class App extends cc.Component {
    */
   onLoad() {
     logger.setLevel(
-      this.isRelease() ? enums.E_Log_Level.Trace : enums.E_Log_Level.Error
+      this.isRelease() ? enums.E_Log_Level.Error : enums.E_Log_Level.Trace
     );
     this.lockCanvasAdapter();
     this.registerCanvasResizeEvent();

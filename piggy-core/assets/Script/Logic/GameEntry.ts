@@ -15,6 +15,7 @@
  */
 
 import { app } from "../Piggy/Core/App";
+
 const { ccclass } = cc._decorator;
 
 /**

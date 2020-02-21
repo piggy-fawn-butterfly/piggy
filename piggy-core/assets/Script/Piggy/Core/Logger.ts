@@ -118,20 +118,15 @@ class Logger {
       `font-weight:bold;background:${color};`,
       `font-weight:bold;background:${colors.Yellow.Z200};`
     ];
+    let method = Logger.s_call_methods[level];
+    console.log(method, groups);
+    if (groups.length === 0) return console[method](...args);
 
     //输出日志内容
-    if (groups.length === 0) {
-      console[Logger.s_call_methods[level]](...args);
-      return;
-    }
-    let group_method = label.indexOf("@") >= 0 ? "group" : "groupCollapsed";
+    let group_method = collapse ? "group" : "groupCollapsed";
     console[group_method](...args);
-    for (let group of groups) {
-      console.log(group);
-    }
-    if (Logger.s_call_chains.includes(level)) {
-      console[Logger.s_call_methods[level]]("调用链回溯");
-    }
+    groups.forEach((e: any) => console.log(e));
+    Logger.s_call_chains.includes(level) && console[method]("调用链回溯");
     console.groupEnd();
   }
 
