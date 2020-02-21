@@ -15,6 +15,14 @@
  */
 namespace arrays {
   /**
+   * 是否数组
+   * @param obj 对象
+   */
+  export function isArray(obj: object) {
+    return Object.prototype.toString.call(obj) === "[object Array]";
+  }
+
+  /**
    * 打乱数组后返回新的数组，不会修改原数组
    * 可用于洗牌算法
    * @param arr 原数组
@@ -111,7 +119,7 @@ namespace arrays {
    * 获得数组最大值
    * @param arr 数组
    */
-  export function getMaxValue(arr: [number]): number {
+  export function max(arr: [number]): number {
     return Math.max.apply(Math, arr);
   }
 
@@ -119,7 +127,7 @@ namespace arrays {
    * 获得最大值
    * @param arr 数组
    */
-  export function getMinValue(arr: [number]): number {
+  export function min(arr: [number]): number {
     return Math.min.apply(Math, arr);
   }
 
