@@ -1,5 +1,6 @@
 import { datetime } from "../Utils/DateTime";
 import { enums } from "../Const/Declare/Enums";
+import { colors } from "../Const/Colors";
 
 /**
  * @file Logger
@@ -19,13 +20,34 @@ import { enums } from "../Const/Declare/Enums";
  * ```
  */
 class Logger {
+  /**
+   * console一般方法
+   */
+  private static readonly s_call_methods = [
+    enums.E_Log_Method.Trace,
+    enums.E_Log_Method.Info,
+    enums.E_Log_Method.Warn,
+    enums.E_Log_Method.Error
+  ];
+
+  /**
+   * 需要展示调用链的方法
+   */
   private static readonly s_call_chains = [
     enums.E_Log_Level.Trace,
     enums.E_Log_Level.Warn,
     enums.E_Log_Level.Error
   ];
-  private static readonly s_call_methods = ["trace", "log", "warn", "error"];
-  private static readonly s_method_colors = ["#cbd", "#afa", "#ff5", "#f88"];
+
+  /**
+   * console一般方法对应的颜色
+   */
+  private static readonly s_method_colors = [
+    colors.Purple.Z200,
+    colors.Green.A100,
+    colors.Yellow.Z300,
+    colors.Red.Z200
+  ];
 
   /** 当前日志等级 */
   private static s_log_level: enums.E_Log_Level = enums.E_Log_Level.Trace;
@@ -94,7 +116,7 @@ class Logger {
     let args = [
       `%c${collapse ? label.slice(1) : label} %c${datetime.shortDay()}`,
       `font-weight:bold;background:${color};`,
-      `font-weight:bold;background:#ffb;`
+      `font-weight:bold;background:${colors.Yellow.Z200};`
     ];
 
     //输出日志内容

@@ -54,6 +54,16 @@ namespace enums {
     Error,
     Silence
   }
+
+  /**
+   * 日志方法
+   */
+  export enum E_Log_Method {
+    Trace = "trace",
+    Info = "log",
+    Warn = "warn",
+    Error = "error"
+  }
 }
 
 export { enums };
