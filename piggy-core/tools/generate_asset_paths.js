@@ -10,7 +10,7 @@ class generate_asset_paths {
     this.savePath = "";
   }
 
-  async walk_dir(dir) {
+  walk_dir(dir) {
     let files = fs.readdirSync(dir);
     for (let i = 0; i < files.length; i++) {
       let filePath = path.join(dir, files[i]);
