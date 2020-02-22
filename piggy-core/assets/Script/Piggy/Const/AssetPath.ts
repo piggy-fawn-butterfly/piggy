@@ -17,6 +17,6 @@ const AssetPath = {
   "Prefab_Testcase_CanvasAdapter": "Prefab/Testcase_CanvasAdapter",
   "Sound_ButtonClick": "Sound/ButtonClick",
   "Sound_LoopingBgm1": "Sound/LoopingBgm1"
-};
+}
 
-export { AssetPath as assetPath };
+export {AssetPath as assetPath};
