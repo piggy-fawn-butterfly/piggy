@@ -1,5 +1,6 @@
 import { strings } from "./Strings";
 import { i18n, i18ns } from "../Core/i18n";
+import { timestamp as _timestamp } from "./TimeStamp";
 
 /**
  * @file DateTime
@@ -17,6 +18,9 @@ import { i18n, i18ns } from "../Core/i18n";
  * ```
  */
 namespace datetime {
+  export function timestamp(str?: string, date?: Date, utc?: boolean): string {
+    return _timestamp.format(str, date, utc);
+  }
   /**
    * 日期常数
    * @namespace
