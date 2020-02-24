@@ -11,5 +11,8 @@
     "tools"
   ],
   "author": "reyn",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "merge-deep": "^3.0.2"
+  }
 }
