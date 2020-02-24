@@ -15,14 +15,6 @@
  */
 namespace arrays {
   /**
-   * 是否数组
-   * @param obj 对象
-   */
-  export function isArray(obj: object) {
-    return Object.prototype.toString.call(obj) === "[object Array]";
-  }
-
-  /**
    * 打乱数组后返回新的数组，不会修改原数组
    * 可用于洗牌算法
    * @param arr 原数组
@@ -136,6 +128,40 @@ namespace arrays {
    */
   export function inArray<T>(arr: [T], ele: T): boolean {
     return arr.indexOf(ele) > -1;
+  }
+
+  /**
+   * 数组合并
+   * @param init 第一个数组
+   */
+  export function union(init: Array<any>, ...args: any) {
+    if (!Array.isArray(init)) {
+      throw new TypeError(
+        "arr-union expects the first argument to be an array."
+      );
+    }
+
+    let len = args.length;
+    let i = -1;
+
+    while (++i < len) {
+      let arg = args[i];
+      if (!arg) continue;
+
+      if (!Array.isArray(arg)) {
+        arg = [arg];
+      }
+
+      for (let j = 0; j < arg.length; j++) {
+        let ele = arg[j];
+
+        if (init.indexOf(ele) >= 0) {
+          continue;
+        }
+        init.push(ele);
+      }
+    }
+    return init;
   }
 }
 
