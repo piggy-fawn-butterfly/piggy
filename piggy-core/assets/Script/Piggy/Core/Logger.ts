@@ -119,7 +119,6 @@ class Logger {
       `font-weight:bold;background:${colors.Yellow.Z200};`
     ];
     let method = Logger.s_call_methods[level];
-    console.log(method, groups);
     if (groups.length === 0) return console[method](...args);
 
     //输出日志内容
