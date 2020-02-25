@@ -15,6 +15,17 @@
  */
 namespace strings {
   /**
+   * 模板字符串插值实现
+   * @param template 模板字符串
+   * @param context 字符串插值
+   */
+  export function render(template: string, context: object) {
+    return template.replace(
+      /\{\{(.*?)\}\}/g,
+      (match, key) => context[key.trim()]
+    );
+  }
+  /**
    * 字符串高位补零
    * @param str 原字符串
    * @param num 设定默认字符串长度，长度不够时进行高位补零
