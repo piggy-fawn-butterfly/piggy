@@ -236,9 +236,10 @@ class Res {
    * 解除资源占用
    * @param path 资源
    */
-  public unUse(path: string) {
+  public unUse(path: string, count?: number) {
+    count = Math.max(1, count || 1);
     let asset = this.m_cache_asset.get(path);
-    asset && (asset.use = Math.max(0, asset.use - 1));
+    asset && (asset.use = Math.max(0, asset.use - count));
   }
 
   /**
