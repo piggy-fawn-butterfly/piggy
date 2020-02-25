@@ -48,5 +48,6 @@ export const TC = {
   [E_Text_Key.resources_cache_count]: "·已緩存資源:",
   [E_Text_Key.resources_debug_info]: "資源調試信息",
   [E_Text_Key.resource_cache_info]: "資源緩存數據",
-  [E_Text_Key.resources_type_in_cache]: "資源列錶存在的資源類型"
+  [E_Text_Key.resources_type_in_cache]: "資源列錶存在的資源類型",
+  [E_Text_Key.invalid_resource_path]: "無效的資源路徑"
 };
