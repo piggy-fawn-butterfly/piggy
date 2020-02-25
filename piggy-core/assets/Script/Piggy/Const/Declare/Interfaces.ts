@@ -31,6 +31,36 @@ namespace interfaces {
     off(): void;
     val: boolean;
   }
+
+  /**
+   * 资源加载进度回调
+   */
+  export interface I_Progress_Callback {
+    (current: number, total: number, asset: cc.Asset): void;
+  }
+
+  /**
+   * 资源加载完成回调
+   */
+  export interface I_Complete_Callback {
+    (resources: string[]): void;
+  }
+
+  /**
+   * 缓存资源信息
+   */
+  export interface I_Res_Cache_Asset {
+    asset: cc.Asset;
+    use: number;
+  }
+
+  /**
+   * 缓存数量信息
+   */
+  export interface I_Res_Cache_Refer {
+    refers: number;
+    excludes: number;
+  }
 }
 
 export { interfaces };
