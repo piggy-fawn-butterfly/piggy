@@ -30,5 +30,19 @@ export enum E_Text_Key {
   date_week_6,
   date_week_7,
   date_am,
-  date_pm
+  date_pm,
+  builtin_resources,
+  map_of_resources_path_and_type,
+  how_many_resources_loaded,
+  unload_failed_for_non_exist,
+  unload_failed_for_in_use,
+  builtin_depend_urls,
+  scene_depend_urls,
+  cache_depend_urls,
+  cc_loader_cache_urls,
+  static_script_files,
+  resources_cache_count,
+  resources_debug_info,
+  resource_cache_info,
+  resources_type_in_cache
 }

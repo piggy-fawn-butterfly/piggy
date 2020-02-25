@@ -173,6 +173,7 @@ class App extends cc.Component {
     logger.setLevel(
       this.isRelease() ? enums.E_Log_Level.Error : enums.E_Log_Level.Trace
     );
+    i18ns.language = this._p_i18n_language;
     this.lockCanvasAdapter();
     this.registerCanvasResizeEvent();
   }

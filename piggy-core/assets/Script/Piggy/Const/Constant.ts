@@ -47,6 +47,42 @@ namespace constants {
     ON_PICK_BUILDING_ITEM: "on_pick_building_item",
     ON_ADD_BUILDING_TO_MAP: "on_add_building_to_map"
   };
+
+  /**
+   * 资源类型
+   */
+  export const RES_TYPE_FALLBACKS = [
+    "cc.Model",
+    "cc.Mesh",
+    "cc.Material",
+    "cc.EffectAsset",
+    "dragonBones.DragonBonesAsset",
+    "dragonBones.DragonBonesAtlasAsset",
+    "sp.SkeletonData",
+    "cc.SkeletonAnimationClip",
+    "cc.Skeleton",
+    "cc.AnimationClip",
+    "cc.Prefab",
+    "cc.BufferAsset",
+    "cc.ParticleAsset",
+    "cc.AudioClip",
+    "cc.TiledMapAsset",
+    "cc.TTFFont",
+    "cc.BitmapFont",
+    "cc.LabelAtlas",
+    "cc.SpriteAtlas",
+    "cc.SpriteFrame",
+    "cc.Texture2D",
+    "cc.JsonAsset",
+    "cc.TextAsset",
+    "cc.Asset"
+  ];
+  export const RES_TYPE_LIST = new Set(RES_TYPE_FALLBACKS);
+
+  /**
+   * 定义需要排除的无关资源数组
+   */
+  export const RES_TYPE_IN_CACHE_TO_EXCLUDES = new Set(["js", "json"]);
 }
 
 export { constants };

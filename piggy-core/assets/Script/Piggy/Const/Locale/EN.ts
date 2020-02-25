@@ -32,5 +32,21 @@ export const EN = {
   [E_Text_Key.date_week_6]: "Friday",
   [E_Text_Key.date_week_7]: "Saturday",
   [E_Text_Key.date_am]: "AM",
-  [E_Text_Key.date_pm]: "PM"
+  [E_Text_Key.date_pm]: "PM",
+  [E_Text_Key.builtin_resources]: "builtin",
+  [E_Text_Key.map_of_resources_path_and_type]: "path&type",
+  [E_Text_Key.how_many_resources_loaded]: "{{num}} loaded",
+  [E_Text_Key.unload_failed_for_non_exist]:
+    "unload failed: asset not exists.\n  path: {{path}}",
+  [E_Text_Key.unload_failed_for_in_use]:
+    "unload failed: asset in use.\n  path:${path}\n  refer:${use}",
+  [E_Text_Key.builtin_depend_urls]: "·builtin depends:",
+  [E_Text_Key.scene_depend_urls]: "·scene depends:",
+  [E_Text_Key.cache_depend_urls]: "·dynamic depends:",
+  [E_Text_Key.cc_loader_cache_urls]: "·cc.loader caches:",
+  [E_Text_Key.static_script_files]: "·static scripts:",
+  [E_Text_Key.resources_cache_count]: "·dynamic counts:",
+  [E_Text_Key.resources_debug_info]: "debug information",
+  [E_Text_Key.resource_cache_info]: "cache information",
+  [E_Text_Key.resources_type_in_cache]: "types in dynamic resources"
 };
