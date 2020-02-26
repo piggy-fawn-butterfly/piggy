@@ -1,5 +1,5 @@
+import { events } from "./Events";
 import { cocos } from "../Utils/Cocos";
-import { event_center } from "./EventCenter";
 import { constants } from "../Const/Constant";
 
 const { ccclass, requireComponent } = cc._decorator;
@@ -32,14 +32,14 @@ class CanvasAdapter extends cc.Component {
    */
   onEnable() {
     this.adapt();
-    event_center.on(constants.EVENT_NAME.ON_CANVAS_RESIZE, this.adapt, this);
+    events.on(constants.EVENT_NAME.ON_CANVAS_RESIZE, this.adapt, this);
   }
 
   /**
    * 禁用
    */
   onDisable() {
-    event_center.off(constants.EVENT_NAME.ON_CANVAS_RESIZE, this.adapt, this);
+    events.off(constants.EVENT_NAME.ON_CANVAS_RESIZE, this.adapt, this);
   }
 
   /**
