@@ -64,6 +64,39 @@ namespace enums {
     Warn = "warn",
     Error = "error"
   }
+
+  /**
+   * 音频类型
+   */
+  export enum E_Sound_Type {
+    Music = "music",
+    Effect = "effect"
+  }
+
+  /**
+   * 建筑类型枚举
+   * @enum {string}
+   */
+  export enum E_Building_Type {
+    /** 城堡 */
+    castle = "castle",
+    /** 修道院 */
+    cloister = "cloister",
+    /** 仓库 */
+    depository = "depository",
+    /** 农田 */
+    field = "field",
+    /** 民居 */
+    house = "house",
+    /** 图书馆 */
+    library = "library",
+    /** 伐木场 */
+    logging = "logging",
+    /** 市场 */
+    market = "market",
+    /** 矿场 */
+    mine = "mine"
+  }
 }
 
 export { enums };
