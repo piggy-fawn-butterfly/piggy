@@ -33,10 +33,10 @@ class GameEntry extends app {
    */
   async loadRes() {
     res.initialize();
-    let node = await res.use(assetPath.Prefab_Testcase_CanvasAdapter);
-    node && this.node.addChild(node);
-
-    await pool.load([[assetPath.Prefab_Testcase_CanvasAdapter, 10]]);
+    await pool.load([[assetPath.Prefab_Testcase_CanvasAdapter, 1]]);
+    await pool.get(assetPath.Prefab_Testcase_CanvasAdapter).then(node => {
+      node && this.node.addChild(node);
+    });
     pool.dump();
   }
 }

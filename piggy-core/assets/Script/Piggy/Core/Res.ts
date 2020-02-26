@@ -3,7 +3,7 @@ import { arrays } from "../Utils/Arrays";
 import { strings } from "../Utils/Strings";
 import { constants } from "../Const/Constant";
 import { interfaces } from "../Const/Declare/Interfaces";
-import { i18n, i18ns } from "./i18n";
+import { i18n } from "./i18n";
 
 /**
  * @file Res
@@ -42,9 +42,9 @@ class Res {
   public initialize() {
     this._builtinDependUrls();
     this._linkPathAndType();
-    let info = i18ns.text(i18n.TextKey.builtin_resources);
+    let info = i18n.I.text(i18n.K.builtin_resources);
     logger.info(info, ...this.m_builtin_res);
-    info = i18ns.text(i18n.TextKey.map_of_resources_path_and_type);
+    info = i18n.I.text(i18n.K.map_of_resources_path_and_type);
     logger.info(info, ...Array.from(this.m_path_type.entries()));
   }
 
@@ -75,26 +75,11 @@ class Res {
   }
 
   /**
-   * 异步加载 Promise 化
-   * @param path 资源路径
-   * @param type 资源类型
+   * 加载资源
+   * @param paths 资源路径
+   * @param onprogress 资源加载进度回调
    */
-  private _loadRes<T extends typeof cc.Asset>(
-    path: string,
-    type: T
-  ): Promise<InstanceType<T>> {
-    return new Promise(resolve =>
-      cc.loader.loadRes(path, type, (err, resource) => {
-        if (err) {
-          resolve(null);
-        } else {
-          resolve(resource);
-        }
-      })
-    );
-  }
-
-  public loadAsync(
+  public load(
     paths: string | Array<string>,
     onprogress?: interfaces.I_Progress_Callback
   ): Promise<any> {
@@ -116,37 +101,35 @@ class Res {
       }
 
       //异步加载资源
-      console.time("---");
-      let self: Res = this;
       let path_arr = arrays.fromMap(valid_paths);
+      let total: number = path_arr.length;
+      if (total === 0) return resolve(null);
+      let self: Res = this;
       let assets: Array<string> = [];
       let current: number = 0;
-      let total: number = path_arr.length;
+      let label = `res.load [${total}]`;
+      console.time(label);
       async function next() {
         let path_info = path_arr.shift();
         if (path_info) {
           current++;
           let [path, type] = path_info;
-          await self._loadRes(path, type).then(asset => {
-            if (asset) {
-              assets.push(path);
-              asset["_url"] = path;
-              self.m_cache_asset.set(path, {
-                asset: asset,
-                use: 0
-              });
-            }
-            onprogress(current, total, asset);
-            // UIStack.I.onProgress(current, total, path);
-          });
+          let asset = await self._loadRes(path, type);
+          if (asset) {
+            assets.push(path);
+            asset["_url"] = path;
+            self.m_cache_asset.set(path, { asset: asset, use: 0 });
+          }
+          onprogress(current, total, asset);
+          // UIStack.I.onProgress(current, total, path);
           next();
         } else {
-          let text = i18ns.text(i18n.TextKey.how_many_resources_loaded);
+          let text = i18n.I.text(i18n.K.how_many_resources_loaded);
           let info = strings.render(text, { num: assets.length });
           assets.length > 0 && logger.info(info, ...assets);
           resolve(assets);
           // UIStack.I.onComplete();
-          console.timeEnd("---");
+          console.timeEnd(label);
         }
       }
       next();
@@ -161,7 +144,7 @@ class Res {
     let asset_info = this.m_cache_asset.get(path);
     //资源不存在
     if (!asset_info) {
-      let info = i18ns.text(i18n.TextKey.unload_failed_for_non_exist);
+      let info = i18n.I.text(i18n.K.unload_failed_for_non_exist);
       let warn = strings.render(info, {
         path: path
       });
@@ -169,7 +152,7 @@ class Res {
     }
     //资源正在使用中
     if (asset_info.use > 0) {
-      let info = i18ns.text(i18n.TextKey.unload_failed_for_in_use);
+      let info = i18n.I.text(i18n.K.unload_failed_for_in_use);
       let warn = strings.render(info, {
         path: path,
         use: asset_info.use
@@ -201,11 +184,11 @@ class Res {
     if (this.has(path)) {
       loaded = true;
     } else if (path && this.m_path_type.has(path)) {
-      loaded = (await this.loadAsync(path)).length > 0;
+      loaded = (await this.load(path)).length > 0;
     }
     return new Promise((resolve, reject) => {
       if (!loaded) {
-        reject(i18ns.text(i18n.TextKey.invalid_resource_path));
+        reject(i18n.I.text(i18n.K.invalid_resource_path));
         return;
       }
       let asset_type = this.m_path_type.get(path);
@@ -220,6 +203,26 @@ class Res {
           resolve(asset);
       }
     });
+  }
+
+  /**
+   * 异步加载 Promise 化
+   * @param path 资源路径
+   * @param type 资源类型
+   */
+  private _loadRes<T extends typeof cc.Asset>(
+    path: string,
+    type: T
+  ): Promise<InstanceType<T>> {
+    return new Promise(resolve =>
+      cc.loader.loadRes(path, type, (err, resource) => {
+        if (err) {
+          resolve(null);
+        } else {
+          resolve(resource);
+        }
+      })
+    );
   }
 
   /**
@@ -261,12 +264,12 @@ class Res {
     let scene_depends = this._getSceneDependUrls().length;
     let cache_depends = this._getCacheDependUrls().length;
     let debug_info = [
-      i18ns.text(i18n.TextKey.builtin_depend_urls) + builtin_depends,
-      i18ns.text(i18n.TextKey.scene_depend_urls) + scene_depends,
-      i18ns.text(i18n.TextKey.cache_depend_urls) + cache_depends,
-      i18ns.text(i18n.TextKey.cc_loader_cache_urls) + cache_count.refers,
-      i18ns.text(i18n.TextKey.static_script_files) + cache_count.excludes,
-      i18ns.text(i18n.TextKey.resources_cache_count),
+      i18n.I.text(i18n.K.builtin_depend_urls) + builtin_depends,
+      i18n.I.text(i18n.K.scene_depend_urls) + scene_depends,
+      i18n.I.text(i18n.K.cache_depend_urls) + cache_depends,
+      i18n.I.text(i18n.K.cc_loader_cache_urls) + cache_count.refers,
+      i18n.I.text(i18n.K.static_script_files) + cache_count.excludes,
+      i18n.I.text(i18n.K.resources_cache_count),
       Array.from(this.m_cache_asset.keys()).join("\n")
     ];
     return debug_info.join("\n");
@@ -276,9 +279,9 @@ class Res {
    * 输出信息
    */
   public dump() {
-    let info = i18ns.text(i18n.TextKey.resources_debug_info);
+    let info = i18n.I.text(i18n.K.resources_debug_info);
     logger.info(info, this._debugInfo());
-    info = i18ns.text(i18n.TextKey.resource_cache_info);
+    info = i18n.I.text(i18n.K.resource_cache_info);
     logger.info(info, Array.from(this.m_cache_asset));
     // logger.info("cc.loader._cache:", cc.loader["_cache"]);
   }
@@ -317,7 +320,7 @@ class Res {
       this.m_path_type.set(path, this._resTypeFallback(types));
     }
     logger.info(
-      i18ns.text(i18n.TextKey.resources_type_in_cache),
+      i18n.I.text(i18n.K.resources_type_in_cache),
       ...Array.from(_types)
     );
   }
