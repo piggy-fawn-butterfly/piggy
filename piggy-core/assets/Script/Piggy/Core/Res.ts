@@ -39,7 +39,7 @@ class Res {
   /**
    * 初始化
    */
-  public initialize() {
+  public init() {
     this._builtinDependUrls();
     this._linkPathAndType();
     let info = i18n.I.text(i18n.K.builtin_resources);
