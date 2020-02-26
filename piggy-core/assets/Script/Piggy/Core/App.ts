@@ -16,9 +16,11 @@
 
 import { i18n } from "./i18n";
 import { logger } from "./Logger";
-import { event_center } from "./EventCenter";
+import { events } from "./Events";
 import { enums } from "../Const/Declare/Enums";
 import { constants } from "../Const/Constant";
+import { userdata } from "./Userdata";
+import { res } from "./Res";
 
 const {
   ccclass,
@@ -173,6 +175,8 @@ class App extends cc.Component {
       this.isRelease() ? enums.E_Log_Level.Error : enums.E_Log_Level.Trace
     );
     i18n.I.language = this._p_i18n_language;
+    userdata.init();
+    res.init();
     this.lockCanvasAdapter();
     this.registerCanvasResizeEvent();
   }
@@ -196,7 +200,7 @@ class App extends cc.Component {
       this.refreshFrameSize();
     } else {
       cc.view.on(constants.EVENT_NAME.ON_CANVAS_RESIZE, () => {
-        event_center.dispatch(constants.EVENT_NAME.ON_CANVAS_RESIZE);
+        events.dispatch(constants.EVENT_NAME.ON_CANVAS_RESIZE);
       });
     }
   }
@@ -212,7 +216,7 @@ class App extends cc.Component {
       Math.floor(frameSize.height - clientHeight) !== 0
     ) {
       cc.view.setFrameSize(clientWidth, clientHeight);
-      event_center.dispatch(constants.EVENT_NAME.ON_CANVAS_RESIZE);
+      events.dispatch(constants.EVENT_NAME.ON_CANVAS_RESIZE);
     }
   }
 }
