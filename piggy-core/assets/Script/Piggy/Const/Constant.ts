@@ -83,6 +83,50 @@ namespace constants {
    * 定义需要排除的无关资源数组
    */
   export const RES_TYPE_IN_CACHE_TO_EXCLUDES = new Set(["js", "json"]);
+
+  /**
+   * 默认数据库名称
+   */
+  export const DATABASE_NAME = "UserData";
+
+  /**
+   * 默认数据库格式
+   * @requires interfaces.I_Schema_Database
+   */
+  export const DATABASE_SCHEMA = {
+    time: {
+      game: { min: 0, max: 9999999999, val: 0 }
+    },
+    resource: {
+      ren_kou: { max: 300, min: 0, val: 10 },
+      liang_shi: { max: 9999, min: 0, val: 500 },
+      jin_bi: { max: 9999, min: 0, val: 500 },
+      mu_cai: { max: 9999, min: 0, val: 500 },
+      kuang_chan: { max: 9999, min: 0, val: 500 },
+      xing_fu: { max: 100, min: 0, val: 50 },
+      xing_yang: { max: 100, min: 0, val: 0 }
+    },
+    sound: {
+      volume: { max: 100, min: 0, val: 80 },
+      music: { val: true },
+      effect: { val: true }
+    },
+    map: {
+      building: {
+        val: {
+          "1515": {
+            //主城
+            tm: "castle",
+            id: 1,
+            lv: 1,
+            ct: 0,
+            lt: 0,
+            no: 10
+          }
+        }
+      }
+    }
+  };
 }
 
 export { constants };
