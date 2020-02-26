@@ -1,7 +1,6 @@
 import { app } from "../Piggy/Core/App";
-import { assetPath } from "../Piggy/Const/AssetPath";
-import { res } from "../Piggy/Core/Res";
 import { pool } from "../Piggy/Core/Pool";
+import { assetPath } from "../Piggy/Const/AssetPath";
 const { ccclass } = cc._decorator;
 
 /**
@@ -32,7 +31,6 @@ class GameEntry extends app {
    * 加载资源
    */
   async loadRes() {
-    res.initialize();
     await pool.load([[assetPath.Prefab_Testcase_CanvasAdapter, 1]]);
     await pool.get(assetPath.Prefab_Testcase_CanvasAdapter).then(node => {
       node && this.node.addChild(node);
@@ -41,4 +39,4 @@ class GameEntry extends app {
   }
 }
 
-export { GameEntry };
+export { GameEntry as gameEntry };
