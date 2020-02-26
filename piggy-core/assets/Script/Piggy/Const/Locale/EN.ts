@@ -49,5 +49,6 @@ export const EN = {
   [E_Text_Key.resources_debug_info]: "debug information",
   [E_Text_Key.resource_cache_info]: "cache information",
   [E_Text_Key.resources_type_in_cache]: "types in dynamic resources",
-  [E_Text_Key.invalid_resource_path]: "invalid resource path"
+  [E_Text_Key.invalid_resource_path]: "invalid resource path",
+  [E_Text_Key.pool_information]: "pool information"
 };

@@ -45,5 +45,6 @@ export enum E_Text_Key {
   resources_debug_info,
   resource_cache_info,
   resources_type_in_cache,
-  invalid_resource_path
+  invalid_resource_path,
+  pool_information
 }

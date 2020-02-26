@@ -14,7 +14,7 @@
  * ```
  */
 
-import { i18n, i18ns } from "./i18n";
+import { i18n } from "./i18n";
 import { logger } from "./Logger";
 import { event_center } from "./EventCenter";
 import { enums } from "../Const/Declare/Enums";
@@ -62,14 +62,14 @@ class App extends cc.Component {
   @property()
   _p_i18n_language: enums.E_Language_Choice = enums.E_Language_Choice.CN;
   @property({
-    displayName: i18ns.text(i18n.TextKey.editor_choose_language),
+    displayName: i18n.I.text(i18n.K.editor_choose_language),
     type: cc.Enum(enums.E_Language_Choice)
   })
   get p_i18n_language(): enums.E_Language_Choice {
     return this._p_i18n_language;
   }
   set p_i18n_language(lang: enums.E_Language_Choice) {
-    i18ns.language = this._p_i18n_language = lang;
+    i18n.I.language = this._p_i18n_language = lang;
   }
 
   /**
@@ -81,7 +81,7 @@ class App extends cc.Component {
   @property()
   _p_version_string: string = constants.VERSION_STRING;
   @property({
-    displayName: i18ns.text(i18n.TextKey.editor_version_code),
+    displayName: i18n.I.text(i18n.K.editor_version_code),
     type: cc.String
   })
   get p_version_string(): string {
@@ -90,7 +90,7 @@ class App extends cc.Component {
   set p_version_string(str: string) {
     let arr = str.split(".");
     if (arr.length !== 3) {
-      cc.warn(i18ns.text(i18n.TextKey.editor_invalid_version_rule));
+      cc.warn(i18n.I.text(i18n.K.editor_invalid_version_rule));
       this.p_version_string = constants.VERSION_STRING;
     } else {
       let ret = [];
@@ -98,8 +98,7 @@ class App extends cc.Component {
         let num = Number(code);
         let meet = !isNaN(num) && num >= 0 && code[0] !== "-";
         num = meet ? num : 0;
-        !meet &&
-          cc.warn(i18ns.text(i18n.TextKey.editor_invalid_version_number));
+        !meet && cc.warn(i18n.I.text(i18n.K.editor_invalid_version_number));
         ret.push(num);
       });
       this._p_version_string = ret.join(".");
@@ -110,7 +109,7 @@ class App extends cc.Component {
    * 版本状态
    */
   @property({
-    displayName: i18ns.text(i18n.TextKey.editor_version_state),
+    displayName: i18n.I.text(i18n.K.editor_version_state),
     type: cc.Enum(enums.E_Version_Choice)
   })
   p_version_state: enums.E_Version_Choice = enums.E_Version_Choice.Dev;
@@ -119,8 +118,8 @@ class App extends cc.Component {
    * 浏览器自动满屏
    */
   @property({
-    displayName: i18ns.text(i18n.TextKey.editor_auto_resize_for_browser),
-    tooltip: i18ns.text(i18n.TextKey.editor_browser_only)
+    displayName: i18n.I.text(i18n.K.editor_auto_resize_for_browser),
+    tooltip: i18n.I.text(i18n.K.editor_browser_only)
   })
   p_auto_resize_for_browser: boolean = false;
 
@@ -173,7 +172,7 @@ class App extends cc.Component {
     logger.setLevel(
       this.isRelease() ? enums.E_Log_Level.Error : enums.E_Log_Level.Trace
     );
-    i18ns.language = this._p_i18n_language;
+    i18n.I.language = this._p_i18n_language;
     this.lockCanvasAdapter();
     this.registerCanvasResizeEvent();
   }

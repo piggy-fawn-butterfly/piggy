@@ -1,5 +1,5 @@
 import { strings } from "./Strings";
-import { i18n, i18ns } from "../Core/i18n";
+import { i18n } from "../Core/i18n";
 import { timestamp as _timestamp } from "./TimeStamp";
 
 /**
@@ -390,7 +390,7 @@ namespace datetime {
           replacement = date.getMilliseconds().toString();
           break;
         case DATE_PATTERNS.DAY_OF_WEEK: //E
-          replacement = i18ns.text(i18n.TextKey["date_week_" + date.getDay()]);
+          replacement = i18n.I.text(i18n.K["date_week_" + date.getDay()]);
           break;
         case DATE_PATTERNS.DAY_OF_YEAR: //D
           replacement = dayOfTheYear(date).toString();
@@ -407,8 +407,8 @@ namespace datetime {
         case DATE_PATTERNS.AM_PM: //a
           replacement =
             date.getHours() < 12
-              ? i18ns.text(i18n.TextKey.date_am)
-              : i18ns.text(i18n.TextKey.date_pm);
+              ? i18n.I.text(i18n.K.date_am)
+              : i18n.I.text(i18n.K.date_pm);
           break;
         case DATE_PATTERNS.HOUR1: //h(1~12)
           let hours12 = date.getHours() % 12 || 12; //0转为12

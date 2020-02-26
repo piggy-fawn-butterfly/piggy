@@ -49,5 +49,6 @@ export const CN = {
   [E_Text_Key.resources_debug_info]: "资源调试信息",
   [E_Text_Key.resource_cache_info]: "资源缓存数据",
   [E_Text_Key.resources_type_in_cache]: "资源列表存在的资源类型",
-  [E_Text_Key.invalid_resource_path]: "无效的资源路径"
+  [E_Text_Key.invalid_resource_path]: "无效的资源路径",
+  [E_Text_Key.pool_information]: "@对象池数据"
 };

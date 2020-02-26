@@ -3,6 +3,10 @@ import { E_Text_Key } from "../Const/Locale/TextKey";
 import { EN } from "../Const/Locale/EN";
 import { CN } from "../Const/Locale/CN";
 import { TC } from "../Const/Locale/TC";
+
+/**
+ * 国际化配置
+ */
 const locales = {
   EN: EN,
   CN: CN,
@@ -58,10 +62,20 @@ class i18n {
   }
 }
 
+/**
+ * 国际化方案导出接口
+ * @namespace
+ */
 namespace i18n {
-  export const TextKey = E_Text_Key;
+  /**
+   * 国际化文本配置键
+   */
+  export const K = E_Text_Key;
+
+  /**
+   * 国际化方案实现实例
+   */
+  export const I = i18n.s_instance;
 }
 
-const i18ns = i18n.s_instance;
-
-export { i18n, i18ns };
+export { i18n };
