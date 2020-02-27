@@ -51,5 +51,7 @@ export enum E_Text_Key {
   player_cheating_detected,
   audio_volume,
   audio_information,
-  audio_all_information
+  audio_all_information,
+  timer_information,
+  timer_all_information
 }

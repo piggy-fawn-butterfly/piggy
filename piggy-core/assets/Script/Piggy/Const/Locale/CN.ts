@@ -55,5 +55,8 @@ export const CN = {
   [E_Text_Key.player_cheating_detected]: "检测到玩家作弊",
   [E_Text_Key.audio_volume]: "音量:",
   [E_Text_Key.audio_information]: "路径:{{path}} 类型:{{type}} 状态:{{state}}",
-  [E_Text_Key.audio_all_information]: "音频信息"
+  [E_Text_Key.audio_all_information]: "音频信息",
+  [E_Text_Key.timer_information]:
+    "名称:{{name}} 状态:{{state}} 当前:{{elapse}} 剩余:{{rest}}",
+  [E_Text_Key.timer_all_information]: "定时器信息"
 };

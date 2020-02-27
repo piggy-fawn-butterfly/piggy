@@ -55,5 +55,8 @@ export const EN = {
   [E_Text_Key.player_cheating_detected]: "player cheating detected",
   [E_Text_Key.audio_volume]: "volume:",
   [E_Text_Key.audio_information]: "path:{{path}} type:{{type}} state:{{state}}",
-  [E_Text_Key.audio_all_information]: "audio information"
+  [E_Text_Key.audio_all_information]: "audio information",
+  [E_Text_Key.timer_information]:
+    "name:{{name}} state:{{state}} current:{{elapse}} rest:{{rest}}",
+  [E_Text_Key.timer_all_information]: "timers information"
 };

@@ -55,5 +55,8 @@ export const TC = {
   [E_Text_Key.player_cheating_detected]: "檢測到玩家作弊",
   [E_Text_Key.audio_volume]: "音量:",
   [E_Text_Key.audio_information]: "路徑:{{path}} 類型:{{type}} 狀態:{{state}}",
-  [E_Text_Key.audio_all_information]: "音頻信息"
+  [E_Text_Key.audio_all_information]: "音頻信息",
+  [E_Text_Key.timer_information]:
+    "名稱:{{name}} 狀態:{{state}} 當前:{{elapse}} 剩餘:{{rest}}",
+  [E_Text_Key.timer_all_information]: "定時器信息"
 };
