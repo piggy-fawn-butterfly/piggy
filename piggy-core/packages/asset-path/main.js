@@ -48,9 +48,14 @@ module.exports = {
 
     walk_dir(root_path);
 
+    var enums = "";
+    for (let key of Object.keys(resources)) {
+      let path = resources[key];
+      enums += `  "${key}" = "${path}",\n`;
+    }
     var content =
       "/**\n" +
-      " * @file AssetPath\n" +
+      " * @file Assets\n" +
       " * @description 资源路径定义，该文件通过工具生成\n" +
       " * @author DoooReyn <jl88744653@gmail.com>\n" +
       " * @license MIT\n" +
@@ -64,11 +69,11 @@ module.exports = {
       " *             ╨━━━┻━━━┗┛┗┛━━┗┛┗┛━━━┻━━━╨\n" +
       " * ```\n" +
       " */\n" +
-      "const AssetPath = " +
-      JSON.stringify(resources, null, 2) +
-      "\n\nexport {AssetPath as assetPath};\n";
+      "export enum assets { \n" +
+      enums +
+      "}\n";
     Editor.assetdb.saveExists(
-      "db://assets/Script/Piggy/Const/AssetPath.ts",
+      "db://assets/Script/Piggy/Const/Assets.ts",
       content,
       (err, results) => {}
     );
