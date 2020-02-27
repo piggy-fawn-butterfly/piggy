@@ -1,9 +1,9 @@
+import { i18n } from "./i18n";
 import { logger } from "./Logger";
 import { arrays } from "../Utils/Arrays";
 import { strings } from "../Utils/Strings";
 import { constants } from "../Const/Constant";
 import { interfaces } from "../Const/Declare/Interfaces";
-import { i18n } from "./i18n";
 
 /**
  * @file Res
@@ -107,8 +107,8 @@ class Res {
       let self: Res = this;
       let assets: Array<string> = [];
       let current: number = 0;
-      let label = `res.load [${total}]`;
-      console.time(label);
+      // let label = `res.load [${total}]`;
+      // console.time(label);
       async function next() {
         let path_info = path_arr.shift();
         if (path_info) {
@@ -129,7 +129,7 @@ class Res {
           assets.length > 0 && logger.info(info, ...assets);
           resolve(assets);
           // UIStack.I.onComplete();
-          console.timeEnd(label);
+          // console.timeEnd(label);
         }
       }
       next();
