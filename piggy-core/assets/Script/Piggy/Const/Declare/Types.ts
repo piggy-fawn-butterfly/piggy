@@ -13,8 +13,6 @@
  *             ╨━━━┻━━━┗┛┗┛━━┗┛┗┛━━━┻━━━╨
  * ```
  */
-namespace types {
-  export type T_User_Key = string;
-}
+namespace types {}
 
 export { types };
