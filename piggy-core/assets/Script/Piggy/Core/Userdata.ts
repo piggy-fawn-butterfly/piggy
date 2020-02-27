@@ -1,4 +1,5 @@
 import { app } from "./App";
+import { i18n } from "./i18n";
 import { events } from "./Events";
 import { logger } from "./Logger";
 import { cocos } from "../Utils/Cocos";
@@ -33,7 +34,7 @@ const RAW_STRING = "{}";
 class UserData {
   public static s_instance: UserData = new UserData();
   private m_raw_string: string = null;
-  private m_raw_schemas: interfaces.I_Schema_Database;
+  public m_raw_schemas: interfaces.I_Schema_Database;
 
   /**
    * 隐藏构造器
@@ -50,7 +51,7 @@ class UserData {
       //json解析失败意味着数据被修改
       events.dispatch(constants.EVENT_NAME.ON_GAME_CHEATING);
       this.reset();
-      throw "检测到玩家作弊";
+      throw i18n.I.text(i18n.K.player_cheating_detected);
     }
     this.m_raw_string = raw_string;
     this._loadSchemas();
@@ -143,7 +144,7 @@ class UserData {
    * 数据输出
    */
   public dump() {
-    logger.info("@UserData", this.m_raw_schemas);
+    logger.info("@Userdata", this.m_raw_schemas);
   }
 }
 
