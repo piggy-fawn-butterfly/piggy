@@ -97,6 +97,32 @@ namespace enums {
     /** 矿场 */
     mine = "mine"
   }
+
+  /**
+   * 定时器状态
+   */
+  export enum E_Timer_State {
+    "Ready",
+    "Running",
+    "Paused",
+    "Stopped"
+  }
+
+  /**
+   * 定时器导出API
+   */
+  export enum E_Timer_API {
+    "isInterrupt" = "isInterrupt",
+    "isRunning" = "isRunning",
+    "isPaused" = "isPaused",
+    "isStopped" = "isStopped",
+    "interrupt" = "interrupt",
+    "recover" = "recover",
+    "pause" = "pause",
+    "restart" = "restart",
+    "stop" = "stop",
+    "resume" = "resume"
+  }
 }
 
 export { enums };
