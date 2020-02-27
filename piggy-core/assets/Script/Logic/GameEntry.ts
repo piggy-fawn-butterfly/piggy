@@ -45,7 +45,7 @@ class GameEntry extends app {
       assets.Sound_ButtonClick
     ];
     await res.load(resources, (c, t) => {
-      logger.info("资源加载进度:", (((c / t) * 100) | 0) + "%");
+      logger.info(`资源加载进度:${((c / t) * 100) | 0}%`);
     });
 
     //加载对象池

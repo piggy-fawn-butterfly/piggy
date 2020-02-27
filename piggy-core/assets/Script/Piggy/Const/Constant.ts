@@ -22,6 +22,14 @@ namespace constants {
   export const VERSION_STRING = "1.0.0";
 
   /**
+   * 音量
+   */
+  export const VOLUME_VALUE = {
+    MIN: 0,
+    MAX: 100
+  };
+
+  /**
    * 事件名称
    */
   export const EVENT_NAME = {
