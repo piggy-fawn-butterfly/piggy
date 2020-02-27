@@ -1,27 +1,11 @@
-/**
- * @file App
- * @description 游戏入口组件
- * @author DoooReyn <jl88744653@gmail.com>
- * @license MIT
- * @identifier
- * ```
- *             ╥━━━┳━━━━━━━━━╭━━╮━━━┳━━━╥
- *             ╢━D━┣ ╭╮╭━━━━━┫┃▋▋━▅ ┣━R━╢
- *             ╢━O━┣ ┃╰┫┈┈┈┈┈┃┃┈┈╰┫ ┣━E━╢
- *             ╢━O━┣ ╰━┫┈┈┈┈┈╰╯╰┳━╯ ┣━Y━╢
- *             ╢━O━┣ ┊┊┃┏┳┳━━┓┏┳┫┊┊ ┣━N━╢
- *             ╨━━━┻━━━┗┛┗┛━━┗┛┗┛━━━┻━━━╨
- * ```
- */
-
+import { res } from "./Res";
 import { i18n } from "./i18n";
+import { sound } from "./Sound";
 import { logger } from "./Logger";
 import { events } from "./Events";
+import { userdata } from "./Userdata";
 import { enums } from "../Const/Declare/Enums";
 import { constants } from "../Const/Constant";
-import { userdata } from "./Userdata";
-import { res } from "./Res";
-import { sound } from "./Sound";
 
 const {
   ccclass,
@@ -33,9 +17,20 @@ const {
 } = cc._decorator;
 
 /**
- * App游戏入口
- * @summary 要求:
- * - 必须挂载在`Canvas`下
+ * @file App
+ * @description 游戏入口组件
+ * @requires cc.Canvas
+ * @author DoooReyn <jl88744653@gmail.com>
+ * @license MIT
+ * @identifier
+ * ```
+ *             ╥━━━┳━━━━━━━━━╭━━╮━━━┳━━━╥
+ *             ╢━D━┣ ╭╮╭━━━━━┫┃▋▋━▅ ┣━R━╢
+ *             ╢━O━┣ ┃╰┫┈┈┈┈┈┃┃┈┈╰┫ ┣━E━╢
+ *             ╢━O━┣ ╰━┫┈┈┈┈┈╰╯╰┳━╯ ┣━Y━╢
+ *             ╢━O━┣ ┊┊┃┏┳┳━━┓┏┳┫┊┊ ┣━N━╢
+ *             ╨━━━┻━━━┗┛┗┛━━┗┛┗┛━━━┻━━━╨
+ * ```
  */
 @ccclass
 @playOnFocus
