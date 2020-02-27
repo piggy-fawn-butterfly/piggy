@@ -46,5 +46,7 @@ export enum E_Text_Key {
   resource_cache_info,
   resources_type_in_cache,
   invalid_resource_path,
-  pool_information
+  pool_information,
+  audio_resource_no_found,
+  player_cheating_detected
 }

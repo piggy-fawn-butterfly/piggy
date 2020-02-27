@@ -37,7 +37,7 @@ export const EN = {
   [E_Text_Key.map_of_resources_path_and_type]: "path&type",
   [E_Text_Key.how_many_resources_loaded]: "{{num}} loaded",
   [E_Text_Key.unload_failed_for_non_exist]:
-    "unload failed: asset not exists.\n  path: {{path}}",
+    "unload failed: asset not found.\n  path: {{path}}",
   [E_Text_Key.unload_failed_for_in_use]:
     "unload failed: asset in use.\n  path:${path}\n  refer:${use}",
   [E_Text_Key.builtin_depend_urls]: "·builtin depends:",
@@ -50,5 +50,7 @@ export const EN = {
   [E_Text_Key.resource_cache_info]: "cache information",
   [E_Text_Key.resources_type_in_cache]: "types in dynamic resources",
   [E_Text_Key.invalid_resource_path]: "invalid resource path",
-  [E_Text_Key.pool_information]: "pool information"
+  [E_Text_Key.pool_information]: "pool information",
+  [E_Text_Key.audio_resource_no_found]: "@missing audio resource",
+  [E_Text_Key.player_cheating_detected]: "player cheating detected"
 };

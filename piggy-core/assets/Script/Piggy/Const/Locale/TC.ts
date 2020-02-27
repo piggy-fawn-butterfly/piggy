@@ -50,5 +50,7 @@ export const TC = {
   [E_Text_Key.resource_cache_info]: "資源緩存數據",
   [E_Text_Key.resources_type_in_cache]: "資源列錶存在的資源類型",
   [E_Text_Key.invalid_resource_path]: "無效的資源路徑",
-  [E_Text_Key.pool_information]: "@對象池數據"
+  [E_Text_Key.pool_information]: "@對象池數據",
+  [E_Text_Key.audio_resource_no_found]: "@音頻資源不存在",
+  [E_Text_Key.player_cheating_detected]: "檢測到玩家作弊"
 };

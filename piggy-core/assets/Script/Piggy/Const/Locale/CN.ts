@@ -50,5 +50,7 @@ export const CN = {
   [E_Text_Key.resource_cache_info]: "资源缓存数据",
   [E_Text_Key.resources_type_in_cache]: "资源列表存在的资源类型",
   [E_Text_Key.invalid_resource_path]: "无效的资源路径",
-  [E_Text_Key.pool_information]: "@对象池数据"
+  [E_Text_Key.pool_information]: "@对象池数据",
+  [E_Text_Key.audio_resource_no_found]: "@音频资源不存在",
+  [E_Text_Key.player_cheating_detected]: "检测到玩家作弊"
 };
