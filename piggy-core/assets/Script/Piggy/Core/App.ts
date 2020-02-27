@@ -21,6 +21,7 @@ import { enums } from "../Const/Declare/Enums";
 import { constants } from "../Const/Constant";
 import { userdata } from "./Userdata";
 import { res } from "./Res";
+import { sound } from "./Sound";
 
 const {
   ccclass,
@@ -177,6 +178,7 @@ class App extends cc.Component {
     i18n.I.language = this._p_i18n_language;
     userdata.init();
     res.init();
+    sound.init();
     this.lockCanvasAdapter();
     this.registerCanvasResizeEvent();
   }
