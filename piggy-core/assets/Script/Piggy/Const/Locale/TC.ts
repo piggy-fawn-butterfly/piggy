@@ -52,5 +52,8 @@ export const TC = {
   [E_Text_Key.invalid_resource_path]: "無效的資源路徑",
   [E_Text_Key.pool_information]: "@對象池數據",
   [E_Text_Key.audio_resource_no_found]: "@音頻資源不存在",
-  [E_Text_Key.player_cheating_detected]: "檢測到玩家作弊"
+  [E_Text_Key.player_cheating_detected]: "檢測到玩家作弊",
+  [E_Text_Key.audio_volume]: "音量:",
+  [E_Text_Key.audio_information]: "路徑:{{path}} 類型:{{type}} 狀態:{{state}}",
+  [E_Text_Key.audio_all_information]: "音頻信息"
 };

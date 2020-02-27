@@ -52,5 +52,8 @@ export const EN = {
   [E_Text_Key.invalid_resource_path]: "invalid resource path",
   [E_Text_Key.pool_information]: "pool information",
   [E_Text_Key.audio_resource_no_found]: "@missing audio resource",
-  [E_Text_Key.player_cheating_detected]: "player cheating detected"
+  [E_Text_Key.player_cheating_detected]: "player cheating detected",
+  [E_Text_Key.audio_volume]: "volume:",
+  [E_Text_Key.audio_information]: "path:{{path}} type:{{type}} state:{{state}}",
+  [E_Text_Key.audio_all_information]: "audio information"
 };

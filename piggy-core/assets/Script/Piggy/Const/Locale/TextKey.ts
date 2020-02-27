@@ -48,5 +48,8 @@ export enum E_Text_Key {
   invalid_resource_path,
   pool_information,
   audio_resource_no_found,
-  player_cheating_detected
+  player_cheating_detected,
+  audio_volume,
+  audio_information,
+  audio_all_information
 }
