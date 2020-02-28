@@ -26,8 +26,8 @@ const { ccclass } = cc._decorator;
  */
 @ccclass
 class GameEntry extends app {
-  public onStart(): void {
-    this.loadRes();
+  public async onStart(): Promise<void> {
+    await this.loadRes();
   }
 
   /**

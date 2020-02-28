@@ -1,4 +1,5 @@
 import { res } from "./Res";
+import { tick } from "./Tick";
 import { i18n } from "./i18n";
 import { sound } from "./Sound";
 import { logger } from "./Logger";
@@ -200,7 +201,7 @@ abstract class App extends cc.Component {
    * 获得离线时间
    */
   public getOfflineTime(): number {
-    return (this.m_enter_at - this.m_exit_at) / 1000;
+    return (this.m_enter_at - this.m_exit_at) / constants.SEC_TO_MS;
   }
 
   /**
@@ -233,10 +234,16 @@ abstract class App extends cc.Component {
   /**
    * 游戏开始
    */
-  onAppStart() {
-    this.onStart();
+  async onAppStart(): Promise<void> {
+    await this.onStart();
+    tick.start();
+    machines.dump();
+    userdata.dump();
+    res.dump();
+    sound.dump();
+    timers.dump();
   }
-  public abstract onStart(): void;
+  public abstract async onStart(): Promise<void>;
 
   /**
    * 自动更新FrameSize
@@ -278,7 +285,7 @@ abstract class App extends cc.Component {
   onDealWithAppReset(): Promise<void> {
     return new Promise(resolve => {
       // UIStack.I.closeAll();
-      // GameTimeCounter.I.reset();
+      tick.reset();
       events.reset();
       timers.del();
       sound.stop();

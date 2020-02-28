@@ -1,4 +1,5 @@
 import { ids } from "./IdGenerator";
+import { constants } from "../Const/Constant";
 import { enums } from "../Const/Declare/Enums";
 
 /**
@@ -60,8 +61,7 @@ class Timer {
     call_after?: number,
     stop_callback?: Function
   ) {
-    const MAX_TIME = cc.macro.REPEAT_FOREVER;
-    const SEC_TO_MS = 1000;
+    const { MAX_TIME, SEC_TO_MS } = constants;
     this.m_category = ids.timer.next();
     this.m_tick_callback = tick_callback;
     this.m_call_interval = call_interval * SEC_TO_MS;

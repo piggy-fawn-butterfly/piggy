@@ -90,7 +90,6 @@ class UserData {
     });
     this.m_raw_string = JSON.stringify(schemas);
     storage.set(constants.DATABASE_NAME, this.m_raw_string);
-    this.dump();
   }
 
   /**
