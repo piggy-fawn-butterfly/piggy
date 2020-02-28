@@ -30,6 +30,11 @@ namespace constants {
   };
 
   /**
+   * 超过限定的离线时间后重启
+   */
+  export const OFFLINE_TO_RESTART = 60;
+
+  /**
    * 事件名称
    */
   export const EVENT_NAME = {
