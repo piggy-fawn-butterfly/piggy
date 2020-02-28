@@ -109,18 +109,18 @@ export namespace fsm {
    * @param configuration 状态机配置
    */
   export function create(
-    configuration: I_Machine_Configuration,
-    callback: I_StateMachine_CallFunc
-  ): StateMachine {
-    try {
-      isValidStateMachine(configuration);
-      let machine = new StateMachine(configuration);
-      callback(machine);
-      return machine;
-    } catch (e) {
-      logger.error(i18n.I.text(i18n.K.fsm_tip_5), e);
-      return null;
-    }
+    configuration: I_Machine_Configuration
+  ): Promise<StateMachine> {
+    return new Promise((resolve, reject) => {
+      try {
+        isValidStateMachine(configuration);
+        let machine = new StateMachine(configuration);
+        resolve(machine);
+      } catch (e) {
+        logger.error(i18n.I.text(i18n.K.fsm_tip_5), e);
+        resolve(null);
+      }
+    });
   }
 
   /**
