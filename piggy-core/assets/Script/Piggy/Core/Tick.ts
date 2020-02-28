@@ -1,3 +1,4 @@
+import { timer } from "./Timer";
 import { events } from "./Events";
 import { timers } from "./Timers";
 import { userdata } from "./Userdata";
@@ -24,7 +25,7 @@ import { constants } from "../Const/Constant";
  */
 class Tick {
   public static s_instance: Tick = new Tick();
-  private m_timer_id: string;
+  private m_timer_id: string = null;
   private m_tick_count: number = 0;
 
   /**
@@ -35,17 +36,10 @@ class Tick {
   }
 
   /**
-   * 获取定时器实例
-   */
-  private _timer() {
-    return timers.get(this.m_timer_id);
-  }
-
-  /**
    * 计时器回调
    */
   private _tick() {
-    let timer = this._timer();
+    let timer = this.timer();
     if (!timer || !timer.isRunning()) return;
     let interval = constants.AUTO_SAVE_INTERVAL * constants.SEC_TO_MS;
     timer.elapse > 0 && timer.elapse % interval === 0 && this._autoSave();
@@ -64,28 +58,32 @@ class Tick {
    * 暂停事件
    */
   private _onPause() {
-    let timer = this._timer();
-    if (!timer) return;
+    if (!this.m_timer_id) return;
     ++this.m_tick_count;
-    timer.pause();
+    this.timer().pause();
   }
 
   /**
    * 恢复事件
    */
   private _onResume() {
-    let timer = this._timer();
-    if (!timer) return;
-    --this.m_tick_count <= 0 && timer.resume();
+    if (!this.m_timer_id) return;
+    --this.m_tick_count <= 0 && this.timer().resume();
+  }
+
+  /**
+   * 获取定时器实例
+   */
+  public timer(): timer {
+    return timers.get(this.m_timer_id);
   }
 
   /**
    * 开始计时
    */
   public start() {
-    let timer = this._timer();
-    if (timer) return;
-    timer = timers.new(this._tick.bind(this), 1, constants.MAX_TIME);
+    if (this.m_timer_id) return;
+    let timer = timers.new(this._tick.bind(this), 1, constants.MAX_TIME);
     events.on(constants.EVENT_NAME.ON_PAUSE_GAME_TIMER, this._onPause, this);
     events.on(constants.EVENT_NAME.ON_RESUME_GAME_TIMER, this._onResume, this);
     this.m_timer_id = timer.m_category;
@@ -100,6 +98,7 @@ class Tick {
     events.off(constants.EVENT_NAME.ON_PAUSE_GAME_TIMER, this._onPause, this);
     events.off(constants.EVENT_NAME.ON_PAUSE_GAME_TIMER, this._onResume, this);
     this.m_timer_id && timers.del(this.m_timer_id);
+    this.m_timer_id = null;
   }
 }
 
