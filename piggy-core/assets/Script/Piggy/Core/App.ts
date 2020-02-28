@@ -3,9 +3,14 @@ import { i18n } from "./i18n";
 import { sound } from "./Sound";
 import { logger } from "./Logger";
 import { events } from "./Events";
+import { timers } from "./Timers";
 import { userdata } from "./Userdata";
-import { enums } from "../Const/Declare/Enums";
+import { states } from "../Const/States";
+import { assets } from "../Const/Assets";
+import { strings } from "../Utils/Strings";
+import { fsm } from "./FiniteStateMachine";
 import { constants } from "../Const/Constant";
+import { enums } from "../Const/Declare/Enums";
 
 const {
   ccclass,
@@ -37,7 +42,7 @@ const {
 @disallowMultiple
 @executeInEditMode
 @requireComponent(cc.Canvas)
-class App extends cc.Component {
+abstract class App extends cc.Component {
   //----------------------组件属性----------------------
 
   resetInEditor() {
@@ -121,6 +126,9 @@ class App extends cc.Component {
   })
   p_auto_resize_for_browser: boolean = false;
 
+  private m_enter_at: number;
+  private m_exit_at: number;
+  public m_game_fsm: fsm.StateMachine;
   //----------------------组件方法----------------------
 
   /**
@@ -167,15 +175,20 @@ class App extends cc.Component {
    * App首次加载
    */
   onLoad() {
-    logger.setLevel(
-      this.isRelease() ? enums.E_Log_Level.Error : enums.E_Log_Level.Trace
-    );
+    //设置日志等级
+    let level = this.isRelease()
+      ? enums.E_Log_Level.Error
+      : enums.E_Log_Level.Trace;
+    logger.setLevel(level);
+
+    //设置语言
     i18n.I.language = this._p_i18n_language;
-    userdata.init();
-    res.init();
-    sound.init();
-    this.lockCanvasAdapter();
-    this.registerCanvasResizeEvent();
+
+    //创建游戏状态机
+    fsm.create(states.game.structure, machine => {
+      (this.m_game_fsm = machine).dump();
+      this.onAppInit();
+    });
   }
 
   /**
@@ -184,6 +197,35 @@ class App extends cc.Component {
   onDestroy() {
     this.unschedule(this.refreshFrameSize);
   }
+
+  /**
+   * 游戏初始化
+   */
+  onAppInit() {
+    //模块初始化
+    userdata.init();
+    res.init();
+    sound.init();
+
+    //锁定Canvas适配方案
+    this.lockCanvasAdapter();
+
+    //注册事件
+    this.registerEventListener();
+    this.registerCanvasResizeEvent();
+    this.registerFiniteStateMachine();
+
+    //启动状态机
+    this.m_game_fsm.transitTo(states.game.transition.start);
+  }
+
+  /**
+   * 游戏开始
+   */
+  onAppStart() {
+    this.onStart();
+  }
+  public abstract onStart(): void;
 
   /**
    * 监听Canvas尺寸变化
@@ -215,6 +257,104 @@ class App extends cc.Component {
       cc.view.setFrameSize(clientWidth, clientHeight);
       events.dispatch(constants.EVENT_NAME.ON_CANVAS_RESIZE);
     }
+  }
+
+  /**
+   * 注册游戏状态机监听器
+   */
+  registerFiniteStateMachine() {
+    states.game.structure.transitions.forEach(transition => {
+      events.on(transition.name, this.onFsmTransitTo, this);
+    });
+  }
+
+  /**
+   * 游戏作弊处理
+   */
+  onDealWithGameCheat() {}
+
+  /**
+   *
+   * @param event
+   */
+  onFsmTransitTo(event: cc.Event.EventCustom) {
+    let { name, from, to } = <fsm.I_FSM_TRANSITION>event.getUserData();
+    logger.info(`[Game FSM] ${name}: ${from} > ${to}`);
+    switch (name) {
+      case states.game.transition.cheat:
+        this.onDealWithGameCheat();
+        break;
+      case states.game.transition.reset:
+        events.reset();
+        // UIStack.I.closeAll();
+        timers.del();
+        sound.stop();
+        // GameTimeCounter.I.reset();
+        this.registerFiniteStateMachine();
+        this.onAppStart();
+        break;
+      case states.game.transition.start:
+        this.onAppStart();
+        sound.playMusic(assets.Sound_LoopingBgm1, true);
+        sound.dump();
+        break;
+      case states.game.transition.restart:
+        this.onAppStart();
+        break;
+      case states.game.transition.pause:
+        timers.interrupt();
+        userdata.save();
+        break;
+      case states.game.transition.over:
+        break;
+      case states.game.transition.resume:
+        timers.recover();
+        break;
+      default:
+        break;
+    }
+  }
+
+  /**
+   * 监听系统事件
+   */
+  registerEventListener() {
+    cc.game.on(constants.EVENT_NAME.ON_APP_SHOW, this.onAppShow, this);
+    cc.game.on(constants.EVENT_NAME.ON_APP_HIDE, this.onAppHide, this);
+  }
+
+  /**
+   * 获得离线时间
+   */
+  getOfflineTime(): number {
+    return (this.m_enter_at - this.m_exit_at) / 1000;
+  }
+
+  /**
+   * App进入前台事件
+   */
+  onAppShow() {
+    logger.info(i18n.I.text(i18n.K.app_entering));
+    this.m_enter_at = Date.now();
+    let time = this.getOfflineTime();
+    let info = i18n.I.text(i18n.K.app_offline_time);
+    logger.info(strings.render(info, { time: time }));
+    let state =
+      time >= constants.OFFLINE_TO_RESTART
+        ? states.game.transition.reset
+        : states.game.transition.resume;
+    this.m_game_fsm.transitTo(state);
+    logger.info(i18n.I.text(i18n.K.app_entered));
+  }
+
+  /**
+   * App进入后台事件
+   */
+  onAppHide() {
+    logger.info(i18n.I.text(i18n.K.app_exiting));
+    this.m_exit_at = Date.now();
+    this.m_game_fsm.transitTo(states.game.transition.pause);
+    logger.info(i18n.I.text(i18n.K.app_exited));
   }
 }
 

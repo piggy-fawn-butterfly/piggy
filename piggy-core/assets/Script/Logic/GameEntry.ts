@@ -26,8 +26,7 @@ const { ccclass } = cc._decorator;
  */
 @ccclass
 class GameEntry extends app {
-  onLoad() {
-    super.onLoad();
+  public onStart(): void {
     this.loadRes();
   }
 
