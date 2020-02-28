@@ -165,9 +165,8 @@ abstract class App extends cc.Component {
     //创建游戏状态机
     machines.create(states.app).then(async machine => {
       logger.info(`[FSM] ${machine.m_category}: ${machine.current()}`);
-      await this.onAppInit();
-      events.on(machine.m_category, this.onFsmTransitTo, this);
       this.m_app_fsm = machine;
+      await this.onAppInit();
       this.m_app_fsm.transitTo(states.app.transition.start);
     });
   }
@@ -291,13 +290,16 @@ abstract class App extends cc.Component {
    * 重置处理
    */
   onDealWithAppReset(): Promise<void> {
-    return new Promise(resolve => {
+    return new Promise(async resolve => {
       // uistack.closeAll();
+      this.unregisterEventListener();
+      userdata.save();
       tick.reset();
-      events.reset();
       timers.del();
       sound.stop();
-      this.onAppStart();
+      events.reset();
+      this.registerEventListener();
+      this.m_app_fsm.transitTo(states.app.transition.start);
       resolve();
     });
   }
@@ -306,8 +308,8 @@ abstract class App extends cc.Component {
    * 重启处理
    */
   onDealWithAppRestart(): Promise<void> {
-    return new Promise(resolve => {
-      this.onAppStart();
+    return new Promise(async resolve => {
+      //TODO
       resolve();
     });
   }
@@ -318,7 +320,8 @@ abstract class App extends cc.Component {
   onDealWithAppPause(): Promise<void> {
     return new Promise(resolve => {
       userdata.save();
-      tick.timer().interrupt;
+      sound.pause();
+      tick.timer().interrupt();
       resolve();
     });
   }
@@ -328,6 +331,7 @@ abstract class App extends cc.Component {
    */
   onDealWithAppResume(): Promise<void> {
     return new Promise(resolve => {
+      sound.resume();
       tick.timer().recover();
       resolve();
     });
@@ -367,6 +371,9 @@ abstract class App extends cc.Component {
     cc.game.on(ON_APP_SHOW, this.onAppShow, this);
     cc.game.on(ON_APP_HIDE, this.onAppHide, this);
 
+    //监听App状态机事件
+    events.on(this.m_app_fsm.m_category, this.onFsmTransitTo, this);
+
     //监听Canvas尺寸变化事件
     if (this.p_auto_resize_for_browser && cc.sys.isBrowser) {
       cc.view.enableAutoFullScreen(this.p_auto_resize_for_browser);
@@ -385,6 +392,7 @@ abstract class App extends cc.Component {
     const { ON_APP_SHOW, ON_APP_HIDE, ON_CANVAS_RESIZE } = constants.EVENT_NAME;
     cc.game.off(ON_APP_SHOW, this.onAppShow, this);
     cc.game.off(ON_APP_HIDE, this.onAppHide, this);
+    events.off(this.m_app_fsm.m_category, this.onFsmTransitTo, this);
     if (this.p_auto_resize_for_browser && cc.sys.isBrowser) {
       return this.unschedule(this.refreshFrameSize);
     }
