@@ -237,13 +237,20 @@ abstract class App extends cc.Component {
   async onAppStart(): Promise<void> {
     await this.onStart();
     tick.start();
+    this.dump();
+  }
+  public abstract async onStart(): Promise<void>;
+
+  /**
+   * 输出App信息
+   */
+  public dump() {
     machines.dump();
     userdata.dump();
     res.dump();
     sound.dump();
     timers.dump();
   }
-  public abstract async onStart(): Promise<void>;
 
   /**
    * 自动更新FrameSize

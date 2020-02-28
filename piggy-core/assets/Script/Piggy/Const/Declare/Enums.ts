@@ -102,10 +102,10 @@ namespace enums {
    * 定时器状态
    */
   export enum E_Timer_State {
-    "Ready",
-    "Running",
-    "Paused",
-    "Stopped"
+    "Ready" = "ready",
+    "Running" = "running",
+    "Paused" = "paused",
+    "Stopped" = "stopped"
   }
 
   /**
