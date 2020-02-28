@@ -5,8 +5,8 @@ import { logger } from "./Logger";
 import { events } from "./Events";
 import { timers } from "./Timers";
 import { userdata } from "./Userdata";
+import { machines } from "./Machines";
 import { states } from "../Const/States";
-import { assets } from "../Const/Assets";
 import { strings } from "../Utils/Strings";
 import { fsm } from "./FiniteStateMachine";
 import { constants } from "../Const/Constant";
@@ -137,14 +137,38 @@ abstract class App extends cc.Component {
   /**
    * 游戏状态机
    */
-  public m_game_fsm: fsm.StateMachine;
-  //----------------------组件方法----------------------
+  public m_app_fsm: fsm.StateMachine;
 
   /**
    * 初始化
    */
   private resetEditor() {
     this.lockCanvasAdapter();
+  }
+
+  //----------------------组件方法----------------------
+
+  /**
+   * App首次加载
+   */
+  onLoad() {
+    //设置语言
+    i18n.I.language = this._p_i18n_language;
+
+    //设置日志等级
+    let level = this.isRelease()
+      ? enums.E_Log_Level.Error
+      : enums.E_Log_Level.Trace;
+    logger.setLevel(level);
+
+    //创建游戏状态机
+    machines.create(states.app).then(async machine => {
+      logger.info(`[FSM] ${machine.m_category}: ${machine.current()}`);
+      await this.onAppInit();
+      this.m_app_fsm = machine;
+      events.on(machine.m_category, this.onFsmTransitTo, this);
+      machine.transitTo(states.app.transition.start);
+    });
   }
 
   /**
@@ -160,74 +184,50 @@ abstract class App extends cc.Component {
   }
 
   /**
-   * 是否开发版本
+   * 是否开发、测试、发布版本
    */
   isDev() {
     return this.p_version_state === enums.E_Version_Choice.Dev;
   }
-
-  /**
-   * 是否测试版本
-   */
   isBeta() {
     return this.p_version_state === enums.E_Version_Choice.Beta;
   }
-
-  /**
-   * 是否发布版本
-   */
   isRelease() {
     return this.p_version_state === enums.E_Version_Choice.Release;
   }
 
   /**
-   * App首次加载
+   * 获得离线时间
    */
-  onLoad() {
-    //设置日志等级
-    let level = this.isRelease()
-      ? enums.E_Log_Level.Error
-      : enums.E_Log_Level.Trace;
-    logger.setLevel(level);
-
-    //设置语言
-    i18n.I.language = this._p_i18n_language;
-
-    //创建游戏状态机
-    fsm.create(states.game.structure).then(machine => {
-      (this.m_game_fsm = machine).dump();
-      machine.m_category;
-      logger.info(`[FSM] ${machine.m_category}: ${machine.current()}`);
-      this.onAppInit();
-    });
+  public getOfflineTime(): number {
+    return (this.m_enter_at - this.m_exit_at) / 1000;
   }
 
   /**
    * App销毁
    */
   onDestroy() {
-    this.unschedule(this.refreshFrameSize);
+    this.unregisterEventListener();
   }
 
   /**
    * 游戏初始化
    */
-  onAppInit() {
-    //模块初始化
-    userdata.init();
-    res.init();
-    sound.init();
+  async onAppInit() {
+    return new Promise(resolve => {
+      //锁定Canvas适配方案
+      this.lockCanvasAdapter();
 
-    //锁定Canvas适配方案
-    this.lockCanvasAdapter();
+      //模块初始化
+      userdata.init();
+      res.init();
+      sound.init();
 
-    //注册事件
-    this.registerEventListener();
-    this.registerCanvasResizeEvent();
-    this.registerFiniteStateMachine();
+      //注册事件
+      this.registerEventListener();
 
-    //启动状态机
-    this.m_game_fsm.transitTo(states.game.transition.start);
+      resolve();
+    });
   }
 
   /**
@@ -237,23 +237,6 @@ abstract class App extends cc.Component {
     this.onStart();
   }
   public abstract onStart(): void;
-
-  /**
-   * 监听Canvas尺寸变化
-   */
-  registerCanvasResizeEvent() {
-    if (this.p_auto_resize_for_browser && cc.sys.isBrowser) {
-      cc.view.enableAutoFullScreen(this.p_auto_resize_for_browser);
-      let toolbar = document.getElementsByClassName("toolbar")[0];
-      toolbar && (toolbar["style"]["display"] = "none");
-      this.schedule(this.refreshFrameSize, 1);
-      this.refreshFrameSize();
-    } else {
-      cc.view.on(constants.EVENT_NAME.ON_CANVAS_RESIZE, () => {
-        events.dispatch(constants.EVENT_NAME.ON_CANVAS_RESIZE);
-      });
-    }
-  }
 
   /**
    * 自动更新FrameSize
@@ -271,90 +254,147 @@ abstract class App extends cc.Component {
   }
 
   /**
-   * 注册游戏状态机监听器
+   * 开始处理
    */
-  registerFiniteStateMachine() {
-    states.game.structure.transitions.forEach(transition => {
-      events.on(transition.name, this.onFsmTransitTo, this);
+  onDealWithAppStart(): Promise<void> {
+    return new Promise(resolve => {
+      this.onAppStart();
+      resolve();
+    });
+  }
+  /**
+   * 作弊处理
+   */
+  onDealWithAppCheat(): Promise<void> {
+    return new Promise(resolve => {
+      //TODO
+      resolve();
     });
   }
 
   /**
-   * 游戏作弊处理
+   * 重置处理
    */
-  onDealWithGameCheat() {}
+  onDealWithAppReset(): Promise<void> {
+    return new Promise(resolve => {
+      // UIStack.I.closeAll();
+      // GameTimeCounter.I.reset();
+      events.reset();
+      timers.del();
+      sound.stop();
+      this.onAppStart();
+      resolve();
+    });
+  }
 
   /**
-   *
-   * @param event
+   * 重启处理
    */
-  onFsmTransitTo(event: cc.Event.EventCustom) {
+  onDealWithAppRestart(): Promise<void> {
+    return new Promise(resolve => {
+      this.onAppStart();
+      resolve();
+    });
+  }
+
+  /**
+   * 暂停处理
+   */
+  onDealWithAppPause(): Promise<void> {
+    return new Promise(resolve => {
+      timers.interrupt();
+      userdata.save();
+      resolve();
+    });
+  }
+
+  /**
+   * 恢复处理
+   */
+  onDealWithAppResume(): Promise<void> {
+    return new Promise(resolve => {
+      timers.resume();
+      resolve();
+    });
+  }
+
+  /**
+   * 结束处理
+   */
+  onDealWithAppOver(): Promise<void> {
+    return new Promise(resolve => {
+      resolve();
+    });
+  }
+
+  /**
+   * 处理状态机状态切换事件
+   * @param event 状态切换事件
+   */
+  private async onFsmTransitTo(event: cc.Event.EventCustom): Promise<any> {
     let { name, from, to } = <fsm.I_FSM_TRANSITION>event.getUserData();
-    logger.info(`[FSM] ${name}: ${from} > ${to}`);
-    switch (name) {
-      case states.game.transition.cheat:
-        this.onDealWithGameCheat();
-        break;
-      case states.game.transition.reset:
-        events.reset();
-        // UIStack.I.closeAll();
-        timers.del();
-        sound.stop();
-        // GameTimeCounter.I.reset();
-        this.registerFiniteStateMachine();
-        this.onAppStart();
-        break;
-      case states.game.transition.start:
-        this.onAppStart();
-        sound.playMusic(assets.Sound_LoopingBgm1, true);
-        sound.dump();
-        break;
-      case states.game.transition.restart:
-        this.onAppStart();
-        break;
-      case states.game.transition.pause:
-        timers.interrupt();
-        userdata.save();
-        break;
-      case states.game.transition.over:
-        break;
-      case states.game.transition.resume:
-        timers.recover();
-        break;
-      default:
-        break;
+    logger.info(`[FSM] ${event.type}: ${from} > ${to}`);
+    let machine = machines.get(event.type);
+    if (machine && states[machine.name()]) {
+      let transition = name.split("_").pop();
+      let api = this[`onDealWithApp${strings.capitalize(transition)}`];
+      await (api && api instanceof Function && api.apply(this));
     }
   }
 
   /**
-   * 监听系统事件
+   * 监听事件
    */
   registerEventListener() {
-    cc.game.on(constants.EVENT_NAME.ON_APP_SHOW, this.onAppShow, this);
-    cc.game.on(constants.EVENT_NAME.ON_APP_HIDE, this.onAppHide, this);
+    const { ON_APP_SHOW, ON_APP_HIDE, ON_CANVAS_RESIZE } = constants.EVENT_NAME;
+
+    //监听系统进入、退出事件
+    cc.game.on(ON_APP_SHOW, this.onAppShow, this);
+    cc.game.on(ON_APP_HIDE, this.onAppHide, this);
+
+    //监听Canvas尺寸变化事件
+    if (this.p_auto_resize_for_browser && cc.sys.isBrowser) {
+      cc.view.enableAutoFullScreen(this.p_auto_resize_for_browser);
+      let toolbar = document.getElementsByClassName("toolbar")[0];
+      toolbar && (toolbar["style"]["display"] = "none");
+      this.schedule(this.refreshFrameSize, 1);
+      return this.refreshFrameSize();
+    }
+    cc.view.on(ON_CANVAS_RESIZE, this.onCanvasResize, this);
   }
 
   /**
-   * 获得离线时间
+   * 注销事件
    */
-  getOfflineTime(): number {
-    return (this.m_enter_at - this.m_exit_at) / 1000;
+  unregisterEventListener() {
+    const { ON_APP_SHOW, ON_APP_HIDE, ON_CANVAS_RESIZE } = constants.EVENT_NAME;
+    cc.game.off(ON_APP_SHOW, this.onAppShow, this);
+    cc.game.off(ON_APP_HIDE, this.onAppHide, this);
+    if (this.p_auto_resize_for_browser && cc.sys.isBrowser) {
+      return this.unschedule(this.refreshFrameSize);
+    }
+    cc.view.off(ON_CANVAS_RESIZE, this.onCanvasResize, this);
+  }
+
+  /**
+   * Canvas尺寸变化事件
+   */
+  onCanvasResize() {
+    events.dispatch(constants.EVENT_NAME.ON_CANVAS_RESIZE);
   }
 
   /**
    * App进入前台事件
    */
-  onAppShow() {
+  public onAppShow() {
     logger.info(i18n.I.text(i18n.K.app_entering));
     this.m_enter_at = Date.now();
     let time = this.getOfflineTime();
     let info = i18n.I.text(i18n.K.app_offline_time);
     logger.info(strings.render(info, { time: time }));
-    let state =
-      time >= constants.OFFLINE_TO_RESTART
-        ? states.game.transition.reset
-        : states.game.transition.resume;
-    this.m_game_fsm.transitTo(state);
+    let { reset, resume } = states.app.transition;
+    let state = time >= constants.OFFLINE_TO_RESTART ? reset : resume;
+    this.m_app_fsm.transitTo(state);
     logger.info(i18n.I.text(i18n.K.app_entered));
   }
 
@@ -364,7 +404,7 @@ abstract class App extends cc.Component {
   onAppHide() {
     logger.info(i18n.I.text(i18n.K.app_exiting));
     this.m_exit_at = Date.now();
-    this.m_game_fsm.transitTo(states.game.transition.pause);
+    this.m_app_fsm.transitTo(states.app.transition.pause);
     logger.info(i18n.I.text(i18n.K.app_exited));
   }
 }
