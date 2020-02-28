@@ -144,7 +144,7 @@ class UserData {
    * 数据输出
    */
   public dump() {
-    logger.info("@Userdata", this.m_raw_schemas);
+    logger.info(i18n.I.text(i18n.K.user_data), this.m_raw_schemas);
   }
 }
 
