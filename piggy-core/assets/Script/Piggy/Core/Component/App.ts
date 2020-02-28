@@ -1,17 +1,17 @@
-import { res } from "./Res";
-import { tick } from "./Tick";
-import { i18n } from "./i18n";
-import { sound } from "./Sound";
-import { logger } from "./Logger";
-import { events } from "./Events";
-import { timers } from "./Timers";
-import { userdata } from "./Userdata";
-import { machines } from "./Machines";
-import { states } from "../Const/States";
-import { strings } from "../Utils/Strings";
-import { fsm } from "./FiniteStateMachine";
-import { constants } from "../Const/Constant";
-import { enums } from "../Const/Declare/Enums";
+import { res } from "../Res";
+import { tick } from "../Tick";
+import { i18n } from "../i18n";
+import { sound } from "../Sound";
+import { logger } from "../Logger";
+import { events } from "../Events";
+import { timers } from "../Timers";
+import { userdata } from "../Userdata";
+import { machines } from "../Machines";
+import { states } from "../../Const/States";
+import { strings } from "../../Utils/Strings";
+import { fsm } from "../FiniteStateMachine";
+import { constants } from "../../Const/Constant";
+import { enums } from "../../Const/Declare/Enums";
 
 const {
   ccclass,

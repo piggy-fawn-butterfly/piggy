@@ -1,7 +1,7 @@
-import { app } from "./App";
 import { i18n } from "./i18n";
 import { events } from "./Events";
 import { logger } from "./Logger";
+import { app } from "./Component/App";
 import { cocos } from "../Utils/Cocos";
 import { unreadable } from "./Unreadable";
 import { objects } from "../Utils/Objects";

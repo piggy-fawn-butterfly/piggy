@@ -1,6 +1,6 @@
-import { events } from "./Events";
-import { cocos } from "../Utils/Cocos";
-import { constants } from "../Const/Constant";
+import { events } from "../Events";
+import { cocos } from "../../Utils/Cocos";
+import { constants } from "../../Const/Constant";
 
 const { ccclass, requireComponent } = cc._decorator;
 

@@ -1,9 +1,9 @@
-import { app } from "../Piggy/Core/App";
 import { res } from "../Piggy/Core/Res";
 import { pool } from "../Piggy/Core/Pool";
 import { sound } from "../Piggy/Core/Sound";
 import { logger } from "../Piggy/Core/Logger";
 import { assets } from "../Piggy/Const/Assets";
+import { app } from "../Piggy/Core/Component/App";
 
 const { ccclass } = cc._decorator;
 
