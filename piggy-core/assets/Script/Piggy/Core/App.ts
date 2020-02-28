@@ -126,8 +126,17 @@ abstract class App extends cc.Component {
   })
   p_auto_resize_for_browser: boolean = false;
 
+  /**
+   * 应用进入前台时间
+   */
   private m_enter_at: number;
+  /**
+   * 应用进入后台时间
+   */
   private m_exit_at: number;
+  /**
+   * 游戏状态机
+   */
   public m_game_fsm: fsm.StateMachine;
   //----------------------组件方法----------------------
 
@@ -185,8 +194,10 @@ abstract class App extends cc.Component {
     i18n.I.language = this._p_i18n_language;
 
     //创建游戏状态机
-    fsm.create(states.game.structure, machine => {
+    fsm.create(states.game.structure).then(machine => {
       (this.m_game_fsm = machine).dump();
+      machine.m_category;
+      logger.info(`[FSM] ${machine.m_category}: ${machine.current()}`);
       this.onAppInit();
     });
   }
@@ -279,7 +290,7 @@ abstract class App extends cc.Component {
    */
   onFsmTransitTo(event: cc.Event.EventCustom) {
     let { name, from, to } = <fsm.I_FSM_TRANSITION>event.getUserData();
-    logger.info(`[Game FSM] ${name}: ${from} > ${to}`);
+    logger.info(`[FSM] ${name}: ${from} > ${to}`);
     switch (name) {
       case states.game.transition.cheat:
         this.onDealWithGameCheat();
