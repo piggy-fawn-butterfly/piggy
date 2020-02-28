@@ -3189,6 +3189,10 @@ declare namespace cc {
 	Cocos Creator 场景中的所有节点类。<br/>
 	支持的节点事件，请参阅 {{#crossLink "Node.EventType"}}{{/crossLink}}。 */
   export class Node extends _BaseNode {
+		/**
+		 * 点击测试
+		 */
+    _hitTest(touch_loc: Vec2):boolean;
     /** !#en
 		Group index of node.<br/>
 		Which Group this node belongs to will resolve that this node's collision components can collide with which other collision componentns.<br/>
@@ -14895,6 +14899,9 @@ declare namespace cc {
     /** !#en The event type supported by Node
 		!#zh Node 支持的事件类型 */
     export class EventType {
+      static TOUCH_OUT: string;
+      static TOUCH_MOVE_IN: string;
+      static TOUCH_MOVE_OUT: string;
       /** !#en The event type for touch start event, you can use its value directly: 'touchstart'
 			!#zh 当手指触摸到屏幕时。 */
       static TOUCH_START: string;
