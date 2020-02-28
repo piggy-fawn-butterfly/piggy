@@ -70,9 +70,10 @@ export const TC = {
   [E_Text_Key.fsm_tip_4]: "狀態必須是狀態列錶中的一項",
   [E_Text_Key.fsm_tip_5]: "@狀態機創建失敗",
   [E_Text_Key.fsm_tip_6]: "狀態機當前狀態{{state}}無法切換到{{transition}}動作",
-  [E_Text_Key.fsm_tip_7]: "@狀態機{{category}}數據",
+  [E_Text_Key.fsm_tip_7]: "狀態機{{category}}數據",
   [E_Text_Key.fsm_tip_8]: "當前狀態:",
   [E_Text_Key.fsm_tip_9]: "默認狀態:",
   [E_Text_Key.fsm_tip_10]: "狀態列錶:",
-  [E_Text_Key.fsm_tip_11]: "動作列錶:"
+  [E_Text_Key.fsm_tip_11]: "動作列錶:",
+  [E_Text_Key.user_data]: "玩家數據"
 };

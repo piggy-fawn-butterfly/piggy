@@ -70,9 +70,10 @@ export const CN = {
   [E_Text_Key.fsm_tip_4]: "状态必须是状态列表中的一项",
   [E_Text_Key.fsm_tip_5]: "@状态机创建失败",
   [E_Text_Key.fsm_tip_6]: "状态机当前状态{{state}}无法切换到{{transition}}动作",
-  [E_Text_Key.fsm_tip_7]: "@状态机{{category}}数据",
+  [E_Text_Key.fsm_tip_7]: "状态机{{category}}数据",
   [E_Text_Key.fsm_tip_8]: "当前状态:",
   [E_Text_Key.fsm_tip_9]: "默认状态:",
   [E_Text_Key.fsm_tip_10]: "状态列表:",
-  [E_Text_Key.fsm_tip_11]: "动作列表:"
+  [E_Text_Key.fsm_tip_11]: "动作列表:",
+  [E_Text_Key.user_data]: "玩家数据"
 };

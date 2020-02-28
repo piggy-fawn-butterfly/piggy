@@ -69,5 +69,6 @@ export enum E_Text_Key {
   fsm_tip_8,
   fsm_tip_9,
   fsm_tip_10,
-  fsm_tip_11
+  fsm_tip_11,
+  user_data
 }

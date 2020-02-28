@@ -74,9 +74,10 @@ export const EN = {
   [E_Text_Key.fsm_tip_5]: "@failed to create state machine",
   [E_Text_Key.fsm_tip_6]:
     "current state {{state}} can not switch to {{transition}}",
-  [E_Text_Key.fsm_tip_7]: "@state machine {{category}} information",
+  [E_Text_Key.fsm_tip_7]: "state machine {{category}} information",
   [E_Text_Key.fsm_tip_8]: "current state:",
   [E_Text_Key.fsm_tip_9]: "default state:",
   [E_Text_Key.fsm_tip_10]: "states list:",
-  [E_Text_Key.fsm_tip_11]: "transitions list:"
+  [E_Text_Key.fsm_tip_11]: "transitions list:",
+  [E_Text_Key.user_data]: "User Data"
 };
