@@ -166,9 +166,9 @@ abstract class App extends cc.Component {
     machines.create(states.app).then(async machine => {
       logger.info(`[FSM] ${machine.m_category}: ${machine.current()}`);
       await this.onAppInit();
-      this.m_app_fsm = machine;
       events.on(machine.m_category, this.onFsmTransitTo, this);
-      machine.transitTo(states.app.transition.start);
+      this.m_app_fsm = machine;
+      this.m_app_fsm.transitTo(states.app.transition.start);
     });
   }
 
@@ -187,13 +187,13 @@ abstract class App extends cc.Component {
   /**
    * 是否开发、测试、发布版本
    */
-  isDev() {
+  isDev(): boolean {
     return this.p_version_state === enums.E_Version_Choice.Dev;
   }
-  isBeta() {
+  isBeta(): boolean {
     return this.p_version_state === enums.E_Version_Choice.Beta;
   }
-  isRelease() {
+  isRelease(): boolean {
     return this.p_version_state === enums.E_Version_Choice.Release;
   }
 
@@ -214,7 +214,7 @@ abstract class App extends cc.Component {
   /**
    * 游戏初始化
    */
-  async onAppInit() {
+  async onAppInit(): Promise<void> {
     return new Promise(resolve => {
       //锁定Canvas适配方案
       this.lockCanvasAdapter();
@@ -276,6 +276,7 @@ abstract class App extends cc.Component {
       resolve();
     });
   }
+
   /**
    * 作弊处理
    */
@@ -291,7 +292,7 @@ abstract class App extends cc.Component {
    */
   onDealWithAppReset(): Promise<void> {
     return new Promise(resolve => {
-      // UIStack.I.closeAll();
+      // uistack.closeAll();
       tick.reset();
       events.reset();
       timers.del();
@@ -316,8 +317,8 @@ abstract class App extends cc.Component {
    */
   onDealWithAppPause(): Promise<void> {
     return new Promise(resolve => {
-      timers.interrupt();
       userdata.save();
+      tick.timer().interrupt;
       resolve();
     });
   }
@@ -327,7 +328,7 @@ abstract class App extends cc.Component {
    */
   onDealWithAppResume(): Promise<void> {
     return new Promise(resolve => {
-      timers.resume();
+      tick.timer().recover();
       resolve();
     });
   }
