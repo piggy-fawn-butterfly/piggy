@@ -30,9 +30,24 @@ namespace constants {
   };
 
   /**
+   * 最大时间
+   */
+  export const MAX_TIME = cc.macro.REPEAT_FOREVER;
+
+  /**
+   * 1秒的毫秒数
+   */
+  export const SEC_TO_MS = 1000;
+
+  /**
    * 超过限定的离线时间后重启
    */
   export const OFFLINE_TO_RESTART = 60;
+
+  /**
+   * 自动保存时间间隔
+   */
+  export const AUTO_SAVE_INTERVAL = 60;
 
   /**
    * 事件名称
