@@ -53,5 +53,21 @@ export enum E_Text_Key {
   audio_information,
   audio_all_information,
   timer_information,
-  timer_all_information
+  timer_all_information,
+  app_entering,
+  app_exiting,
+  app_entered,
+  app_exited,
+  app_offline_time,
+  fsm_tip_1,
+  fsm_tip_2,
+  fsm_tip_3,
+  fsm_tip_4,
+  fsm_tip_5,
+  fsm_tip_6,
+  fsm_tip_7,
+  fsm_tip_8,
+  fsm_tip_9,
+  fsm_tip_10,
+  fsm_tip_11
 }

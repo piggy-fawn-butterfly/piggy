@@ -58,5 +58,21 @@ export const TC = {
   [E_Text_Key.audio_all_information]: "音頻信息",
   [E_Text_Key.timer_information]:
     "名稱:{{name}} 狀態:{{state}} 當前:{{elapse}} 剩餘:{{rest}}",
-  [E_Text_Key.timer_all_information]: "定時器信息"
+  [E_Text_Key.timer_all_information]: "定時器信息",
+  [E_Text_Key.app_entering]: "應用正在進入前臺",
+  [E_Text_Key.app_exiting]: "應用正在進入後臺",
+  [E_Text_Key.app_entered]: "應用已經進入前臺",
+  [E_Text_Key.app_exited]: "應用已經進入後臺",
+  [E_Text_Key.app_offline_time]: "應用離線時間:{{time}}s",
+  [E_Text_Key.fsm_tip_1]: "狀態機至少應該包含兩種狀態",
+  [E_Text_Key.fsm_tip_2]: "默認狀態必須是狀態列錶中的一項",
+  [E_Text_Key.fsm_tip_3]: "狀態機至少應該包含一種狀態切換動作",
+  [E_Text_Key.fsm_tip_4]: "狀態必須是狀態列錶中的一項",
+  [E_Text_Key.fsm_tip_5]: "@狀態機創建失敗",
+  [E_Text_Key.fsm_tip_6]: "狀態機當前狀態{{state}}無法切換到{{transition}}動作",
+  [E_Text_Key.fsm_tip_7]: "@狀態機{{category}}數據",
+  [E_Text_Key.fsm_tip_8]: "當前狀態:",
+  [E_Text_Key.fsm_tip_9]: "默認狀態:",
+  [E_Text_Key.fsm_tip_10]: "狀態列錶:",
+  [E_Text_Key.fsm_tip_11]: "動作列錶:"
 };

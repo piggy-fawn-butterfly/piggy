@@ -58,5 +58,21 @@ export const CN = {
   [E_Text_Key.audio_all_information]: "音频信息",
   [E_Text_Key.timer_information]:
     "名称:{{name}} 状态:{{state}} 当前:{{elapse}} 剩余:{{rest}}",
-  [E_Text_Key.timer_all_information]: "定时器信息"
+  [E_Text_Key.timer_all_information]: "定时器信息",
+  [E_Text_Key.app_entering]: "应用正在进入前台",
+  [E_Text_Key.app_exiting]: "应用正在进入后台",
+  [E_Text_Key.app_entered]: "应用已经进入前台",
+  [E_Text_Key.app_exited]: "应用已经进入后台",
+  [E_Text_Key.app_offline_time]: "应用离线时间:{{time}}s",
+  [E_Text_Key.fsm_tip_1]: "状态机至少应该包含两种状态",
+  [E_Text_Key.fsm_tip_2]: "默认状态必须是状态列表中的一项",
+  [E_Text_Key.fsm_tip_3]: "状态机至少应该包含一种状态切换动作",
+  [E_Text_Key.fsm_tip_4]: "状态必须是状态列表中的一项",
+  [E_Text_Key.fsm_tip_5]: "@状态机创建失败",
+  [E_Text_Key.fsm_tip_6]: "状态机当前状态{{state}}无法切换到{{transition}}动作",
+  [E_Text_Key.fsm_tip_7]: "@状态机{{category}}数据",
+  [E_Text_Key.fsm_tip_8]: "当前状态:",
+  [E_Text_Key.fsm_tip_9]: "默认状态:",
+  [E_Text_Key.fsm_tip_10]: "状态列表:",
+  [E_Text_Key.fsm_tip_11]: "动作列表:"
 };

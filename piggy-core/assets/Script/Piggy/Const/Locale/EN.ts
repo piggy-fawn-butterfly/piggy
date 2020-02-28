@@ -58,5 +58,25 @@ export const EN = {
   [E_Text_Key.audio_all_information]: "audio information",
   [E_Text_Key.timer_information]:
     "name:{{name}} state:{{state}} current:{{elapse}} rest:{{rest}}",
-  [E_Text_Key.timer_all_information]: "timers information"
+  [E_Text_Key.timer_all_information]: "timers information",
+  [E_Text_Key.app_entering]: "the app is entering the foreground",
+  [E_Text_Key.app_exiting]: "the app is entering the background",
+  [E_Text_Key.app_entered]: "the app has entered the foreground",
+  [E_Text_Key.app_exited]: "the app has entered the background",
+  [E_Text_Key.app_offline_time]: "app offline time:{{time}}s",
+  [E_Text_Key.fsm_tip_1]:
+    "the state machine should contain at least two states",
+  [E_Text_Key.fsm_tip_2]:
+    "The default state must be an item in the states list",
+  [E_Text_Key.fsm_tip_3]:
+    "The state machine should contain at least one state switching action",
+  [E_Text_Key.fsm_tip_4]: "states must be an item in the states list",
+  [E_Text_Key.fsm_tip_5]: "@failed to create state machine",
+  [E_Text_Key.fsm_tip_6]:
+    "current state {{state}} can not switch to {{transition}}",
+  [E_Text_Key.fsm_tip_7]: "@state machine {{category}} information",
+  [E_Text_Key.fsm_tip_8]: "current state:",
+  [E_Text_Key.fsm_tip_9]: "default state:",
+  [E_Text_Key.fsm_tip_10]: "states list:",
+  [E_Text_Key.fsm_tip_11]: "transitions list:"
 };
