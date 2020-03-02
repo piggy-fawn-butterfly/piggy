@@ -1773,7 +1773,10 @@ declare namespace cc {
 	@param path path
 	@param referenceNode referenceNode
 	*/
-  export function find(path: string, referenceNode?: Node): Node;
+	export function find(path: string, referenceNode?: Node): Node;
+	/**
+	 * 管理动态图集
+	 */
   export var dynamicAtlasManager: DynamicAtlasManager;
   /** !#en cc.audioEngine is the singleton object, it provide simple audio APIs.
 	!#zh
@@ -3189,10 +3192,10 @@ declare namespace cc {
 	Cocos Creator 场景中的所有节点类。<br/>
 	支持的节点事件，请参阅 {{#crossLink "Node.EventType"}}{{/crossLink}}。 */
   export class Node extends _BaseNode {
-		/**
-		 * 点击测试
-		 */
-    _hitTest(touch_loc: Vec2):boolean;
+    /**
+     * 点击测试
+     */
+    _hitTest(touch_loc: Vec2): boolean;
     /** !#en
 		Group index of node.<br/>
 		Which Group this node belongs to will resolve that this node's collision components can collide with which other collision componentns.<br/>
