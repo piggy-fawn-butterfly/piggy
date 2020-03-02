@@ -24,6 +24,35 @@ namespace cocos {
   }
 
   /**
+   * 根据路径和参考节点获取节点
+   * @param path 节点相对路径
+   * @param referenceNode 参考节点
+   */
+  export function findNodes(path: string, referenceNode?: cc.Node): cc.Node[] {
+    let match = [];
+    if (path == null) return match;
+    if (referenceNode && !referenceNode.isValid) return match;
+    if (!referenceNode) {
+      let scene = cc.director.getScene();
+      if (!scene) return match;
+      if (!scene.isValid) return match;
+      referenceNode = scene;
+    }
+    let startIndex = path[0] !== "/" ? 0 : 1;
+    let nameList = path.split("/");
+    for (let n = startIndex; n < nameList.length; n++) {
+      let name = nameList[n];
+      let children = referenceNode["_children"];
+      for (let t = 0, len = children.length; t < len; ++t) {
+        let subChild = children[t];
+        subChild.name === name && match.push(subChild);
+      }
+    }
+
+    return match;
+  }
+
+  /**
    * 根据路径和参考节点和组件类型获取节点下的组件
    * @param path 节点相对路径
    * @param component 组件类型
@@ -49,6 +78,40 @@ namespace cocos {
     referenceNode?: cc.Node
   ): cc.Component {
     return cc.find(path, referenceNode).getComponent(component);
+  }
+
+  /**
+   * 获得组件类型
+   * @param component 组件
+   */
+  export function instanceOfComponent<T extends cc.Component>(
+    component: T
+  ): string {
+    if (component && component.isValid) {
+      return component["__proto__"]["__classname__"];
+    }
+    return "undefined";
+  }
+
+  /**
+   * 获得组件路径
+   * @param component 组件
+   */
+  export function pathOfNode(
+    target: cc.Node,
+    root: cc.Node = null,
+    full: boolean = true
+  ): string {
+    if (!root) root = cc.find("Canvas");
+    let walk = (from: cc.Node, url: string[]) => {
+      url.push(from.parent.name);
+      from.parent !== root && walk(from.parent, url);
+    };
+    let path = [];
+    walk(target, path);
+    !full && path.pop();
+    path.unshift(target.name);
+    return path.reverse().join("/");
   }
 
   /**
