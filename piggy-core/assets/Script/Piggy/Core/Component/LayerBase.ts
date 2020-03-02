@@ -39,6 +39,7 @@ class UIEvent {
 abstract class LayerBase extends cc.Component {
   public static readonly EVENT_TYPE_LAYER_OPEN: string = "layer-open";
   public static readonly EVENT_TYPE_LAYER_CLOSE: string = "layer-close";
+  private m_events: Map<string, Function> = new Map();
 
   @property({ displayName: "UI事件", type: [UIEvent], readonly: true })
   p_ui_events: UIEvent[] = [];
@@ -75,6 +76,7 @@ abstract class LayerBase extends cc.Component {
       })
     );
     this._unregisterAll();
+    this.delAllEvents();
     this.onExit();
   }
 
@@ -187,6 +189,36 @@ abstract class LayerBase extends cc.Component {
   public apisOfComponent<T extends cc.Component>(component: T): string[] {
     if (!component || !component.isValid) return [];
     return constants.UI_EVENT_TYPE[cocos.instanceOfComponent(component)] || [];
+  }
+
+  /**
+   * 添加事件
+   * @param event_name 事件名称
+   * @param callback 事件回调
+   */
+  public addEvent(event_name: string, callback: Function) {
+    if (!callback) return;
+    if (this.m_events.has(event_name)) return;
+    this.m_events.set(event_name, callback);
+    events.on(event_name, callback, this);
+  }
+
+  /**
+   * 删除事件
+   * @param event_name 事件名称
+   */
+  public delEvent(event_name: string) {
+    if (!this.m_events.has(event_name)) return;
+    events.off(event_name, this.m_events.get(event_name), this);
+    this.m_events.delete(event_name);
+  }
+
+  /**
+   * 删除全部事件
+   */
+  public delAllEvents() {
+    this.m_events.clear();
+    events.targetOff(this);
   }
 
   public onEnter(): void {}
