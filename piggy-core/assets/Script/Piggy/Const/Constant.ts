@@ -15,6 +15,73 @@
  */
 namespace constants {
   /**
+   * UI事件类型
+   */
+  export const UI_EVENT_TYPE = {
+    Touchable: [
+      "touchstart",
+      "touchout",
+      "touchmove",
+      "touchmove_in",
+      "touchmove_out",
+      "touchend",
+      "touchcancel"
+    ],
+    "cc.ScrollView": [
+      "scroll-to-top",
+      "scroll-to-bottom",
+      "scroll-to-left",
+      "scroll-to-right",
+      "scrolling",
+      "bounce-bottom",
+      "bounce-left",
+      "bounce-right",
+      "bounce-top",
+      "scroll-ended",
+      "touch-up",
+      "scroll-ended-with-threshold",
+      "scroll-began"
+    ],
+    "cc.Button": ["click"],
+    "cc.PageView": ["page-turning"],
+    "cc.Toggle": ["toggle"],
+    "cc.Slider": ["slide"],
+    "cc.EditBox": [
+      "editing-did-began",
+      "editing-did-ended",
+      "text-changed",
+      "editing-return"
+    ],
+    "cc.WebView": ["loading", "loading", "error"],
+    "cc.VideoPlayer": [
+      "meta-loaded",
+      "ready-to-play",
+      "clicked",
+      "playing",
+      "completed",
+      "stopped",
+      "paused"
+    ],
+    LayerBase: ["layer-open", "layer-close"]
+  };
+
+  /**
+   * UI事件类型名称
+   */
+  export enum UI_EVENT_TYPE_NAME {
+    "Touchable" = 0,
+    "cc.ScrollView",
+    "cc.Button",
+    "cc.PageView",
+    "cc.Toggle",
+    "cc.Slider",
+    "cc.EditBox",
+    "cc.WebView",
+    "cc.VideoPlayer",
+    "LayerBase"
+  }
+
+  /**
    * 默认版本号
    * @summary 结构说明：
    * 主版本号.次版本号.补丁版本号
@@ -69,6 +136,7 @@ namespace constants {
     ON_AUTO_SAVE_USER_DATA: "on_auto_save_user_data",
     ON_PAUSE_GAME_TIMER: "on_pause_game_timer",
     ON_RESUME_GAME_TIMER: "on_resume_game_timer",
+    ON_DISPATCH_UI_EVENT: "on_dispatch_ui_event",
     //user custom
     ON_ENTER_MAIN_UI: "on_enter_main_ui",
     ON_PICK_MAIN_MENU: "on_pick_main_menu",
