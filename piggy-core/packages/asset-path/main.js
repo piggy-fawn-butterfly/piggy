@@ -49,9 +49,17 @@ module.exports = {
     walk_dir(root_path);
 
     var enums = "";
-    for (let key of Object.keys(resources)) {
+    var keys = Object.keys(resources);
+    var iter_num = 0,
+      max_num = keys.length;
+    for (let key of keys) {
       let path = resources[key];
-      enums += `  "${key}" = "${path}",\n`;
+      ++iter_num;
+      if (iter_num === max_num) {
+        enums += `  "${key}" = "${path}"\n`;
+      } else {
+        enums += `  "${key}" = "${path}",\n`;
+      }
     }
     var content =
       "/**\n" +
@@ -69,7 +77,7 @@ module.exports = {
       " *             ╨━━━┻━━━┗┛┗┛━━┗┛┗┛━━━┻━━━╨\n" +
       " * ```\n" +
       " */\n" +
-      "export enum assets { \n" +
+      "export enum assets {\n" +
       enums +
       "}\n";
     Editor.assetdb.saveExists(
