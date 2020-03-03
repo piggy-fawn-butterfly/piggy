@@ -1,7 +1,7 @@
-import { events } from "../Events";
-import { cocos } from "../../Utils/Cocos";
-import { canvasAdapter } from "./CanvasAdapter";
 import { constants } from "../../Const/Constant";
+import { cocos } from "../../Utils/Cocos";
+import { events } from "../Events";
+import { canvasAdapter } from "./CanvasAdapter";
 
 const { ccclass, property, disallowMultiple, requireComponent } = cc._decorator;
 
@@ -20,6 +20,7 @@ class UIEvent {
 
 /**
  * @file LayerBase
+ * @class
  * @description UI层基类
  * @author DoooReyn <jl88744653@gmail.com>
  * @license MIT
@@ -40,6 +41,12 @@ abstract class LayerBase extends cc.Component {
   public static readonly EVENT_TYPE_LAYER_OPEN: string = "layer-open";
   public static readonly EVENT_TYPE_LAYER_CLOSE: string = "layer-close";
   private m_events: Map<string, Function> = new Map();
+
+  @property({ displayName: "挂载背景" })
+  p_mount_background: boolean = false;
+
+  @property({ displayName: "微调层级", type: cc.Integer, min: 0 })
+  p_local_z: number = 0;
 
   @property({ displayName: "UI事件", type: [UIEvent], readonly: true })
   p_ui_events: UIEvent[] = [];
