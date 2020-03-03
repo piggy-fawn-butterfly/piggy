@@ -20,7 +20,7 @@ const { ccclass, property, disallowMultiple } = cc._decorator;
  */
 @ccclass
 @disallowMultiple
-abstract class Touchable extends cc.Component {
+class Touchable extends cc.Component {
   private _down_in_callback: Function = null;
   private _down_out_callback: Function = null;
   private _up_in_callback: Function = null;
@@ -29,8 +29,8 @@ abstract class Touchable extends cc.Component {
   private _move_out_callback: Function = null;
   private _move_callback: Function = null;
 
-  @property({ displayName: "初始开启" })
-  p_default_open: boolean = false;
+  @property({ displayName: "默认开启" })
+  p_default_open: boolean = true;
 
   /**
    * 第一次加载
