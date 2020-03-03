@@ -418,9 +418,9 @@ abstract class App extends cc.Component {
   /**
    * 请求全屏
    */
-  public enterFullScreen() {
+  public enterFullScreen(element: Element) {
     cc.screen["requestFullScreen"](
-      cc.game.container,
+      element || cc.game.container,
       this.onEnterFullScreenOK.bind(this),
       this.onEnterFullScreenFailed.bind(this)
     );
@@ -450,9 +450,9 @@ abstract class App extends cc.Component {
   /**
    * 退出全屏
    */
-  public exitFullScreen() {
+  public exitFullScreen(element: Element) {
     cc.screen["exitFullScreen"](
-      cc.game.container,
+      element || cc.game.container,
       this.onExitFullScreen.bind(this)
     );
   }
