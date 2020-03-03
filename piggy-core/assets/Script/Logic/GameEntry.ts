@@ -4,6 +4,8 @@ import { res } from "../Piggy/Core/Res";
 import { sound } from "../Piggy/Core/Sound";
 import { app } from "../Piggy/Core/Component/App";
 import { layers } from "../Piggy/Core/Component/Layers";
+import { constants } from "../Piggy/Const/Constant";
+import { events } from "../Piggy/Core/Events";
 
 const { ccclass } = cc._decorator;
 
@@ -26,8 +28,50 @@ const { ccclass } = cc._decorator;
  */
 @ccclass
 class GameEntry extends app {
+  /**
+   * 开始游戏
+   */
   public async onStart(): Promise<void> {
     await this.loadRes();
+  }
+
+  /**
+   * 注册事件
+   */
+  registerEventListener() {
+    super.registerEventListener();
+    events.on(
+      constants.EVENT_NAME.ON_DISPATCH_UI_EVENT,
+      this._onListenUIEvent,
+      this
+    );
+  }
+
+  /**
+   * 注销事件
+   */
+  unregisterEventListener() {
+    events.off(
+      constants.EVENT_NAME.ON_DISPATCH_UI_EVENT,
+      this._onListenUIEvent,
+      this
+    );
+    super.unregisterEventListener();
+  }
+
+  /**
+   * 监听UI事件
+   * @param event UI事件
+   */
+  private _onListenUIEvent(event: cc.Event.EventCustom) {
+    let data = event.getUserData();
+    if (data.type === "click") {
+      if (data.com.name.indexOf("LoginBtn") > -1) {
+        this.enterFullScreen();
+      } else if (data.com.name.indexOf("LogoutBtn") > -1) {
+        this.exitFullScreen();
+      }
+    }
   }
 
   /**
