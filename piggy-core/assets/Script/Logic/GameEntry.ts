@@ -1,10 +1,9 @@
 import { assets } from "../Piggy/Const/Assets";
-import { app } from "../Piggy/Core/Component/App";
-import { layers } from "../Piggy/Core/Component/Layers";
 import { logger } from "../Piggy/Core/Logger";
-import { pool } from "../Piggy/Core/Pool";
 import { res } from "../Piggy/Core/Res";
 import { sound } from "../Piggy/Core/Sound";
+import { app } from "../Piggy/Core/Component/App";
+import { layers } from "../Piggy/Core/Component/Layers";
 
 const { ccclass } = cc._decorator;
 

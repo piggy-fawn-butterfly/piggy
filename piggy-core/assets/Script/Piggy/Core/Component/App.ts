@@ -13,13 +13,7 @@ import { tick } from "../Tick";
 import { timers } from "../Timers";
 import { userdata } from "../Userdata";
 
-const {
-  ccclass,
-  property,
-  playOnFocus,
-  disallowMultiple,
-  requireComponent
-} = cc._decorator;
+const { ccclass, property, disallowMultiple, requireComponent } = cc._decorator;
 
 /**
  * @file App
