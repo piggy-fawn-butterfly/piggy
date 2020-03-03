@@ -1,8 +1,8 @@
-import { events } from "../Events";
-import { cocos } from "../../Utils/Cocos";
 import { constants } from "../../Const/Constant";
+import { cocos } from "../../Utils/Cocos";
+import { events } from "../Events";
 
-const { ccclass, requireComponent } = cc._decorator;
+const { ccclass, requireComponent, disallowMultiple } = cc._decorator;
 
 /**
  * @file CanvasAdapter
@@ -25,6 +25,7 @@ const { ccclass, requireComponent } = cc._decorator;
  * ```
  */
 @ccclass
+@disallowMultiple
 @requireComponent(cc.Widget)
 class CanvasAdapter extends cc.Component {
   /**
@@ -45,16 +46,16 @@ class CanvasAdapter extends cc.Component {
   /**
    * 准备适配
    */
-  private adapt(): void {
+  public adapt(): void {
     this.scheduleOnce(() => {
-      this.doAdapt();
+      this._doAdapt();
     }, 0);
   }
 
   /**
    * 执行适配
    */
-  public doAdapt(): void {
+  private _doAdapt(): void {
     let widget = this.node.getComponent(cc.Widget);
     widget.alignMode = cc.Widget.AlignMode.ONCE;
 
