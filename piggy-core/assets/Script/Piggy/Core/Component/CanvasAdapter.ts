@@ -53,6 +53,16 @@ class CanvasAdapter extends cc.Component {
   }
 
   /**
+   * 全方位对齐到Canvas
+   */
+  public adaptToCanvas() {
+    let widget = this.node.getComponent(cc.Widget);
+    widget.top = widget.bottom = widget.left = widget.right = 0;
+    widget.isAlignTop = widget.isAlignBottom = widget.isAlignRight = widget.isAlignLeft = true;
+    this.adapt();
+  }
+
+  /**
    * 执行适配
    */
   private _doAdapt(): void {
