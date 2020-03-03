@@ -3,6 +3,8 @@ import { canvasAdapter } from "./CanvasAdapter";
 import { res } from "../Res";
 import { logger } from "../Logger";
 import { cocos } from "../../Utils/Cocos";
+import { enums } from "../../Const/Declare/Enums";
+import { assets } from "../../Const/Assets";
 
 /**
  * 固定节点名称
@@ -15,10 +17,7 @@ const NODE_NAME = Object.freeze({
 
 /**
  * @file Layers
- * @description UI层管理器: **约定**
- * - 层名称以 `Layer` 结尾
- * - 层必须挂载基类 `LayerBase`
- * - 层以 `预制体 Prefab` 的形式存在
+ * @description UI层管理器
  * @author DoooReyn <jl88744653@gmail.com>
  * @license MIT
  * @identifier
@@ -37,6 +36,22 @@ class Layers {
   private m_root: cc.Node = null;
 
   /**
+   * 是否有效的视图资源路径
+   * @param path 视图资源路径
+   * @description
+   * - 层必须以 `预制体 Prefab` 的形式存在
+   * - 层资源路径必须以 `Prefab` 开头， 以 `Layer` 结尾
+   * - 层必须挂载基类 `LayerBase`
+   */
+  private _isValidPath(path: string): boolean {
+    return (
+      path.startsWith("Prefab") &&
+      path.endsWith("Layer") &&
+      res.rawType(path) === "cc.Prefab"
+    );
+  }
+
+  /**
    * 隐藏构造器
    * - 监听场景加载完成事件，场景加载完成后初始化UI根节点
    */
@@ -52,6 +67,7 @@ class Layers {
   private _init() {
     //添加根节点
     let canvas = cc.find(NODE_NAME.CANVAS);
+    if (!canvas) return;
     let root = cc.find(NODE_NAME.ROOT, canvas);
     cc.find(NODE_NAME.CAMERA, canvas).zIndex = -1;
     this.m_root = root || new cc.Node(NODE_NAME.ROOT);
@@ -74,7 +90,7 @@ class Layers {
    * @param path 资源路径
    */
   public async open(path: string): Promise<void> {
-    if (!path.endsWith("Layer")) return;
+    if (!this._isValidPath(path)) return;
     res.use(path).then(node => {
       if (!node) return;
       let layer: layerBase = node.getComponent(layerBase);
@@ -96,7 +112,7 @@ class Layers {
    * @param path 资源路径
    */
   public close(path: string) {
-    if (!path.endsWith("Layer")) return;
+    if (!this._isValidPath(path)) return;
     if (this.m_stack_layers.has(path)) {
       this.m_stack_layers.get(path).removeFromParent(true);
       this._reorder();
@@ -105,9 +121,61 @@ class Layers {
   }
 
   /**
+   * 关闭全部层
+   */
+  public closeAll() {}
+
+  /**
    * 重排渲染层级
    */
-  private _reorder() {}
+  private _reorder() {
+    this._reorderBasic();
+    this._reorderDock();
+    this._reorderBackground();
+  }
+
+  /**
+   * 为所有视图重新排布层级
+   * @param path
+   */
+  private _reorderBasic() {
+    this.m_stack_layers.forEach((node: cc.Node) => {
+      node.zIndex = node.getComponent(layerBase).getPredefinedZOrder();
+    });
+  }
+
+  /**
+   * 为Dock视图重新排布层级
+   * @param path
+   */
+  private _reorderDock() {
+    this.m_stack_layers.forEach((node: cc.Node) => {
+      let layer = node.getComponent(layerBase);
+      if (layer && layer.p_layer_type === enums.E_Layer_Type.Dock) {
+        node.zIndex += layer.p_dock_type;
+      }
+    });
+  }
+
+  /**
+   * 为背景视图重新排布层级
+   * @summary 注意事项
+   * - 要求对象视图必须开启`挂载背景`属性
+   * - 要求对象视图必须处于`激活状态`
+   * @param path
+   */
+  private _reorderBackground() {
+    let layer = this.m_stack_layers.get(assets.Prefab_BackgroundLayer);
+    if (!layer) return;
+    let target_z_order = 0;
+    this.m_stack_layers.forEach((node: cc.Node) => {
+      let layer = node.getComponent(layerBase);
+      if (layer.p_mount_background && node.active) {
+        target_z_order = Math.max(node.zIndex, 0);
+      }
+    });
+    layer.zIndex = target_z_order - 1;
+  }
 
   /**
    * 输出视图数据
