@@ -43,25 +43,22 @@
       },
       {
         "__id__": 132
-      },
-      {
-        "__id__": 135
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 139
+        "__id__": 136
       },
       {
-        "__id__": 140
+        "__id__": 137
       },
       {
-        "__id__": 141
+        "__id__": 138
       }
     ],
     "_prefab": {
-      "__id__": 154
+      "__id__": 150
     },
     "_opacity": 255,
     "_color": {
@@ -5017,103 +5014,6 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "VideoPlayer",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 1
-    },
-    "_children": [],
-    "_active": true,
-    "_components": [
-      {
-        "__id__": 133
-      }
-    ],
-    "_prefab": {
-      "__id__": 134
-    },
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 428,
-      "height": 240
-    },
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_trs": {
-      "__type__": "TypedArray",
-      "ctor": "Float64Array",
-      "array": [
-        386.777,
-        206.15,
-        0,
-        0,
-        0,
-        0,
-        1,
-        1,
-        1,
-        1
-      ]
-    },
-    "_eulerAngles": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.VideoPlayer",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 132
-    },
-    "_enabled": true,
-    "_resourceType": 1,
-    "_remoteURL": "",
-    "_clip": {
-      "__uuid__": "2be36297-9abb-4fee-8049-9ed5e271da8a"
-    },
-    "_volume": 1,
-    "_mute": false,
-    "_isFullscreen": false,
-    "_N$isFullscreen": false,
-    "_stayOnBottom": false,
-    "videoPlayerEvent": [],
-    "_N$keepAspectRatio": true,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 1
-    },
-    "asset": {
-      "__uuid__": "a493f6f7-7626-4bb9-b2a4-3da3a5a04ae0"
-    },
-    "fileId": "c1/f+9/0hC36cjg2FvMIoJ",
-    "sync": false
-  },
-  {
-    "__type__": "cc.Node",
     "_name": "Touch",
     "_objFlags": 0,
     "_parent": {
@@ -5123,14 +5023,14 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 136
+        "__id__": 133
       },
       {
-        "__id__": 137
+        "__id__": 134
       }
     ],
     "_prefab": {
-      "__id__": 138
+      "__id__": 135
     },
     "_opacity": 255,
     "_color": {
@@ -5184,7 +5084,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 135
+      "__id__": 132
     },
     "_enabled": true,
     "_materials": [
@@ -5216,7 +5116,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 135
+      "__id__": 132
     },
     "_enabled": true,
     "p_default_open": true,
@@ -5284,6 +5184,15 @@
     "p_local_z": 0,
     "p_ui_events": [
       {
+        "__id__": 139
+      },
+      {
+        "__id__": 140
+      },
+      {
+        "__id__": 141
+      },
+      {
         "__id__": 142
       },
       {
@@ -5306,18 +5215,6 @@
       },
       {
         "__id__": 149
-      },
-      {
-        "__id__": 150
-      },
-      {
-        "__id__": 151
-      },
-      {
-        "__id__": 152
-      },
-      {
-        "__id__": 153
       }
     ],
     "_id": ""
@@ -5396,13 +5293,6 @@
     "__type__": "ui_event",
     "node": {
       "__id__": 132
-    },
-    "type": 8
-  },
-  {
-    "__type__": "ui_event",
-    "node": {
-      "__id__": 135
     },
     "type": 0
   },
