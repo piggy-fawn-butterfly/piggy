@@ -1,14 +1,14 @@
-import { i18n } from "./i18n";
-import { events } from "./Events";
-import { logger } from "./Logger";
-import { app } from "./Component/App";
-import { cocos } from "../Utils/Cocos";
-import { unreadable } from "./Unreadable";
-import { objects } from "../Utils/Objects";
-import { strings } from "../Utils/Strings";
 import { constants } from "../Const/Constant";
 import { enums } from "../Const/Declare/Enums";
 import { interfaces } from "../Const/Declare/Interfaces";
+import { cocos } from "../Utils/Cocos";
+import { objects } from "../Utils/Objects";
+import { strings } from "../Utils/Strings";
+import { app } from "./Component/App";
+import { events } from "./Events";
+import { i18n } from "./i18n";
+import { logger } from "./Logger";
+import { unreadable } from "./Unreadable";
 
 /**
  * 原始数据
@@ -157,11 +157,11 @@ namespace storage {
    * @param name 存储键
    */
   export function get(name: string): string {
+    let com = cocos.findComponent("Canvas", app);
+    if (!com) return;
     let val = cc.sys.localStorage.getItem(name);
     if (!!val && typeof val === "string") {
-      return cocos.findComponent("Canvas", app).isRelease()
-        ? unreadable.decode(val)
-        : val;
+      return com.isRelease() ? unreadable.decode(val) : val;
     }
     return val;
   }
@@ -172,9 +172,9 @@ namespace storage {
    * @param val 存储字符串
    */
   export function set(name: string, val: string) {
-    val = cocos.findComponent("Canvas", app).isRelease()
-      ? unreadable.encode(val)
-      : val;
+    let com = cocos.findComponent("Canvas", app);
+    if (!com) return;
+    val = com.isRelease() ? unreadable.encode(val) : val;
     cc.sys.localStorage.setItem(name, val);
   }
 }
