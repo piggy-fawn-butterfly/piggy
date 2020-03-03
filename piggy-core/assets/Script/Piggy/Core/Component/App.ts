@@ -13,6 +13,7 @@ import { tick } from "../Tick";
 import { timers } from "../Timers";
 import { userdata } from "../Userdata";
 
+cc.macro.ENABLE_TRANSPARENT_CANVAS = true;
 const { ccclass, property, disallowMultiple, requireComponent } = cc._decorator;
 
 /**
@@ -273,7 +274,7 @@ abstract class App extends cc.Component {
    */
   onDealWithAppReset(): Promise<void> {
     return new Promise(async resolve => {
-      // uistack.closeAll();
+      // layers.closeAll();
       this.unregisterEventListener();
       userdata.save();
       tick.reset();
@@ -379,6 +380,7 @@ abstract class App extends cc.Component {
       return this.unschedule(this.refreshFrameSize);
     }
     cc.view.off(ON_CANVAS_RESIZE, this.onCanvasResize, this);
+    events.targetOff(this);
   }
 
   /**
@@ -411,6 +413,48 @@ abstract class App extends cc.Component {
     this.m_exit_at = Date.now();
     this.m_app_fsm.transitTo(states.app.transition.pause);
     logger.info(i18n.I.text(i18n.K.app_exited));
+  }
+
+  /**
+   * 请求全屏
+   */
+  public enterFullScreen() {
+    cc.screen["requestFullScreen"](
+      cc.game.container,
+      this.onEnterFullScreenOK.bind(this),
+      this.onEnterFullScreenFailed.bind(this)
+    );
+  }
+
+  /**
+   * 进入全屏成功回调
+   */
+  onEnterFullScreenOK(e: any) {
+    logger.info("onEnterFullScreenOK:", e);
+  }
+
+  /**
+   * 进入全屏失败回调
+   */
+  onEnterFullScreenFailed(e: any) {
+    logger.info("onEnterFullScreenFailed:", e);
+  }
+
+  /**
+   * 退出全屏回调
+   */
+  onExitFullScreen(e: any) {
+    logger.info("onExitFullScreen:", e);
+  }
+
+  /**
+   * 退出全屏
+   */
+  public exitFullScreen() {
+    cc.screen["exitFullScreen"](
+      cc.game.container,
+      this.onExitFullScreen.bind(this)
+    );
   }
 }
 
