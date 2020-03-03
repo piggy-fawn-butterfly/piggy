@@ -1,4 +1,5 @@
 import { constants } from "../../Const/Constant";
+import { enums } from "../../Const/Declare/Enums";
 import { cocos } from "../../Utils/Cocos";
 import { events } from "../Events";
 import { canvasAdapter } from "./CanvasAdapter";
@@ -41,6 +42,18 @@ abstract class LayerBase extends cc.Component {
   public static readonly EVENT_TYPE_LAYER_OPEN: string = "layer-open";
   public static readonly EVENT_TYPE_LAYER_CLOSE: string = "layer-close";
   private m_events: Map<string, Function> = new Map();
+
+  @property({ displayName: "视图类型", type: cc.Enum(enums.E_Layer_Type) })
+  p_layer_type: enums.E_Layer_Type = enums.E_Layer_Type.Screen;
+
+  @property({
+    displayName: "指定Dock挂载视图",
+    type: cc.Enum(enums.E_Layer_Type),
+    visible() {
+      return this.p_layer_type === enums.E_Layer_Type.Dock;
+    }
+  })
+  p_dock_type: enums.E_Layer_Type = enums.E_Layer_Type.Background;
 
   @property({ displayName: "挂载背景" })
   p_mount_background: boolean = false;
@@ -226,6 +239,13 @@ abstract class LayerBase extends cc.Component {
   public delAllEvents() {
     this.m_events.clear();
     events.targetOff(this);
+  }
+
+  /**
+   * 获得预定义的渲染层级
+   */
+  getPredefinedZOrder(): number {
+    return this.p_layer_type + this.p_local_z;
   }
 
   public onEnter(): void {}
