@@ -1,24 +1,23 @@
-import { res } from "../Res";
-import { tick } from "../Tick";
-import { i18n } from "../i18n";
-import { sound } from "../Sound";
-import { logger } from "../Logger";
-import { events } from "../Events";
-import { timers } from "../Timers";
-import { userdata } from "../Userdata";
-import { machines } from "../Machines";
-import { states } from "../../Const/States";
-import { strings } from "../../Utils/Strings";
-import { fsm } from "../FiniteStateMachine";
 import { constants } from "../../Const/Constant";
 import { enums } from "../../Const/Declare/Enums";
+import { states } from "../../Const/States";
+import { strings } from "../../Utils/Strings";
+import { events } from "../Events";
+import { fsm } from "../FiniteStateMachine";
+import { i18n } from "../i18n";
+import { logger } from "../Logger";
+import { machines } from "../Machines";
+import { res } from "../Res";
+import { sound } from "../Sound";
+import { tick } from "../Tick";
+import { timers } from "../Timers";
+import { userdata } from "../Userdata";
 
 const {
   ccclass,
   property,
   playOnFocus,
   disallowMultiple,
-  executeInEditMode,
   requireComponent
 } = cc._decorator;
 
@@ -39,9 +38,7 @@ const {
  * ```
  */
 @ccclass
-@playOnFocus
 @disallowMultiple
-@executeInEditMode
 @requireComponent(cc.Canvas)
 abstract class App extends cc.Component {
   //----------------------组件属性----------------------
@@ -49,15 +46,6 @@ abstract class App extends cc.Component {
   resetInEditor() {
     this.resetEditor();
     this._p_version_string = constants.VERSION_STRING;
-  }
-  onFocusInEditor() {
-    this.resetEditor();
-  }
-  onLostFocusInEditor() {
-    this.resetEditor();
-  }
-  onRestore() {
-    this.resetEditor();
   }
 
   /**
