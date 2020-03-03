@@ -17,7 +17,7 @@ namespace constants {
   /**
    * UI事件类型
    */
-  export const UI_EVENT_TYPE = {
+  export const UI_EVENT_TYPE = Object.freeze({
     Touchable: [
       "touchstart",
       "touchout",
@@ -63,7 +63,7 @@ namespace constants {
       "paused"
     ],
     LayerBase: ["layer-open", "layer-close"]
-  };
+  });
 
   /**
    * UI事件类型名称
@@ -119,7 +119,7 @@ namespace constants {
   /**
    * 事件名称
    */
-  export const EVENT_NAME = {
+  export const EVENT_NAME = Object.freeze({
     //system
     ON_BUTTON_CLICKED: "click",
     ON_CANVAS_RESIZE: "canvas-resize",
@@ -142,12 +142,12 @@ namespace constants {
     ON_PICK_MAIN_MENU: "on_pick_main_menu",
     ON_PICK_BUILDING_ITEM: "on_pick_building_item",
     ON_ADD_BUILDING_TO_MAP: "on_add_building_to_map"
-  };
+  });
 
   /**
    * 资源类型
    */
-  export const RES_TYPE_FALLBACKS = [
+  export const RES_TYPE_FALLBACKS = Object.freeze([
     "cc.Model",
     "cc.Mesh",
     "cc.Material",
@@ -172,7 +172,7 @@ namespace constants {
     "cc.JsonAsset",
     "cc.TextAsset",
     "cc.Asset"
-  ];
+  ]);
   export const RES_TYPE_LIST = new Set(RES_TYPE_FALLBACKS);
 
   /**
