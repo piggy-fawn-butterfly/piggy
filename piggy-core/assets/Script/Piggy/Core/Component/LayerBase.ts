@@ -3,6 +3,7 @@ import { enums } from "../../Const/Declare/Enums";
 import { cocos } from "../../Utils/Cocos";
 import { events } from "../Events";
 import { canvasAdapter } from "./CanvasAdapter";
+import { touchable } from "./Touchable";
 
 const { ccclass, property, disallowMultiple, requireComponent } = cc._decorator;
 
@@ -37,12 +38,15 @@ class UIEvent {
  */
 @ccclass
 @disallowMultiple
+@requireComponent(touchable)
 @requireComponent(canvasAdapter)
 abstract class LayerBase extends cc.Component {
+  //-------------组件成员---------------
   public static readonly EVENT_TYPE_LAYER_OPEN: string = "layer-open";
   public static readonly EVENT_TYPE_LAYER_CLOSE: string = "layer-close";
   private m_events: Map<string, Function> = new Map();
 
+  //-------------组件属性---------------
   @property({ displayName: "视图类型", type: cc.Enum(enums.E_Layer_Type) })
   p_layer_type: enums.E_Layer_Type = enums.E_Layer_Type.Screen;
 
@@ -55,14 +59,35 @@ abstract class LayerBase extends cc.Component {
   })
   p_dock_type: enums.E_Layer_Type = enums.E_Layer_Type.Background;
 
-  @property({ displayName: "挂载背景" })
+  @property({
+    displayName: "挂载背景",
+    visible() {
+      return this.p_layer_type !== enums.E_Layer_Type.Background;
+    }
+  })
   p_mount_background: boolean = false;
 
-  @property({ displayName: "微调层级", type: cc.Integer, min: 0 })
+  @property({
+    displayName: "微调层级",
+    type: cc.Integer,
+    min: 0,
+    visible() {
+      return this.p_layer_type !== enums.E_Layer_Type.Background;
+    }
+  })
   p_local_z: number = 0;
 
-  @property({ displayName: "UI事件", type: [UIEvent], readonly: true })
+  @property({
+    displayName: "UI事件",
+    type: [UIEvent],
+    readonly: true,
+    visible() {
+      return this.p_layer_type !== enums.E_Layer_Type.Background;
+    }
+  })
   p_ui_events: UIEvent[] = [];
+
+  //-------------组件方法---------------
 
   /**
    * 首次加载
@@ -198,7 +223,7 @@ abstract class LayerBase extends cc.Component {
    * 获得UI事件类型
    * @param type UI事件枚举
    */
-  public getUiEventType(type: constants.UI_EVENT_TYPE_NAME) {
+  public getUiEventType(type: constants.UI_EVENT_TYPE_NAME): string {
     return constants.UI_EVENT_TYPE_NAME[type];
   }
 
