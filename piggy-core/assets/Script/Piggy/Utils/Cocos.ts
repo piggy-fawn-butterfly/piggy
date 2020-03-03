@@ -238,7 +238,7 @@ namespace cocos {
    * @param enabled 是否开启抗锯齿
    * @since 2.3.0
    */
-  export function enableAntiAtlases(tex: cc.Texture2D, enabled: boolean) {
+  export function enableAntiAtlas(tex: cc.Texture2D, enabled: boolean) {
     const { LINEAR, NEAREST } = cc.Texture2D.Filter;
     let filter = enabled ? LINEAR : NEAREST;
     tex && tex.setFilters(filter, filter);
