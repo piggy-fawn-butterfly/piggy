@@ -13,7 +13,11 @@ import { tick } from "../Tick";
 import { timers } from "../Timers";
 import { userdata } from "../Userdata";
 
+/**
+ * App启动前需要进行的配置
+ */
 cc.macro.ENABLE_TRANSPARENT_CANVAS = true;
+
 const { ccclass, property, disallowMultiple, requireComponent } = cc._decorator;
 
 /**
@@ -136,6 +140,9 @@ abstract class App extends cc.Component {
    * App首次加载
    */
   onLoad() {
+    //全局禁用抗锯齿，部分需要的开启抗锯齿
+    cc.view.enableAntiAlias(false);
+
     //设置语言
     i18n.I.language = this._p_i18n_language;
 
@@ -416,9 +423,17 @@ abstract class App extends cc.Component {
   }
 
   /**
+   * 是否已经全屏
+   */
+  public isFullScreen() {
+    return cc.screen["fullScreen"]();
+  }
+
+  /**
    * 请求全屏
    */
-  public enterFullScreen(element: Element) {
+  public enterFullScreen(element?: Element) {
+    if (cc.screen["fullScreen"]()) return;
     cc.screen["requestFullScreen"](
       element || cc.game.container,
       this.onEnterFullScreenOK.bind(this),
@@ -450,7 +465,8 @@ abstract class App extends cc.Component {
   /**
    * 退出全屏
    */
-  public exitFullScreen(element: Element) {
+  public exitFullScreen(element?: Element) {
+    if (!cc.screen["fullScreen"]()) return;
     cc.screen["exitFullScreen"](
       element || cc.game.container,
       this.onExitFullScreen.bind(this)
