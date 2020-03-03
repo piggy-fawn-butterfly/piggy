@@ -63,7 +63,9 @@ namespace cocos {
     component: { prototype: T },
     referenceNode?: cc.Node
   ) {
-    return cc.find(path, referenceNode).getComponent(component);
+    let node = cc.find(path, referenceNode);
+    if (!node) return null;
+    return node.getComponent(component);
   }
 
   /**
@@ -77,7 +79,21 @@ namespace cocos {
     component: string,
     referenceNode?: cc.Node
   ): cc.Component {
-    return cc.find(path, referenceNode).getComponent(component);
+    let node = cc.find(path, referenceNode);
+    if (!node) return null;
+    return node.getComponent(component);
+  }
+
+  /**
+   * 自动获取目标节点上的组件，如果找不到组件则自动挂载组件到目标节点
+   * @param node 目标节点
+   * @param component 目标组件
+   */
+  export function getOrAddComponent<T extends cc.Component>(
+    node: cc.Node,
+    component: { new (): T }
+  ) {
+    return node.getComponent(component) || node.addComponent(component);
   }
 
   /**
