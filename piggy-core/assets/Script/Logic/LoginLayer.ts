@@ -1,4 +1,5 @@
 import { layerBase } from "../Piggy/Core/Component/LayerBase";
+import { constants } from "../Piggy/Const/Constant";
 
 const { ccclass } = cc._decorator;
 
@@ -22,6 +23,14 @@ const { ccclass } = cc._decorator;
 class LoginLayer extends layerBase {
   onLoad() {
     super.onLoad();
+
+    this.addEvent(
+      constants.EVENT_NAME.ON_DISPATCH_UI_EVENT,
+      (event: cc.Event.EventCustom) => {
+        let data = event.getUserData();
+        console.log(data.type);
+      }
+    );
   }
 
   onEnter() {}
