@@ -1,9 +1,10 @@
-import { res } from "../Piggy/Core/Res";
-import { pool } from "../Piggy/Core/Pool";
-import { sound } from "../Piggy/Core/Sound";
-import { logger } from "../Piggy/Core/Logger";
 import { assets } from "../Piggy/Const/Assets";
 import { app } from "../Piggy/Core/Component/App";
+import { layers } from "../Piggy/Core/Component/Layers";
+import { logger } from "../Piggy/Core/Logger";
+import { pool } from "../Piggy/Core/Pool";
+import { res } from "../Piggy/Core/Res";
+import { sound } from "../Piggy/Core/Sound";
 
 const { ccclass } = cc._decorator;
 
@@ -32,6 +33,15 @@ class GameEntry extends app {
 
   /**
    * 加载资源
+   * @description
+   * 1. 加载对象池
+   * @example
+   * ```js
+   * await pool.load([[assets.Prefab_Testcase_CanvasAdapter, 1]]);
+   * await pool.get(assets.Prefab_Testcase_CanvasAdapter).then(node => {
+   *   // node && this.node.addChild(node);
+   * });
+   * ```
    */
   async loadRes() {
     //你可以在一开始就加载所有需要用到的资源
@@ -47,11 +57,8 @@ class GameEntry extends app {
       logger.info(`资源加载进度:${((c / t) * 100) | 0}%`);
     });
 
-    //加载对象池
-    await pool.load([[assets.Prefab_LoginLayer, 1]]);
-    await pool.get(assets.Prefab_LoginLayer).then(node => {
-      node && this.node.addChild(node);
-    });
+    //打开登录页
+    await layers.open(assets.Prefab_LoginLayer);
 
     //播放背景音乐
     await sound.play(assets.Sound_LoopingBgm1, true, true);
