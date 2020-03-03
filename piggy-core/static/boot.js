@@ -150,7 +150,8 @@
 
   function getEmulatedScreenSize() {
     var w, h;
-    var idx = optsDevice.value;
+    var idx = optsDevice.value || "0";
+    optsDevice.value = idx;
     if (idx === "0") {
       w = designWidth;
       h = designHeight;
