@@ -92,6 +92,7 @@ class GameEntry extends app {
     //你也可以在运行时加载指定的资源
     //这意味着注释下面这段代码并不会影响代码的运行
     let resources = [
+      assets.Prefab_BackgroundLayer,
       assets.Prefab_LoginLayer,
       assets.Sound_LoopingBgm1,
       assets.Sound_ButtonClick
@@ -101,6 +102,7 @@ class GameEntry extends app {
     });
 
     //打开登录页
+    await layers.open(assets.Prefab_BackgroundLayer);
     await layers.open(assets.Prefab_LoginLayer);
 
     //播放背景音乐
