@@ -1,8 +1,11 @@
-import { res } from "../Res";
+import { layerBase } from "./LayerBase";
 import { canvasAdapter } from "./CanvasAdapter";
+import { res } from "../Res";
+import { logger } from "../Logger";
+import { cocos } from "../../Utils/Cocos";
 
 /**
- * 节点名称
+ * 固定节点名称
  */
 const NODE_NAME = Object.freeze({
   CANVAS: "Canvas",
@@ -10,16 +13,12 @@ const NODE_NAME = Object.freeze({
   CAMERA: "Main Camera"
 });
 
-function _getComponent<T extends cc.Component>(
-  node: cc.Node,
-  com: { new (): T }
-) {
-  return node.getComponent(com) || node.addComponent(com);
-}
-
 /**
  * @file Layers
- * @description UI层管理器
+ * @description UI层管理器: **约定**
+ * - 层名称以 `Layer` 结尾
+ * - 层必须挂载基类 `LayerBase`
+ * - 层以 `预制体 Prefab` 的形式存在
  * @author DoooReyn <jl88744653@gmail.com>
  * @license MIT
  * @identifier
@@ -64,7 +63,7 @@ class Layers {
     this.m_root.zIndex = -1;
 
     //添加 CanvasAdapter 组件
-    _getComponent(this.m_root, canvasAdapter).adaptToCanvas();
+    cocos.getOrAddComponent(this.m_root, canvasAdapter).adaptToCanvas();
 
     //取消监听场景加载完成事件
     cc.director.off(cc.Director.EVENT_AFTER_SCENE_LAUNCH, this._init, this);
@@ -75,16 +74,46 @@ class Layers {
    * @param path 资源路径
    */
   public async open(path: string): Promise<void> {
+    if (!path.endsWith("Layer")) return;
     res.use(path).then(node => {
       if (!node) return;
+      let layer: layerBase = node.getComponent(layerBase);
+      if (!layer) {
+        res.unUse(path);
+        res.unload(path);
+        return;
+      }
       this.m_stack_layers.set(path, node);
-      this.m_root.addChild(node);
+      this.m_root.addChild(node, layer.getPredefinedZOrder());
       node.setPosition(0, 0);
+      this._reorder();
+      this.dump();
     });
   }
 
+  /**
+   * 关闭层
+   * @param path 资源路径
+   */
   public close(path: string) {
-    this.m_root;
+    if (!path.endsWith("Layer")) return;
+    if (this.m_stack_layers.has(path)) {
+      this.m_stack_layers.get(path).removeFromParent(true);
+      this._reorder();
+      this.dump();
+    }
+  }
+
+  /**
+   * 重排渲染层级
+   */
+  private _reorder() {}
+
+  /**
+   * 输出视图数据
+   */
+  public dump() {
+    logger.info("@视图数据", this.m_root.children);
   }
 }
 
