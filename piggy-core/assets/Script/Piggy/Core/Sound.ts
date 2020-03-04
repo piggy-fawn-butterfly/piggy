@@ -106,7 +106,7 @@ class Sound {
    * @param music 是否音乐类型
    */
   public async play(path: string, loop: boolean, music?: boolean) {
-    if (!path || res.rawType(path) !== "cc.AudioClip") {
+    if (!path || !res.isTypeOf(path, "cc.AudioClip")) {
       return logger.error(i18n.I.text(i18n.K.audio_resource_no_found), path);
     }
     await res.load([path]).then(async () => {
