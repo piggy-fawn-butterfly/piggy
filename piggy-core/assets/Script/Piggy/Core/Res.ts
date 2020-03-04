@@ -5,6 +5,8 @@ import { strings } from "../Utils/Strings";
 import { i18n } from "./i18n";
 import { logger } from "./Logger";
 import { events } from "./Events";
+import { layers } from "./Component/Layers";
+import { assets } from "../Const/Assets";
 
 /**
  * @file Res
@@ -97,18 +99,18 @@ class Res {
    * @param event_name 事件名称
    * @param current 当前进度
    * @param total 全部进度
-   * @param assets 资源路径
+   * @param asset 资源路径
    */
-  private _dispatch(
+  public dispatch(
     event_name: string,
     current: number,
     total: number,
-    assets: string | string[]
+    asset: string | string[]
   ) {
     events.dispatch(event_name, {
       current: current,
       total: total,
-      asset: assets
+      asset: asset
     });
   }
 
@@ -162,14 +164,14 @@ class Res {
             assets.push(path);
             self.m_cache_asset.set(path, { asset: asset, use: 0 });
             onprogress(current, total, asset);
-            self._dispatch(ON_RESOURCES_LOADING, current, total, path);
+            self.dispatch(ON_RESOURCES_LOADING, current, total, path);
           }
           next();
         } else {
           let text = i18n.I.text(i18n.K.how_many_resources_loaded);
           let info = strings.render(text, { num: assets.length });
           assets.length > 0 && logger.info(info, ...assets);
-          self._dispatch(ON_RESOURCES_LOADED, current, total, assets);
+          self.dispatch(ON_RESOURCES_LOADED, current, total, assets);
           resolve(assets);
         }
       }
@@ -435,6 +437,4 @@ class Res {
   }
 }
 
-const res = Res.s_instance;
-
-export { res };
+export const res = Res.s_instance;
