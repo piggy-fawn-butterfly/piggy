@@ -2,10 +2,28 @@ import { constants } from "../../Const/Constant";
 import { enums } from "../../Const/Declare/Enums";
 import { cocos } from "../../Utils/Cocos";
 import { events } from "../Events";
-import { canvasAdapter } from "./CanvasAdapter";
 import { touchable } from "./Touchable";
+import { canvasAdapter } from "./CanvasAdapter";
 
 const { ccclass, property, disallowMultiple, requireComponent } = cc._decorator;
+
+/**
+ * 忽略挂载背景的视图
+ */
+const EXCLUDE_MOUNT_BACKGROUND = [
+  enums.E_Layer_Type.Background,
+  enums.E_Layer_Type.Loading,
+  enums.E_Layer_Type.MsgText,
+  enums.E_Layer_Type.Debug
+];
+
+/**
+ * 判断目标视图是否忽略挂载背景的视图
+ * @param type 视图类型
+ */
+function _isExcludeMountBackground(type: enums.E_Layer_Type) {
+  return EXCLUDE_MOUNT_BACKGROUND.indexOf(type) > -1;
+}
 
 /**
  * @class
@@ -62,7 +80,7 @@ abstract class LayerBase extends cc.Component {
   @property({
     displayName: "挂载背景",
     visible() {
-      return this.p_layer_type !== enums.E_Layer_Type.Background;
+      return !_isExcludeMountBackground(this.p_layer_type);
     }
   })
   p_mount_background: boolean = false;
@@ -72,7 +90,7 @@ abstract class LayerBase extends cc.Component {
     type: cc.Integer,
     min: 0,
     visible() {
-      return this.p_layer_type !== enums.E_Layer_Type.Background;
+      return !_isExcludeMountBackground(this.p_layer_type);
     }
   })
   p_local_z: number = 0;
@@ -82,7 +100,7 @@ abstract class LayerBase extends cc.Component {
     type: [UIEvent],
     readonly: true,
     visible() {
-      return this.p_layer_type !== enums.E_Layer_Type.Background;
+      return !_isExcludeMountBackground(this.p_layer_type);
     }
   })
   p_ui_events: UIEvent[] = [];
