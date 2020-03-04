@@ -4,5 +4,6 @@
     "Marsaglia's",
     "Prando",
     "promisify"
-  ]
+  ],
+  "workbench.editor.limit.value": 20
 }
