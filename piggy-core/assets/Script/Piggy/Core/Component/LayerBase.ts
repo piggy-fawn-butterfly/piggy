@@ -57,7 +57,6 @@ class UIEvent {
 @ccclass
 @disallowMultiple
 @requireComponent(touchable)
-@requireComponent(canvasAdapter)
 abstract class LayerBase extends cc.Component {
   //-------------组件成员---------------
   public static readonly EVENT_TYPE_LAYER_OPEN: string = "layer-open";
@@ -104,6 +103,11 @@ abstract class LayerBase extends cc.Component {
     }
   })
   p_ui_events: UIEvent[] = [];
+
+  resetInEditor() {
+    cocos.getOrAddComponent(this.node, touchable);
+    cocos.getOrAddComponent(this.node, canvasAdapter);
+  }
 
   //-------------组件方法---------------
 
