@@ -6,6 +6,7 @@ import { app } from "../Piggy/Core/Component/App";
 import { layers } from "../Piggy/Core/Component/Layers";
 import { constants } from "../Piggy/Const/Constant";
 import { events } from "../Piggy/Core/Events";
+import { pool } from "../Piggy/Core/Pool";
 
 const { ccclass } = cc._decorator;
 
@@ -80,8 +81,8 @@ class GameEntry extends app {
    * 1. 加载对象池
    * @example
    * ```js
-   * await pool.load([[assets.Prefab_Testcase_CanvasAdapter, 1]]);
-   * await pool.get(assets.Prefab_Testcase_CanvasAdapter).then(node => {
+   * await pool.load([[assets.Prefab_CanvasAdapterLayer, 1]]);
+   * await pool.get(assets.Prefab_CanvasAdapterLayer).then(node => {
    *   // node && this.node.addChild(node);
    * });
    * ```
@@ -92,7 +93,6 @@ class GameEntry extends app {
     //你也可以在运行时加载指定的资源
     //这意味着注释下面这段代码并不会影响代码的运行
     let resources = [
-      assets.Prefab_BackgroundLayer,
       assets.Prefab_LoginLayer,
       assets.Sound_LoopingBgm1,
       assets.Sound_ButtonClick
@@ -102,7 +102,7 @@ class GameEntry extends app {
     });
 
     //打开登录页
-    await layers.open(assets.Prefab_BackgroundLayer);
+    await layers.open(assets.Prefab_CanvasAdapterLayer);
     await layers.open(assets.Prefab_LoginLayer);
 
     //播放背景音乐

@@ -12,6 +12,8 @@ import { sound } from "../Sound";
 import { tick } from "../Tick";
 import { timers } from "../Timers";
 import { userdata } from "../Userdata";
+import { assets } from "../../Const/Assets";
+import { layers } from "./Layers";
 
 /**
  * App启动前需要进行的配置
@@ -204,7 +206,7 @@ abstract class App extends cc.Component {
    * 游戏初始化
    */
   async onAppInit(): Promise<void> {
-    return new Promise(resolve => {
+    return new Promise(async resolve => {
       //锁定Canvas适配方案
       this.lockCanvasAdapter();
 
@@ -216,6 +218,14 @@ abstract class App extends cc.Component {
       //注册事件
       this.registerEventListener();
 
+      //预先挂载背景层、资源加载层和调试信息层
+      let resources = [
+        assets.Prefab_BackgroundLayer,
+        assets.Prefab_LoadingLayer
+      ];
+      await res.load(resources);
+      await layers.open(assets.Prefab_BackgroundLayer);
+      await layers.open(assets.Prefab_LoadingLayer);
       resolve();
     });
   }
