@@ -15,8 +15,9 @@
  */
 export enum assets {
   "Prefab_BackgroundLayer" = "Prefab/BackgroundLayer",
+  "Prefab_CanvasAdapterLayer" = "Prefab/CanvasAdapterLayer",
+  "Prefab_LoadingLayer" = "Prefab/LoadingLayer",
   "Prefab_LoginLayer" = "Prefab/LoginLayer",
-  "Prefab_Testcase_CanvasAdapter" = "Prefab/Testcase_CanvasAdapter",
   "Sound_ButtonClick" = "Sound/ButtonClick",
   "Sound_LoopingBgm1" = "Sound/LoopingBgm1",
   "Video_Default" = "Video/Default"
