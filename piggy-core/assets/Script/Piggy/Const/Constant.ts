@@ -137,6 +137,8 @@ namespace constants {
     ON_PAUSE_GAME_TIMER: "on_pause_game_timer",
     ON_RESUME_GAME_TIMER: "on_resume_game_timer",
     ON_DISPATCH_UI_EVENT: "on_dispatch_ui_event",
+    ON_RESOURCES_LOADING: "on_resources_loading",
+    ON_RESOURCES_LOADED: "on_resources_loaded",
     //user custom
     ON_ENTER_MAIN_UI: "on_enter_main_ui",
     ON_PICK_MAIN_MENU: "on_pick_main_menu",
