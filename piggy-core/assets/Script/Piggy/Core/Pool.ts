@@ -1,7 +1,7 @@
 import { res } from "./Res";
-import { logger } from "./Logger";
 import { i18n } from "./i18n";
-// import { UIStack } from "./UIStack";
+import { logger } from "./Logger";
+import { constants } from "../Const/Constant";
 
 /**
  * @file Pool
@@ -49,16 +49,22 @@ class Pool {
       }
     }
 
+    const { ON_RESOURCES_LOADING, ON_RESOURCES_LOADED } = constants.EVENT_NAME;
     let current = 0;
     let total = pipeline.length;
     for (let path of pipeline) {
-      let item = await res.use(path);
-      this.m_pools.get(path).put(item);
-      onprogress && onprogress(++current, total, item);
-      // uiStack.onProgress(current, total, name);
+      setTimeout(async () => {
+        ++current;
+        let item = await res.use(path);
+        this.m_pools.get(path).put(item);
+        onprogress && onprogress(current, total, item);
+        res.dispatch(ON_RESOURCES_LOADING, current, total, path);
+        if (current >= total) {
+          oncomplete && oncomplete(pools);
+          res.dispatch(ON_RESOURCES_LOADED, current, total, pipeline);
+        }
+      }, 0);
     }
-    oncomplete && oncomplete(pools);
-    // uiStack.onComplete();
   }
 
   /**
