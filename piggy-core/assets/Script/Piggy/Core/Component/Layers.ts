@@ -16,15 +16,15 @@ const NODE_NAME = Object.freeze({
 });
 
 /**
- * 关闭时忽略的层
+ * 关闭时忽略的视图
  */
 const EXCLUDING_LAYERS = Object.freeze([
   assets.Prefab_BackgroundLayer.toString()
 ]);
 
 /**
- * 判断指定层是否忽略关闭
- * @param path 层路径
+ * 判断指定视图是否忽略关闭
+ * @param path 视图路径
  */
 function _isExcludeLayer(path: string) {
   return EXCLUDING_LAYERS.indexOf(path) > -1;
@@ -32,7 +32,7 @@ function _isExcludeLayer(path: string) {
 
 /**
  * @file Layers
- * @description UI层管理器
+ * @description 视图管理器
  * @author DoooReyn <jl88744653@gmail.com>
  * @license MIT
  * @identifier
@@ -54,9 +54,9 @@ class Layers {
    * 是否有效的视图资源路径
    * @param path 视图资源路径
    * @description
-   * - 层必须以 `预制体 Prefab` 的形式存在
-   * - 层资源路径必须以 `Prefab` 开头， 以 `Layer` 结尾
-   * - 层必须挂载基类 `LayerBase`
+   * - 视图必须以 `预制体 Prefab` 的形式存在
+   * - 视图资源路径必须以 `Prefab` 开头， 以 `Layer` 结尾
+   * - 视图必须挂载基类 `LayerBase`
    */
   private _isValidPath(path: string): boolean {
     return (
@@ -101,7 +101,7 @@ class Layers {
   }
 
   /**
-   * 指定层是否已打开
+   * 指定视图是否已打开
    * @param path 资源路径
    */
   public has(path: string): boolean {
@@ -117,16 +117,16 @@ class Layers {
   }
 
   /**
-   * 打开层
+   * 打开视图
    * @param path 资源路径
    */
   public async open(path: string) {
     return new Promise(resolve => {
       if (this.has(path)) {
-        return resolve(logger.warn("视图已打开", path));
+        return resolve(logger.warn("打开视图失败，视图已打开", path));
       }
       if (!this._isValidPath(path)) {
-        return resolve(logger.warn("视图路径无效", path));
+        return resolve(logger.warn("打开视图失败，视图路径无效", path));
       }
       res.use(path).then(node => {
         let layer: layerBase = node.getComponent(layerBase);
@@ -141,13 +141,14 @@ class Layers {
   }
 
   /**
-   * 关闭层
+   * 关闭视图
    * @param path 资源路径
    */
   public close(path: string) {
-    if (!this._isValidPath(path)) return;
+    if (!this._isValidPath(path))
+      return logger.warn("关闭视图失败，视图路径无效", path);
     let node = this.m_stack_layers.get(path);
-    if (!node) return;
+    if (!node) return logger.warn("关闭视图失败，视图不存在", path);
     this.m_stack_layers.delete(path);
     node.destroy();
     res.unUseThenUnload(path);
@@ -156,16 +157,19 @@ class Layers {
   }
 
   /**
-   * 关闭全部层
+   * 关闭全部视图
+   * @param useExclude 关闭时是否忽略特定视图
    */
-  public closeAll() {
+  public closeAll(useExclude: boolean = true) {
     this.m_stack_layers.forEach((node, path) => {
-      if (!_isExcludeLayer(path)) {
+      if (useExclude ? !_isExcludeLayer(path) : true) {
         this.m_stack_layers.delete(path);
         node.destroy();
         res.unUseThenUnload(path);
       }
     });
+    this._reorder();
+    this.dump();
   }
 
   /**
