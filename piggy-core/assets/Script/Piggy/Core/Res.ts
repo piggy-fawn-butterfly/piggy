@@ -4,6 +4,7 @@ import { arrays } from "../Utils/Arrays";
 import { strings } from "../Utils/Strings";
 import { i18n } from "./i18n";
 import { logger } from "./Logger";
+import { events } from "./Events";
 
 /**
  * @file Res
@@ -70,8 +71,45 @@ class Res {
    * 获得资源原始类型
    * @param path 资源路径
    */
-  public rawType(path: string): string {
+  public typeOf(path: string): string {
     return this.m_path_type.get(path);
+  }
+
+  /**
+   * 判断资源是否存在资源列表中
+   * @param path 资源路径
+   */
+  public contains(path: string): boolean {
+    return this.m_path_type.has(path);
+  }
+
+  /**
+   * 判断资源路径是否与资源类型对应
+   * @param path 资源路径
+   * @param type 资源类型
+   */
+  public isTypeOf(path: string, type: string): boolean {
+    return this.typeOf(path) === type;
+  }
+
+  /**
+   * 分发加载进度和加载完成事件
+   * @param event_name 事件名称
+   * @param current 当前进度
+   * @param total 全部进度
+   * @param assets 资源路径
+   */
+  private _dispatch(
+    event_name: string,
+    current: number,
+    total: number,
+    assets: string | string[]
+  ) {
+    events.dispatch(event_name, {
+      current: current,
+      total: total,
+      asset: assets
+    });
   }
 
   /**
@@ -83,32 +121,37 @@ class Res {
     paths: string | Array<string>,
     onprogress?: interfaces.I_Progress_Callback
   ): Promise<any> {
-    typeof paths === "string" && (paths = [paths]);
+    paths = Array.prototype.concat(paths);
     onprogress = onprogress || function() {};
     return new Promise(resolve => {
       //筛选出有效的资源条目：不存在的、重复的、已经加载的将被过滤
       let valid_paths: Map<string, typeof cc.Asset> = new Map();
       for (let path of paths) {
-        if (!this.m_cache_asset.has(path)) {
-          let type = this.rawType(path);
-          if (!type) continue;
-          let classname = type.split(".").pop();
-          if (!classname) continue;
-          cc[classname] &&
-            !valid_paths.has(path) &&
-            valid_paths.set(path, cc[classname]);
-        }
+        if (this.m_cache_asset.has(path)) continue;
+        if (valid_paths.has(path)) continue;
+        let type = this.typeOf(path);
+        if (!type) continue;
+        let cls = type.split(".").pop();
+        if (!cls) continue;
+        if (!cc[cls]) continue;
+        if (
+          cc.js.getClassName(cc[cls]) === "cc.Asset" ||
+          cc.js.getClassName(cc.js.getSuper(cc[cls])) === "cc.Asset"
+        )
+          valid_paths.set(path, cc[cls]);
       }
 
       //异步加载资源
+      const {
+        ON_RESOURCES_LOADING,
+        ON_RESOURCES_LOADED
+      } = constants.EVENT_NAME;
       let path_arr = arrays.fromMap(valid_paths);
-      let total: number = path_arr.length;
+      let total = path_arr.length;
       if (total === 0) return resolve(null);
-      let self: Res = this;
-      let assets: Array<string> = [];
-      let current: number = 0;
-      // let label = `res.load [${total}]`;
-      // console.time(label);
+      let self: Res = this,
+        assets: string[] = [],
+        current: number = 0;
       async function next() {
         let path_info = path_arr.shift();
         if (path_info) {
@@ -117,19 +160,17 @@ class Res {
           let asset = await self._loadRes(path, type);
           if (asset) {
             assets.push(path);
-            asset["_url"] = path;
             self.m_cache_asset.set(path, { asset: asset, use: 0 });
+            onprogress(current, total, asset);
+            self._dispatch(ON_RESOURCES_LOADING, current, total, path);
           }
-          onprogress(current, total, asset);
-          // UIStack.I.onProgress(current, total, path);
           next();
         } else {
           let text = i18n.I.text(i18n.K.how_many_resources_loaded);
           let info = strings.render(text, { num: assets.length });
           assets.length > 0 && logger.info(info, ...assets);
+          self._dispatch(ON_RESOURCES_LOADED, current, total, assets);
           resolve(assets);
-          // UIStack.I.onComplete();
-          // console.timeEnd(label);
         }
       }
       next();
@@ -173,6 +214,7 @@ class Res {
     //释放处理后的资源
     cc.loader.release(deps);
     this.m_cache_asset.delete(path);
+    this.dump();
   }
 
   /**
