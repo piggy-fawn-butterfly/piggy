@@ -2,9 +2,9 @@ import { layerBase } from "./LayerBase";
 import { canvasAdapter } from "./CanvasAdapter";
 import { res } from "../Res";
 import { logger } from "../Logger";
-import { cocos } from "../../Utils/Cocos";
-import { enums } from "../../Const/Declare/Enums";
 import { assets } from "../../Const/Assets";
+import { enums } from "../../Const/Declare/Enums";
+import { cocos } from "../../Utils/Cocos";
 
 /**
  * 固定节点名称
@@ -173,27 +173,33 @@ class Layers {
   }
 
   /**
-   * 隐藏视图节点
+   * 显示/隐藏视图节点
+   * @param path 视图节点
+   * @param show 显示/隐藏
    */
-  hide(path: string) {
+  private _show(path: string, show: boolean) {
     let node = this.get(path);
-    if (node && node.isValid && node.active === true) {
-      node.active = false;
+    if (node && node.isValid && node.active === !show) {
+      node.active = show;
       node.getComponent(layerBase).p_mount_background &&
         this._reorderBackground();
     }
   }
 
   /**
+   * 隐藏视图节点
+   * @param path 资源路径
+   */
+  hide(path: string) {
+    this._show(path, false);
+  }
+
+  /**
    * 显示视图节点
+   * @param path 资源路径
    */
   show(path: string) {
-    let node = this.get(path);
-    if (node && node.isValid && node.active === false) {
-      node.active = true;
-      node.getComponent(layerBase).p_mount_background &&
-        this._reorderBackground();
-    }
+    this._show(path, true);
   }
 
   /**
