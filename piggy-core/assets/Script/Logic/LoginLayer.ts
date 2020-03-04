@@ -28,7 +28,6 @@ class LoginLayer extends layerBase {
       constants.EVENT_NAME.ON_DISPATCH_UI_EVENT,
       (event: cc.Event.EventCustom) => {
         let data = event.getUserData();
-        console.log(data.type);
       }
     );
   }
