@@ -16,6 +16,21 @@ const NODE_NAME = Object.freeze({
 });
 
 /**
+ * 关闭时忽略的层
+ */
+const EXCLUDING_LAYERS = Object.freeze([
+  assets.Prefab_BackgroundLayer.toString()
+]);
+
+/**
+ * 判断指定层是否忽略关闭
+ * @param path 层路径
+ */
+function _isExcludeLayer(path: string) {
+  return EXCLUDING_LAYERS.indexOf(path) > -1;
+}
+
+/**
  * @file Layers
  * @description UI层管理器
  * @author DoooReyn <jl88744653@gmail.com>
@@ -47,7 +62,7 @@ class Layers {
     return (
       path.startsWith("Prefab") &&
       path.endsWith("Layer") &&
-      res.rawType(path) === "cc.Prefab"
+      res.isTypeOf(path, "cc.Prefab")
     );
   }
 
@@ -86,24 +101,42 @@ class Layers {
   }
 
   /**
+   * 指定层是否已打开
+   * @param path 资源路径
+   */
+  public has(path: string): boolean {
+    return this.m_stack_layers.has(path);
+  }
+
+  /**
+   * 获得资源路径对应的视图节点
+   * @param path 资源路径
+   */
+  public get(path: string): cc.Node {
+    return this.m_stack_layers.get(path);
+  }
+
+  /**
    * 打开层
    * @param path 资源路径
    */
-  public async open(path: string): Promise<void> {
-    if (!this._isValidPath(path)) return;
-    res.use(path).then(node => {
-      if (!node) return;
-      let layer: layerBase = node.getComponent(layerBase);
-      if (!layer) {
-        res.unUse(path);
-        res.unload(path);
-        return;
+  public async open(path: string) {
+    return new Promise(resolve => {
+      if (this.has(path)) {
+        return resolve(logger.warn("视图已打开", path));
       }
-      this.m_stack_layers.set(path, node);
-      this.m_root.addChild(node, layer.getPredefinedZOrder());
-      node.setPosition(0, 0);
-      this._reorder();
-      this.dump();
+      if (!this._isValidPath(path)) {
+        return resolve(logger.warn("视图路径无效", path));
+      }
+      res.use(path).then(node => {
+        let layer: layerBase = node.getComponent(layerBase);
+        this.m_stack_layers.set(path, node);
+        this.m_root.addChild(node, layer.getPredefinedZOrder());
+        node.setPosition(0, 0);
+        this._reorder();
+        this.dump();
+        resolve();
+      });
     });
   }
 
@@ -113,17 +146,51 @@ class Layers {
    */
   public close(path: string) {
     if (!this._isValidPath(path)) return;
-    if (this.m_stack_layers.has(path)) {
-      this.m_stack_layers.get(path).removeFromParent(true);
-      this._reorder();
-      this.dump();
-    }
+    let node = this.m_stack_layers.get(path);
+    if (!node) return;
+    this.m_stack_layers.delete(path);
+    node.destroy();
+    res.unUseThenUnload(path);
+    this._reorder();
+    this.dump();
   }
 
   /**
    * 关闭全部层
    */
-  public closeAll() {}
+  public closeAll() {
+    this.m_stack_layers.forEach((node, path) => {
+      if (!_isExcludeLayer(path)) {
+        this.m_stack_layers.delete(path);
+        node.destroy();
+        res.unUseThenUnload(path);
+      }
+    });
+  }
+
+  /**
+   * 隐藏视图节点
+   */
+  hide(path: string) {
+    let node = this.get(path);
+    if (node && node.isValid && node.active === true) {
+      node.active = false;
+      node.getComponent(layerBase).p_mount_background &&
+        this._reorderBackground();
+    }
+  }
+
+  /**
+   * 显示视图节点
+   */
+  show(path: string) {
+    let node = this.get(path);
+    if (node && node.isValid && node.active === false) {
+      node.active = true;
+      node.getComponent(layerBase).p_mount_background &&
+        this._reorderBackground();
+    }
+  }
 
   /**
    * 重排渲染层级
@@ -170,7 +237,7 @@ class Layers {
     let target_z_order = 0;
     this.m_stack_layers.forEach((node: cc.Node) => {
       let layer = node.getComponent(layerBase);
-      if (layer.p_mount_background && node.active) {
+      if (layer.p_mount_background && node.isValid && node.active) {
         target_z_order = Math.max(node.zIndex, 0);
       }
     });
