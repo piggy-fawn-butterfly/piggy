@@ -291,7 +291,7 @@ abstract class App extends cc.Component {
    */
   onDealWithAppReset(): Promise<void> {
     return new Promise(async resolve => {
-      // layers.closeAll();
+      layers.closeAll();
       this.unregisterEventListener();
       userdata.save();
       tick.reset();
