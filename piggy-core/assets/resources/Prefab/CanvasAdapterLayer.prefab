@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Testcase_CanvasAdapter",
+    "_name": "CanvasAdapterLayer",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
