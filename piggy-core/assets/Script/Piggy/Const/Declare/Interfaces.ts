@@ -19,7 +19,7 @@ namespace interfaces {
    * @param alive 心跳包间隔
    * @param key 其他数据
    */
-  export interface I_Ws_Msg {
+  export interface I_Socket_Msg {
     alive: number;
     [key: string]: any;
   }
@@ -29,9 +29,9 @@ namespace interfaces {
    * @param type 消息类型
    * @param msg 消息携带数据
    */
-  export interface I_Ws_Data {
+  export interface I_Socket_Data {
     type: string;
-    msg: I_Ws_Msg;
+    msg: I_Socket_Msg;
   }
 
   /**

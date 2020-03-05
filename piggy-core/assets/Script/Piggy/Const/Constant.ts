@@ -133,6 +133,7 @@ namespace constants {
     ON_APP_SHOW: "game_on_show",
     ON_APP_HIDE: "game_on_hide",
     //internal
+    ON_SOCKET_KEEP_ALIVE: "socket_keep_alive",
     ON_LANGUAGE_CHANGED: "on_language_changed",
     ON_GAME_CHEATING: "on_game_cheating",
     ON_BG_TOUCH_DOWN: "on_bg_touch_down",

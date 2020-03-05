@@ -84,7 +84,7 @@ export class ws_socket {
    * 发送数据
    * @param data 数据
    */
-  public send(data: interfaces.I_Ws_Data) {
+  public send(data: interfaces.I_Socket_Data) {
     if (
       Object.prototype.hasOwnProperty.call(data, "type") &&
       Object.prototype.hasOwnProperty.call(data, "msg")
@@ -101,7 +101,10 @@ export class ws_socket {
     let now = Date.now();
     let diff = now - this.m_heart_beat_at;
     this.m_heart_beat_at = now;
-    this.send({ type: "keep-alive", msg: { alive: diff } });
+    this.send({
+      type: constants.EVENT_NAME.ON_SOCKET_KEEP_ALIVE,
+      msg: { alive: diff }
+    });
   }
 
   /**
