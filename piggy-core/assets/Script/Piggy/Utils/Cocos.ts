@@ -110,23 +110,25 @@ namespace cocos {
   }
 
   /**
-   * 获得组件路径
-   * @param component 组件
+   * 获得节点树路径
+   * @param node 目标节点
+   * @param referenceNode 参考节点
+   * @param outFullPath 是否输出完整路径
    */
   export function pathOfNode(
-    target: cc.Node,
-    root: cc.Node = null,
-    full: boolean = true
+    node: cc.Node,
+    referenceNode: cc.Node = null,
+    outFullPath: boolean = true
   ): string {
-    if (!root) root = cc.find("Canvas");
+    if (!referenceNode) referenceNode = cc.find("Canvas");
     let walk = (from: cc.Node, url: string[]) => {
       url.push(from.parent.name);
-      from.parent !== root && walk(from.parent, url);
+      from.parent !== referenceNode && walk(from.parent, url);
     };
     let path = [];
-    walk(target, path);
-    !full && path.pop();
-    path.unshift(target.name);
+    walk(node, path);
+    !outFullPath && path.pop();
+    path.unshift(node.name);
     return path.reverse().join("/");
   }
 
