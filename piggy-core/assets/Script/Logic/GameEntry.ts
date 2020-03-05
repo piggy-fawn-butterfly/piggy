@@ -7,6 +7,7 @@ import { layers } from "../Piggy/Core/Component/Layers";
 import { constants } from "../Piggy/Const/Constant";
 import { events } from "../Piggy/Core/Events";
 import { pool } from "../Piggy/Core/Pool";
+import { ws_socket } from "../Piggy/Core/Network/Network";
 
 const { ccclass } = cc._decorator;
 
@@ -34,6 +35,7 @@ class GameEntry extends app {
    */
   public async onStart(): Promise<void> {
     await this.loadRes();
+    ws_socket.getInstance().connect();
   }
 
   /**
