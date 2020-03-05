@@ -15,6 +15,26 @@
  */
 namespace interfaces {
   /**
+   * websocket 消息携带数据
+   * @param alive 心跳包间隔
+   * @param key 其他数据
+   */
+  export interface I_Ws_Msg {
+    alive: number;
+    [key: string]: any;
+  }
+
+  /**
+   * websocket 消息格式
+   * @param type 消息类型
+   * @param msg 消息携带数据
+   */
+  export interface I_Ws_Data {
+    type: string;
+    msg: I_Ws_Msg;
+  }
+
+  /**
    * 数字类型的存储值
    */
   export interface I_User_Value_Number {

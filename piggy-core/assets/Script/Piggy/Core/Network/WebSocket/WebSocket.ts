@@ -1,19 +1,8 @@
 import { events } from "../../Events";
 import { timer } from "../../Timer";
-
-/**
- * 测试服务器地址
- */
-const SERVER_FOR_TEST = "wss://echo.websocket.org";
-
-interface I_Message_Info {
-  alive: number;
-  [key: string]: any;
-}
-interface I_Data_Info {
-  type: string;
-  msg: I_Message_Info;
-}
+import { constants } from "../../../Const/Constant";
+import { interfaces } from "../../../Const/Declare/Interfaces";
+import { logger } from "../../Logger";
 
 /**
  * @file WebSocket
@@ -31,6 +20,9 @@ interface I_Data_Info {
  * ```
  */
 export class ws_socket {
+  /**
+   * 获取静态单例
+   */
   private static s_instance: ws_socket = null;
   public static getInstance(): ws_socket {
     return (ws_socket.s_instance = ws_socket.s_instance || new ws_socket());
@@ -56,7 +48,7 @@ export class ws_socket {
    * 连接到服务器
    * @param server 服务器地址
    */
-  public connect(server: string = SERVER_FOR_TEST) {
+  public connect(server: string = constants.SERVER_WEB_SOCKET_DEV) {
     if (this.m_socket) return;
     this.m_server_addr = server;
     this.m_socket = new WebSocket(this.m_server_addr);
@@ -76,26 +68,17 @@ export class ws_socket {
    */
   disconnect() {
     if (!this.m_socket) return;
-    this.m_heart_beat_timer.stop();
+    this._stopHeartBeat();
     this.m_socket.close();
-    delete this.m_heart_beat_timer;
     delete this.m_socket;
     this.m_socket = null;
-    this.m_heart_beat_timer = null;
-  }
-
-  /**
-   * 与服务器重新建立连接
-   */
-  public reconnect() {
-    // this.m_heart_flipped_timer.restart();
   }
 
   /**
    * 发送数据
    * @param data 数据
    */
-  public send(data: I_Data_Info) {
+  public send(data: interfaces.I_Ws_Data) {
     if (
       Object.prototype.hasOwnProperty.call(data, "type") &&
       Object.prototype.hasOwnProperty.call(data, "msg")
@@ -119,6 +102,7 @@ export class ws_socket {
    * 停止发送心跳包
    */
   private _stopHeartBeat() {
+    if (!this.m_heart_beat_timer) return;
     this.m_heart_beat_timer.stop();
     delete this.m_heart_beat_timer;
     this.m_heart_beat_timer = null;
@@ -144,7 +128,7 @@ export class ws_socket {
           console.log(type, msg);
           events.dispatch(type, msg);
         } catch (err) {
-          console.log(err);
+          logger.error("websocket message", err);
         }
       });
     }
@@ -154,7 +138,9 @@ export class ws_socket {
    * 连接错误
    * @param e 消息
    */
-  private _onerror(e: MessageEvent) {}
+  private _onerror(e: MessageEvent) {
+    logger.error("websocket error ", e);
+  }
 
   /**
    * 连接关闭
@@ -162,5 +148,6 @@ export class ws_socket {
    */
   private _onclose(e: MessageEvent) {
     this._stopHeartBeat();
+    logger.warn("websocket close", e);
   }
 }

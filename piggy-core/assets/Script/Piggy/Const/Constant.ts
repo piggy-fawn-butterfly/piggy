@@ -15,6 +15,12 @@
  */
 namespace constants {
   /**
+   * 测试服务器地址
+   */
+  export const SERVER_WEB_SOCKET_DEV = "wss://echo.websocket.org";
+  export const SERVER_IO_SOCKET_DEV = "wss://echo.websocket.org";
+
+  /**
    * UI事件类型
    */
   export const UI_EVENT_TYPE = Object.freeze({
