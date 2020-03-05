@@ -1,12 +1,10 @@
+import { i18n } from "./i18n";
+import { logger } from "./Logger";
+import { events } from "./Events";
 import { constants } from "../Const/Constant";
 import { interfaces } from "../Const/Declare/Interfaces";
 import { arrays } from "../Utils/Arrays";
 import { strings } from "../Utils/Strings";
-import { i18n } from "./i18n";
-import { logger } from "./Logger";
-import { events } from "./Events";
-import { layers } from "./Component/Layers";
-import { assets } from "../Const/Assets";
 
 /**
  * @file Res
@@ -49,6 +47,14 @@ class Res {
     logger.info(info, ...this.m_builtin_res);
     info = i18n.I.text(i18n.K.map_of_resources_path_and_type);
     logger.info(info, ...Array.from(this.m_path_type.entries()));
+  }
+
+  /**
+   * 资源路径的文件名称
+   * @param path
+   */
+  public basenameOf(path: string): string {
+    return cc.path.basename(path);
   }
 
   /**
