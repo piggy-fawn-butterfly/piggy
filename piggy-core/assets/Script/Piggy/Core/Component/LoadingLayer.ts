@@ -6,8 +6,8 @@ import { enums } from "../../Const/Declare/Enums";
 const { ccclass, property } = cc._decorator;
 
 /**
- * @file filename
- * @description description
+ * @file LoadingLayer
+ * @description 资源加载视图
  * @author DoooReyn <jl88744653@gmail.com>
  * @license MIT
  * @identifier
