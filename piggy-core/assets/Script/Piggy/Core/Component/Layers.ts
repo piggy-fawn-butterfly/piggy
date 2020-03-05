@@ -101,6 +101,30 @@ class Layers {
   }
 
   /**
+   * 获得视图组件的资源路径
+   * @param layer 视图组件
+   */
+  public pathOf(layer: layerBase | cc.Node): string {
+    let node = layer instanceof layerBase ? layer.node : layer;
+    for (let item of Array.from(this.m_stack_layers.entries())) {
+      if (item[1] === node) {
+        return item[0];
+      }
+    }
+    return null;
+  }
+
+  /**
+   * 获取视图
+   * @param path 资源路径
+   */
+  layerOf<T extends layerBase>(path: string): T {
+    let node = this.get(path);
+    if (!node) return null;
+    return node.getComponent(cc.path.basename(path));
+  }
+
+  /**
    * 指定视图是否已打开
    * @param path 资源路径
    */
