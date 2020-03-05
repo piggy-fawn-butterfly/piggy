@@ -101,20 +101,6 @@ class Layers {
   }
 
   /**
-   * 获得视图组件的资源路径
-   * @param layer 视图组件
-   */
-  public pathOf(layer: layerBase | cc.Node): string {
-    let node = layer instanceof layerBase ? layer.node : layer;
-    for (let item of Array.from(this.m_stack_layers.entries())) {
-      if (item[1] === node) {
-        return item[0];
-      }
-    }
-    return null;
-  }
-
-  /**
    * 获取视图
    * @param path 资源路径
    */
@@ -154,8 +140,9 @@ class Layers {
       }
       res.use(path).then(node => {
         let layer: layerBase = node.getComponent(layerBase);
+        layer.setAssetPath(path);
         this.m_stack_layers.set(path, node);
-        this.m_root.addChild(node, layer.getPredefinedZOrder());
+        this.m_root.addChild(node);
         node.setPosition(0, 0);
         this._reorder();
         this.dump();
