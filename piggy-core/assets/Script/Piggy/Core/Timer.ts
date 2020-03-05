@@ -48,6 +48,7 @@ class Timer {
 
   /**
    * 定时器构造器
+   * @description 默认间隔1秒，永不停止
    * @summary 构造时使用秒为单位，实际会转换成毫秒
    * @param tick_callback 定时器回调
    * @param call_interval 定时器调用间隔
@@ -56,9 +57,9 @@ class Timer {
    */
   constructor(
     tick_callback: Function,
-    call_interval: number,
-    stop_after: number,
-    call_after?: number,
+    call_interval: number = 1,
+    stop_after: number = 0,
+    call_after: number = 0,
     stop_callback?: Function
   ) {
     const { MAX_TIME, SEC_TO_MS } = constants;
