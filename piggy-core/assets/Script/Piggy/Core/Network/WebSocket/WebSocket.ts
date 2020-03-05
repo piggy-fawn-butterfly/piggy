@@ -27,6 +27,12 @@ export class ws_socket {
   public static getInstance(): ws_socket {
     return (ws_socket.s_instance = ws_socket.s_instance || new ws_socket());
   }
+
+  /**
+   * 隐藏构造器
+   */
+  private constructor() {}
+
   /**
    * 心跳包定时器
    */
