@@ -4,6 +4,7 @@ import { cocos } from "../../Utils/Cocos";
 import { events } from "../Events";
 import { touchable } from "./Touchable";
 import { canvasAdapter } from "./CanvasAdapter";
+import { layers } from "./Layers";
 
 const { ccclass, property, disallowMultiple, requireComponent } = cc._decorator;
 
@@ -62,6 +63,7 @@ abstract class LayerBase extends cc.Component {
   public static readonly EVENT_TYPE_LAYER_OPEN: string = "layer-open";
   public static readonly EVENT_TYPE_LAYER_CLOSE: string = "layer-close";
   private m_events: Map<string, Function> = new Map();
+  private m_asset_path: string = "";
 
   //-------------组件属性---------------
   @property({ displayName: "视图类型", type: cc.Enum(enums.E_Layer_Type) })
@@ -152,6 +154,21 @@ abstract class LayerBase extends cc.Component {
    */
   onDestroy() {
     this.onCleanUp();
+  }
+
+  /**
+   * 设置资源路径
+   * @param path 资源路径
+   */
+  public setAssetPath(path: string) {
+    this.m_asset_path = path;
+  }
+
+  /**
+   * 获得资源路径
+   */
+  public getAssetPath(): string {
+    return this.m_asset_path;
   }
 
   /**
@@ -293,6 +310,13 @@ abstract class LayerBase extends cc.Component {
    */
   getPredefinedZOrder(): number {
     return this.p_layer_type + this.p_local_z;
+  }
+
+  /**
+   * 视图关闭
+   */
+  public onClose() {
+    layers.close(this.m_asset_path);
   }
 
   public onEnter(): void {}
