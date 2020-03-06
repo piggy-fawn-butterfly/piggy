@@ -39,7 +39,7 @@ class Tick {
    * 计时器回调
    */
   private _tick() {
-    let timer = this.timer();
+    let timer = this._timer();
     if (!timer || !timer.isRunning()) return;
     let interval = constants.AUTO_SAVE_INTERVAL * constants.SEC_TO_MS;
     timer.elapse > 0 && timer.elapse % interval === 0 && this._autoSave();
@@ -60,7 +60,7 @@ class Tick {
   private _onPause() {
     if (!this.m_timer_id) return;
     ++this.m_tick_count;
-    this.timer().pause();
+    this._timer().pause();
   }
 
   /**
@@ -68,13 +68,13 @@ class Tick {
    */
   private _onResume() {
     if (!this.m_timer_id) return;
-    --this.m_tick_count <= 0 && this.timer().resume();
+    --this.m_tick_count <= 0 && this._timer().resume();
   }
 
   /**
    * 获取定时器实例
    */
-  public timer(): timer {
+  private _timer(): timer {
     return timers.get(this.m_timer_id);
   }
 
@@ -88,6 +88,22 @@ class Tick {
     events.on(constants.EVENT_NAME.ON_RESUME_GAME_TIMER, this._onResume, this);
     this.m_timer_id = timer.m_category;
     timer.start();
+  }
+
+  /**
+   * 中断计时
+   */
+  interrupt() {
+    if (this.m_timer_id) return;
+    this._timer().interrupt();
+  }
+
+  /**
+   * 恢复计时
+   */
+  public recover() {
+    if (this.m_timer_id) return;
+    this._timer().recover();
   }
 
   /**

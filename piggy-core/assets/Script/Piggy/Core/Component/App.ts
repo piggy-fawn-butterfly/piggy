@@ -321,7 +321,7 @@ abstract class App extends cc.Component {
     return new Promise(resolve => {
       userdata.save();
       sound.pause();
-      tick.timer().interrupt();
+      tick.interrupt();
       resolve();
     });
   }
@@ -332,7 +332,7 @@ abstract class App extends cc.Component {
   onDealWithAppResume(): Promise<void> {
     return new Promise(resolve => {
       sound.resume();
-      tick.timer().recover();
+      tick.recover();
       resolve();
     });
   }
