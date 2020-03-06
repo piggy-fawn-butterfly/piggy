@@ -148,6 +148,14 @@ namespace enums {
     "stop" = "stop",
     "resume" = "resume"
   }
+
+  /**
+   * HTTP Methods
+   */
+  export enum E_Http_Method {
+    Get = "GET",
+    Post = "POST"
+  }
 }
 
 export { enums };

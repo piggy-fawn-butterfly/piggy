@@ -40,4 +40,5 @@ export namespace ids {
   export const timer = new IdGenerator("timer");
   export const fsm = new IdGenerator("fsm");
   export const pool = new IdGenerator("pool");
+  export const http = new IdGenerator("http");
 }

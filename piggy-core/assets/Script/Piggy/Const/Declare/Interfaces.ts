@@ -35,6 +35,21 @@ namespace interfaces {
   }
 
   /**
+   * 简单对象
+   */
+  export interface I_Simple_Object {
+    [key: string]: any;
+  }
+
+  /**
+   * HTTP数据
+   */
+  export interface I_Http_Data {
+    type: string;
+    msg: I_Simple_Object;
+  }
+
+  /**
    * 数字类型的存储值
    */
   export interface I_User_Value_Number {

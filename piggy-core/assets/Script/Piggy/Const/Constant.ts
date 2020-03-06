@@ -15,6 +15,11 @@
  */
 namespace constants {
   /**
+   * Http请求超时时间
+   */
+  export const HTTP_REQUEST_TIMEOUT = 5000;
+
+  /**
    * 主动关闭WebSocket的关闭码
    */
   export const WEBSOCKET_SELF_CLOSE_CODE = 4001;
