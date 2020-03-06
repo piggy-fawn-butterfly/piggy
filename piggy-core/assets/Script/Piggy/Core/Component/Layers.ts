@@ -19,7 +19,8 @@ const NODE_NAME = Object.freeze({
  * 关闭时忽略的视图
  */
 const EXCLUDING_LAYERS = Object.freeze([
-  assets.Prefab_BackgroundLayer.toString()
+  assets.Prefab_BackgroundLayer.toString(),
+  assets.Prefab_LoadingLayer.toString()
 ]);
 
 /**
