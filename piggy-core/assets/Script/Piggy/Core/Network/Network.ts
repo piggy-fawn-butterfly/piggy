@@ -14,7 +14,6 @@
  * ```
  */
 import { http_client } from "./Http/HttpClient";
-import { io_socket } from "./WebSocket/SocketIO";
 import { ws_socket } from "./WebSocket/WebSocket";
 
-export { http_client, io_socket, ws_socket };
+export { http_client, ws_socket };
