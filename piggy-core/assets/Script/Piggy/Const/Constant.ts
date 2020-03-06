@@ -15,6 +15,26 @@
  */
 namespace constants {
   /**
+   * 主动关闭WebSocket的关闭码
+   */
+  export const WEBSOCKET_SELF_CLOSE_CODE = 4001;
+
+  /**
+   * 发送心跳包间隔
+   */
+  export const HEART_BEAT_INTERVAL = 30000;
+
+  /**
+   * 初次连接N秒后如果未连上则重连
+   */
+  export const RECONNECT_WHEN_CONNECTING = 5000;
+
+  /**
+   * 断开连接N秒后重连
+   */
+  export const RECONNECT_WHEN_DISCONNECT = 60000;
+
+  /**
    * 测试服务器地址
    */
   export const SERVER_WEB_SOCKET_DEV = "wss://echo.websocket.org";
