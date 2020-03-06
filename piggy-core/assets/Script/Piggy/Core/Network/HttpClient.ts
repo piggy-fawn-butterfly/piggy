@@ -1,6 +1,6 @@
 /**
- * @file Network
- * @description 网络模块
+ * @file HttpClient
+ * @description HTTP网络模块
  * @author DoooReyn <jl88744653@gmail.com>
  * @license MIT
  * @identifier
@@ -13,7 +13,7 @@
  *             ╨━━━┻━━━┗┛┗┛━━┗┛┗┛━━━┻━━━╨
  * ```
  */
-import { http_client } from "./Http/HttpClient";
-import { ws_socket } from "./WebSocket/WebSocket";
-
-export { http_client, ws_socket };
+export class httpClient {
+  public static s_instance: httpClient = new httpClient();
+  private constructor() {}
+}

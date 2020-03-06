@@ -1,7 +1,7 @@
-import { events } from "../../Events";
-import { constants } from "../../../Const/Constant";
-import { interfaces } from "../../../Const/Declare/Interfaces";
-import { logger } from "../../Logger";
+import { logger } from "../Logger";
+import { events } from "../Events";
+import { constants } from "../../Const/Constant";
+import { interfaces } from "../../Const/Declare/Interfaces";
 
 /**
  * @file WebSocket
@@ -18,13 +18,13 @@ import { logger } from "../../Logger";
  *             ╨━━━┻━━━┗┛┗┛━━┗┛┗┛━━━┻━━━╨
  * ```
  */
-export class ws_socket {
+export class webSocket {
   //---------------属性---------------
 
   /**
    * 静态单例
    */
-  private static s_instance: ws_socket = null;
+  private static s_instance: webSocket = null;
 
   /**
    * 心跳包定时器
@@ -66,8 +66,8 @@ export class ws_socket {
   /**
    * 获取静态单例
    */
-  public static getInstance(): ws_socket {
-    return (ws_socket.s_instance = ws_socket.s_instance || new ws_socket());
+  public static getInstance(): webSocket {
+    return (webSocket.s_instance = webSocket.s_instance || new webSocket());
   }
 
   /**
@@ -87,34 +87,6 @@ export class ws_socket {
 
     //开启重连机制
     this._resetReconnect(constants.RECONNECT_WHEN_CONNECTING);
-  }
-
-  /**
-   * WebSocket是否已关闭
-   */
-  public isClose(): boolean {
-    return this._isState(WebSocket.CLOSED);
-  }
-
-  /**
-   * WebSocket是否正在关闭
-   */
-  public isClosing(): boolean {
-    return this._isState(WebSocket.CLOSING);
-  }
-
-  /**
-   * WebSocket是否正在连接
-   */
-  public isConnecting(): boolean {
-    return this._isState(WebSocket.CONNECTING);
-  }
-
-  /**
-   * WebSocket是否已打开
-   */
-  public isOpen(): boolean {
-    return this._isState(WebSocket.OPEN);
   }
 
   /**
@@ -144,6 +116,34 @@ export class ws_socket {
     if (!this._isState(WebSocket.OPEN)) return this.connect();
     let msg = [JSON.stringify(data)];
     this.m_socket.send(new Blob(msg, { type: "application/json" }));
+  }
+
+  /**
+   * WebSocket是否已关闭
+   */
+  public isClose(): boolean {
+    return this._isState(WebSocket.CLOSED);
+  }
+
+  /**
+   * WebSocket是否正在关闭
+   */
+  public isClosing(): boolean {
+    return this._isState(WebSocket.CLOSING);
+  }
+
+  /**
+   * WebSocket是否正在连接
+   */
+  public isConnecting(): boolean {
+    return this._isState(WebSocket.CONNECTING);
+  }
+
+  /**
+   * WebSocket是否已打开
+   */
+  public isOpen(): boolean {
+    return this._isState(WebSocket.OPEN);
   }
 
   //---------------私有方法---------------
