@@ -141,13 +141,9 @@ export class ws_socket {
    * @param data 数据
    */
   public send(data: interfaces.I_Socket_Data) {
-    if (
-      Object.prototype.hasOwnProperty.call(data, "type") &&
-      Object.prototype.hasOwnProperty.call(data, "msg")
-    ) {
-      let msg = [JSON.stringify(data)];
-      this.m_socket.send(new Blob(msg, { type: "application/json" }));
-    }
+    if (!this._isState(WebSocket.OPEN)) return this.connect();
+    let msg = [JSON.stringify(data)];
+    this.m_socket.send(new Blob(msg, { type: "application/json" }));
   }
 
   //---------------私有方法---------------
