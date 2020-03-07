@@ -69,61 +69,48 @@ class Pool {
 
   /**
    * 卸载对象池
-   * @param prefab_name
+   * @param pool 对象池名称
    */
-  unload(prefab_name: string) {
-    if (this.m_pools.has(prefab_name)) {
-      this.clear(prefab_name);
-      res.unload(prefab_name);
-      this.m_pools.delete(prefab_name);
+  public unload(pool: string) {
+    if (this.m_pools.has(pool)) {
+      this.clear(pool);
+      res.unload(pool);
+      this.m_pools.delete(pool);
     }
   }
 
-  // /**
-  //  * 取出对象
-  //  * @param prefab_name
-  //  */
-  // async get(prefab_name: string): Promise<cc.Node> {
-  //   return new Promise(async (resolve, reject) => {
-  //     if (!this.m_pools.has(prefab_name)) {
-  //       reject(new Error(`对象池${prefab_name}不存在`));
-  //       resolve(null);
-  //     } else {
-  //       resolve(this.m_pools.get(prefab_name).get());
-  //     }
-  //   });
-  // }
-
-  get(pool: string) {
-    if (!this.m_pools.has(pool)) {
-      return Promise.reject(new Error("对象池不存在"));
-    }
-    return this.m_pools.get(pool).get();
+  /**
+   * 取出对象
+   * @param pool 对象池名称
+   */
+  public async get(pool: string): Promise<cc.Node> {
+    if (!this.m_pools.has(pool)) return null;
+    return await this.m_pools.get(pool).get();
   }
 
   /**
    * 存入对象
-   * @param prefab_name
+   * @param pool 对象池名称
    * @param node
    */
-  put(prefab_name: string, node: cc.Node) {
-    if (!this.m_pools.has(prefab_name)) return;
-    this.m_pools.get(prefab_name).put(node);
+  public put(pool: string, node: cc.Node) {
+    if (!this.m_pools.has(pool)) return;
+    this.m_pools.get(pool).put(node);
   }
 
   /**
    * 清理对象池
-   * @param prefab_name
+   * @param pool 对象池名称
    */
-  clear(prefab_name: string) {
-    if (!this.m_pools.has(prefab_name)) return;
-    this.m_pools.get(prefab_name).clear();
+  public clear(pool: string) {
+    if (!this.m_pools.has(pool)) return;
+    this.m_pools.get(pool).clear();
   }
 
   /**
    * 输出信息
    */
-  dump() {
+  public dump() {
     let data = [];
     this.m_pools.forEach(pool => {
       data.push(`${pool.name()}: ${pool.size()}/${pool.capacity()}`);
@@ -132,12 +119,34 @@ class Pool {
   }
 }
 
+/**
+ * @class
+ * @description 对象池
+ * @author DoooReyn <jl88744653@gmail.com>
+ * @license MIT
+ * @identifier
+ * ```
+ *             ╥━━━┳━━━━━━━━━╭━━╮━━━┳━━━╥
+ *             ╢━D━┣ ╭╮╭━━━━━┫┃▋▋━▅ ┣━R━╢
+ *             ╢━O━┣ ┃╰┫┈┈┈┈┈┃┃┈┈╰┫ ┣━E━╢
+ *             ╢━O━┣ ╰━┫┈┈┈┈┈╰╯╰┳━╯ ┣━Y━╢
+ *             ╢━O━┣ ┊┊┃┏┳┳━━┓┏┳┫┊┊ ┣━N━╢
+ *             ╨━━━┻━━━┗┛┗┛━━┗┛┗┛━━━┻━━━╨
+ * ```
+ */
 class NodePool {
   private m_prefab: string; //对象池对象模板
   private m_pool: cc.NodePool; //对象池
   private m_capacity: number; //对象池实际容量
   private m_extend: number; //空间不足时自动扩充数量
 
+  /**
+   *
+   * @param prefab 预制体
+   * @param name 名称
+   * @param capacity 初始容量
+   * @param extend 每次自动扩充数量
+   */
   constructor(
     prefab: string,
     name: string,
@@ -150,7 +159,11 @@ class NodePool {
     this.m_extend = Math.max(1, extend | 0);
   }
 
-  async load(size: number = 1) {
+  /**
+   * 加载对象
+   * @param size 加载数量
+   */
+  public async load(size: number = 1): Promise<void> {
     let node = await res.use(this.m_prefab);
     if (node) {
       this.put(node);
@@ -162,7 +175,7 @@ class NodePool {
    * 扩充对象池
    * @param size
    */
-  private async _extend() {
+  private async _extend(): Promise<void> {
     if (!res.has(this.m_prefab)) return;
     for (let i = 0; i < this.m_extend; i++) {
       this.put(await res.use(this.m_prefab));
@@ -173,35 +186,35 @@ class NodePool {
   /**
    * 获取对象池名称
    */
-  name() {
+  public name(): string | Function {
     return this.m_pool.poolHandlerComp;
   }
 
   /**
    * 获取对象池模板
    */
-  template() {
+  public template(): string {
     return this.m_prefab;
   }
 
   /**
    * 获取对象池当前容量
    */
-  size() {
+  public size(): number {
     return this.m_pool.size();
   }
 
   /**
    * 获取对象池最大容量
    */
-  capacity() {
+  public capacity(): number {
     return this.m_capacity;
   }
 
   /**
    * 提取对象池对象
    */
-  async get() {
+  public async get(): Promise<cc.Node> {
     if (this.size() === 0) await this._extend();
     return this.m_pool.get();
   }
@@ -210,14 +223,14 @@ class NodePool {
    * 回收对象到对象池
    * @param node
    */
-  put(node: cc.Node) {
+  public put(node: cc.Node) {
     this.m_pool.put(node);
   }
 
   /**
    * 清空对象池
    */
-  clear() {
+  public clear() {
     res.unUse(this.m_prefab, this.m_capacity);
     this.m_pool.clear();
   }
