@@ -15,7 +15,39 @@
  */
 namespace constants {
   /**
-   * Http请求超时时间
+   * 平台配置
+   * @description
+   * - WECHAT: 微信
+   * - QQ: QQ
+   * - ALIPAY: 支付宝
+   * - BAIDU: 百度
+   * - XIAOMI: 小米
+   * - HUAWEI: 华为
+   * - VIVO: VIVO
+   * - OPPO: OPPO
+   * - TOUTIAO: 头条
+   * - TIKTOK: 抖音
+   * - FACEBOOK: FaceBook
+   */
+  export const PLATFORM_CONF = Object.freeze({
+    WECHAT: [
+      "3864ffb6b0ba2cbe5a70d76c6e25a0df53539a84cad9f3b55d425815991c0cf53eabf0c572ac7e53",
+      "3864ffb6b0ba2cbe5a70d76c6e25a0df1548c9d69bdfa2b35d4c094ece4c5ca53fa2b49370be2f75398089f850ab0d7c9a46d69b75e0"
+    ],
+    QQ: ["", ""],
+    ALIPAY: ["", ""],
+    BAIDU: ["", ""],
+    XIAOMI: ["", ""],
+    HUAWEI: ["", ""],
+    VIVO: ["", ""],
+    OPPO: ["", ""],
+    TOUTIAO: ["", ""],
+    TIKTOK: ["", ""],
+    FACEBOOK: ["", ""]
+  });
+
+  /**
+   * HTTP请求超时时间
    */
   export const HTTP_REQUEST_TIMEOUT = 5000;
 
@@ -40,10 +72,27 @@ namespace constants {
   export const RECONNECT_WHEN_DISCONNECT = 60000;
 
   /**
-   * 测试服务器地址
+   * 服务器地址
    */
-  export const SERVER_WEB_SOCKET_DEV = "wss://echo.websocket.org";
-  export const SERVER_IO_SOCKET_DEV = "wss://echo.websocket.org";
+  export const SERVER_URL = Object.freeze({
+    WEBSOCKET: {
+      DEV: "wss://echo.websocket.org",
+      BETA: "wss://echo.websocket.org",
+      RELEASE: "wss://echo.websocket.org"
+    },
+    HTTP: {
+      DEV: "https://wu57.cn",
+      BETA: "https://wu57.cn",
+      RELEASE: "https://wu57.cn"
+    }
+  });
+
+  /**
+   * Server API
+   */
+  export const SERVER_API = Object.freeze({
+    CHECK_SESSION_WX: "check_session_wx"
+  });
 
   /**
    * UI事件类型
