@@ -1,0 +1,22 @@
+{
+  "name": "piggy-server",
+  "version": "1.0.0",
+  "description": "server for piggy",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "keywords": [
+    "piggy",
+    "server"
+  ],
+  "author": "reyn",
+  "license": "ISC",
+  "dependencies": {
+    "koa": "^2.11.0",
+    "koa-connect": "^2.0.1",
+    "mongoose": "^5.9.3",
+    "nodemon": "^2.0.2",
+    "pm2": "^4.2.3"
+  }
+}
