@@ -99,6 +99,7 @@ class Logger {
 
   /**
    * 输出日志内容
+   * @description 移动端浏览器控制台不支持CSS
    * @param level 日志等级
    * @param label 分组标签
    * @param groups 分组数据
@@ -110,23 +111,28 @@ class Logger {
   ) {
     if (!this.isValid(level)) return;
 
-    //渲染日志前置标记
-    let collapse = label.indexOf("@") === 0;
-    let color = Logger.s_method_colors[level];
-    let args = [
-      `%c${collapse ? label.slice(1) : label} %c${datetime.shortDay()}`,
-      `font-weight:bold;background:${color};`,
-      `font-weight:bold;background:${colors.Yellow.Z200};`
-    ];
     let method = Logger.s_call_methods[level];
-    if (groups.length === 0) return console[method](...args);
-
-    //输出日志内容
-    let group_method = collapse ? "group" : "groupCollapsed";
-    console[group_method](...args);
-    groups.forEach((e: any) => console.log(e));
-    Logger.s_call_chains.includes(level) && console[method]("调用链回溯");
-    console.groupEnd();
+    let color = Logger.s_method_colors[level];
+    let unfold = label.indexOf("@") === 0;
+    label = unfold ? label.slice(1) : label;
+    let args = [];
+    if (cc.sys.isBrowser) {
+      args.push(
+        `%c${label} %c${datetime.shortDay()}`,
+        `font-weight:bold;background:${color};`,
+        `font-weight:bold;background:${colors.Yellow.Z200};`
+      );
+    } else {
+      args.push(`${label} ${datetime.shortDay()}`);
+    }
+    if (groups.length > 0) {
+      unfold ? console.group(...args) : console.groupCollapsed(...args);
+      groups.forEach((e: any) => console.log(e));
+      Logger.s_call_chains.includes(level) && console[method]("chains");
+      console.groupEnd();
+    } else {
+      console[method](...args);
+    }
   }
 
   /**
