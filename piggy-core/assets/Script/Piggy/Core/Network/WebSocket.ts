@@ -74,7 +74,7 @@ export class webSocket {
    * 连接到服务器
    * @param server 服务器地址
    */
-  public connect(server: string = constants.SERVER_WEB_SOCKET_DEV) {
+  public connect(server: string = constants.SERVER_URL.WEBSOCKET.DEV) {
     if (this.m_socket) return;
     this.m_last_arrive_at = Date.now();
     this.m_server_addr = server;
