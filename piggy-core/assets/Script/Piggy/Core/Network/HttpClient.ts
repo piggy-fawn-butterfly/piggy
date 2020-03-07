@@ -70,7 +70,6 @@ export class httpClient {
     xhr.onload = xhr.onloadstart = xhr.onloadend = xhr.onprogress = null;
     xhr.ontimeout = xhr.onerror = xhr.onabort = xhr.onreadystatechange = null;
     this.m_requests.delete(xhr["http_request_id"]);
-    this.dump();
   }
 
   /**
