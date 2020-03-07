@@ -54,16 +54,14 @@ class Events {
    * @param type 事件标识
    * @param callback 事件回调
    * @param target 事件目标
-   * @param useCapture 使用捕捉
    */
   once(
     type: string,
-    callback: Function,
-    target?: object,
-    useCapture?: boolean
+    callback: (event: cc.Event.EventCustom) => void,
+    target?: object
   ) {
     this.m_events.add(type);
-    this.m_target.on(type, callback, target, useCapture);
+    this.m_target.once(type, callback, target);
   }
 
   /**
