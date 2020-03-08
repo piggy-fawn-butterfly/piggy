@@ -1,17 +1,8 @@
-const fs = require("fs");
-const path = require("path");
 const koa_app = require("koa");
 const koa_websocket = require("koa-websocket");
 const wss_router = require("./wss-router");
+const { cat } = require("./common/functions");
 const { CA, PORT } = require("./config/constants");
-
-/**
- * 读取文件内容
- * @param {string} filename
- */
-function cat(filename) {
-  return fs.readFileSync(path.resolve(__dirname, filename), "utf8");
-}
 
 //创建服务器选项
 const server_options = {
