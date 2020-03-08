@@ -1,8 +1,8 @@
 module.exports = {
   PORT: {
-    HTTP: 7880,
-    HTTPS: 7886,
-    WS: 9006,
+    HTTP: 8065,
+    HTTPS: 8066,
+    WS: 9065,
     WSS: 9066
   },
   CA: {

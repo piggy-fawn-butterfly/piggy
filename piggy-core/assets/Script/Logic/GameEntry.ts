@@ -73,7 +73,7 @@ class GameEntry extends app {
       let http = httpClient.getInstance();
       let ws = webSocket.getInstance();
       if (data.com.name.indexOf("LoginBtn") > -1) {
-        ws.connect(constants.SERVER_URL.WEBSOCKET.BETA);
+        ws.connect(constants.SERVER_URL.WSS.BETA);
         // http.get("https://192.168.22.222");
         // this.enterFullScreen();
       } else if (data.com.name.indexOf("LogoutBtn") > -1) {

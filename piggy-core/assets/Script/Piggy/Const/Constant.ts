@@ -69,21 +69,31 @@ namespace constants {
   /**
    * 断开连接N秒后重连
    */
-  export const RECONNECT_WHEN_DISCONNECT = 60000;
+  export const RECONNECT_WHEN_DISCONNECT = 5000;
 
   /**
    * 服务器地址
    */
   export const SERVER_URL = Object.freeze({
-    WEBSOCKET: {
-      DEV: "wss://echo.websocket.org",
-      BETA: "wss://echo.websocket.org",
-      RELEASE: "wss://echo.websocket.org"
-    },
     HTTP: {
-      DEV: "https://wu57.cn",
-      BETA: "https://wu57.cn",
-      RELEASE: "https://wu57.cn"
+      DEV: "http://localhost:8065",
+      BETA: "http://localhost:8065",
+      RELEASE: "http://xxxxxxxxx.xxx"
+    },
+    HTTPS: {
+      DEV: "https://localhost:8066",
+      BETA: "https://localhost:8066",
+      RELEASE: "https://xxxxxxxxx.xxx"
+    },
+    WS: {
+      DEV: "ws://localhost:9065/ws",
+      BETA: "ws://localhost:9065/ws",
+      RELEASE: "ws://xxxxxxxxx.xxx/ws"
+    },
+    WSS: {
+      DEV: "wss://localhost:9066/wss",
+      BETA: "wss://localhost:9066/wss",
+      RELEASE: "wss://xxxxxxxxx.xxx/wss"
     }
   });
 
