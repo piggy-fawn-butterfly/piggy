@@ -7,7 +7,9 @@ import { layers } from "../Piggy/Core/Component/Layers";
 import { constants } from "../Piggy/Const/Constant";
 import { events } from "../Piggy/Core/Events";
 import { pool } from "../Piggy/Core/Pool";
-import { ws_socket } from "../Piggy/Core/Network/Network";
+import { webSocket } from "../Piggy/Core/Network/WebSocket";
+import { httpClient } from "../Piggy/Core/Network/HttpClient";
+import { md5 } from "../Piggy/Libs/md5";
 
 const { ccclass } = cc._decorator;
 
@@ -35,7 +37,6 @@ class GameEntry extends app {
    */
   public async onStart(): Promise<void> {
     await this.loadRes();
-    ws_socket.getInstance().connect();
   }
 
   /**
@@ -69,10 +70,16 @@ class GameEntry extends app {
   private _onListenUIEvent(event: cc.Event.EventCustom) {
     let data = event.getUserData();
     if (data.type === "click") {
+      let http = httpClient.getInstance();
+      let ws = webSocket.getInstance();
       if (data.com.name.indexOf("LoginBtn") > -1) {
-        this.enterFullScreen();
+        ws.connect(constants.SERVER_URL.WEBSOCKET.BETA);
+        // http.get("https://192.168.22.222");
+        // this.enterFullScreen();
       } else if (data.com.name.indexOf("LogoutBtn") > -1) {
-        this.exitFullScreen();
+        ws.reconnect();
+        // http.post("https://httpbin.org/post", { type: "post_http" });
+        // this.exitFullScreen();
       }
     }
   }
