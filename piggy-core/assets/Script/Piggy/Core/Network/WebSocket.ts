@@ -74,7 +74,7 @@ export class webSocket {
    * 连接到服务器
    * @param server 服务器地址
    */
-  public connect(server: string = constants.SERVER_URL.WEBSOCKET.DEV) {
+  public connect(server: string) {
     if (this.m_socket) return;
     this.m_last_arrive_at = Date.now();
     this.m_server_addr = server;
@@ -92,17 +92,26 @@ export class webSocket {
   /**
    * 重连
    */
-  public reconnect() {
+  private _reconnect() {
     if (Date.now() - this.m_last_arrive_at >= this.m_reconnect_after) {
-      this.disconnect();
-      this.connect();
+      this.reconnect();
     }
+  }
+
+  /**
+   * 强制重连
+   */
+  public reconnect() {
+    if (!this.m_server_addr) return;
+    this.disconnect();
+    this.connect(this.m_server_addr);
   }
 
   /**
    * 与服务器断开连接
    */
   public disconnect(code: number = constants.WEBSOCKET_SELF_CLOSE_CODE) {
+    if (!this.m_socket) return;
     logger.info("@WS连接断开" + this.m_server_addr);
     this.m_socket && this.m_socket.close(code);
     this._clean();
@@ -113,7 +122,7 @@ export class webSocket {
    * @param data 数据
    */
   public send(data: interfaces.I_Socket_Data) {
-    if (!this._isState(WebSocket.OPEN)) return this.connect();
+    if (!this._isState(WebSocket.OPEN)) return this.connect(this.m_server_addr);
     let msg = [JSON.stringify(data)];
     this.m_socket.send(new Blob(msg, { type: "application/json" }));
   }
@@ -187,7 +196,7 @@ export class webSocket {
   private _resetReconnect(after: number) {
     this.m_reconnect_after = after;
     clearTimeout(this.m_reconnect_tid);
-    this.m_reconnect_tid = setTimeout(this.reconnect.bind(this), after);
+    this.m_reconnect_tid = setTimeout(this._reconnect.bind(this), after);
   }
 
   /**
@@ -236,7 +245,7 @@ export class webSocket {
   private _onclose(e: MessageEvent) {
     let code = e["code"];
     logger.warn("@WS连接关闭" + this.m_server_addr, code);
-    code === 1006 && this.reconnect();
+    code === 1006 && this._reconnect();
   }
 
   /**
