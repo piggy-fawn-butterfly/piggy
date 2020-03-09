@@ -479,6 +479,18 @@ namespace datetime {
     };
     return obj;
   }
+
+  /**
+   * 阻塞等待
+   * @param time 等待时间(s)
+   */
+  export function sleep(time: number) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve();
+      }, time * 1000);
+    });
+  }
 }
 
 export { datetime };
