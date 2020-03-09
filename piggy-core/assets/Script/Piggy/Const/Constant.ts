@@ -62,14 +62,14 @@ namespace constants {
   export const HEART_BEAT_INTERVAL = 30000;
 
   /**
-   * 初次连接N秒后如果未连上则重连
+   * 连接时重连检测间隔
    */
   export const RECONNECT_WHEN_CONNECTING = 5000;
 
   /**
-   * 断开连接N秒后重连
+   * 断线重连检测间隔
    */
-  export const RECONNECT_WHEN_DISCONNECT = 5000;
+  export const RECONNECT_WHEN_DISCONNECT = 60000;
 
   /**
    * 服务器地址
