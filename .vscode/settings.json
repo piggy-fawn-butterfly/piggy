@@ -5,5 +5,7 @@
     "Prando",
     "promisify"
   ],
-  "workbench.editor.limit.value": 20
+  "workbench.editor.limit.value": 20,
+  "workbench.view.alwaysShowHeaderActions": true,
+  "workbench.editor.closeOnFileDelete": true
 }
