@@ -54,7 +54,9 @@ export class webSocket {
   /**
    * N秒后重连
    */
-  private m_reconnect_after: number = constants.RECONNECT_WHEN_CONNECTING;
+  private m_reconnect_after: number = 0;
+  private readonly m_reconnect_interval: number =
+    constants.RECONNECT_WHEN_CONNECTING;
 
   //---------------公共方法---------------
 
@@ -86,14 +88,15 @@ export class webSocket {
     logger.info("@WS连接请求" + this.m_server_addr);
 
     //开启重连机制
-    this._resetReconnect(constants.RECONNECT_WHEN_CONNECTING);
+    this._resetReconnect();
   }
 
   /**
    * 重连
    */
   private _reconnect() {
-    if (Date.now() - this.m_last_arrive_at >= this.m_reconnect_after) {
+    if (this.m_socket) return;
+    if (Date.now() - this.m_reconnect_after >= this.m_reconnect_interval) {
       this.reconnect();
     }
   }
@@ -103,7 +106,6 @@ export class webSocket {
    */
   public reconnect() {
     if (!this.m_server_addr) return;
-    this.disconnect();
     this.connect(this.m_server_addr);
   }
 
@@ -114,7 +116,6 @@ export class webSocket {
     if (!this.m_socket) return;
     logger.info("@WS连接断开" + this.m_server_addr);
     this.m_socket && this.m_socket.close(code);
-    this._clean();
   }
 
   /**
@@ -193,10 +194,13 @@ export class webSocket {
    * 重置重连
    * @param after N秒后重连
    */
-  private _resetReconnect(after: number) {
-    this.m_reconnect_after = after;
+  private _resetReconnect() {
+    this.m_reconnect_after = Date.now() + this.m_reconnect_interval;
     clearTimeout(this.m_reconnect_tid);
-    this.m_reconnect_tid = setTimeout(this._reconnect.bind(this), after);
+    this.m_reconnect_tid = setTimeout(
+      this._reconnect.bind(this),
+      this.m_reconnect_interval
+    );
   }
 
   /**
@@ -204,6 +208,7 @@ export class webSocket {
    */
   private _onopen() {
     logger.info("@WS连接建立" + this.m_server_addr);
+    this.m_reconnect_after = Date.now();
     this._resetHeartBeat();
   }
 
@@ -219,7 +224,7 @@ export class webSocket {
           logger.info("@WS消息打印", type, msg);
           if (type === constants.EVENT_NAME.ON_SOCKET_KEEP_ALIVE) {
             this._resetHeartBeat();
-            this._resetReconnect(constants.RECONNECT_WHEN_DISCONNECT);
+            this._resetReconnect();
           } else {
             events.dispatch(type, msg);
           }
@@ -245,7 +250,10 @@ export class webSocket {
   private _onclose(e: MessageEvent) {
     let code = e["code"];
     logger.warn("@WS连接关闭" + this.m_server_addr, code);
-    code === 1006 && this._reconnect();
+    this._clean();
+    if (code === 1006) {
+      this.reconnect();
+    }
   }
 
   /**
