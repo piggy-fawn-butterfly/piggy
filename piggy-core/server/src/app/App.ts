@@ -2,7 +2,7 @@ import Koa from "koa";
 import KoaWebsocket from "koa-websocket";
 import { WssRouter } from "../router/WssRouter";
 import { CA, PORT } from "./../constant/Config";
-import { cat } from "../common/Common";
+import { cat, uuidV4 } from "../common/Common";
 
 /**
  * @file App

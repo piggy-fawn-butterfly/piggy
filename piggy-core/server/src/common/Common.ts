@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import uuid from "uuid";
+import { v4 } from "uuid";
 
 /**
  * @file Common
@@ -21,8 +21,8 @@ import uuid from "uuid";
 /**
  * 获得uuid
  */
-export function uuid_V1() {
-  return uuid.v1();
+export function uuidV4() {
+  return v4();
 }
 
 /**
@@ -30,14 +30,8 @@ export function uuid_V1() {
  * @param {string} type
  * @param {object} msg
  */
-export function toData(type: string, msg: object) {
-  return Buffer.from(
-    JSON.stringify({
-      type: type,
-      msg: msg
-    }),
-    "utf8"
-  );
+export function toMsg(type: string, msg: object) {
+  return Buffer.from(JSON.stringify({ type: type, msg: msg }), "utf8");
 }
 
 /**
@@ -45,7 +39,7 @@ export function toData(type: string, msg: object) {
  * @param {Buffer} message
  */
 export function fromMsg(message: Buffer) {
-  return JSON.parse(message.toString());
+  return JSON.parse(message.toString("utf8"));
 }
 
 /**
@@ -65,4 +59,15 @@ export function objectSize(obj: object) {
  */
 export function cat(filename: string) {
   return fs.readFileSync(path.resolve(__dirname, "../" + filename), "utf8");
+}
+
+/**
+ * 值是否属于参考列表
+ * @param val 指定值
+ * @param values 指定参考值列表
+ */
+export function is(val: any, values: any[]) {
+  return values.some(v => {
+    return v === val;
+  });
 }
