@@ -21,8 +21,8 @@ import { interfaces } from "../../Const/Declare/Interfaces";
  * ```
  */
 export class httpClient {
-  public static s_instance: httpClient = new httpClient();
-  private m_requests: Map<string, string> = new Map();
+  private static s_instance: httpClient = null;
+  private m_requests: Map<string, string> = null;
 
   /**
    * 获取静态单例
@@ -34,7 +34,9 @@ export class httpClient {
   /**
    * 隐藏构造器
    */
-  private constructor() {}
+  private constructor() {
+    this.m_requests = new Map();
+  }
 
   /**
    * 构造请求参数
@@ -107,7 +109,7 @@ export class httpClient {
     if (xhr.readyState === 4 && xhr.status >= 200 && xhr.status < 300) {
       try {
         const rep = JSON.parse(xhr.responseText);
-        rep && rep.type && events.dispatch(rep.type, rep.msg);
+        rep && rep.type && events.getInstance().dispatch(rep.type, rep.msg);
         logger.info("@HTTP消息内容", url, rep);
       } catch (err) {
         logger.error("@HTTP消息错误", url, err, xhr);

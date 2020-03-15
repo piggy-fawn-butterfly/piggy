@@ -221,11 +221,13 @@ class Wechat {
    * 监听网络时间
    */
   private _once() {
-    events.once(
-      constants.SERVER_API.CHECK_SESSION_WX,
-      this.accountLogin.bind(this),
-      this
-    );
+    events
+      .getInstance()
+      .once(
+        constants.SERVER_API.CHECK_SESSION_WX,
+        this.accountLogin.bind(this),
+        this
+      );
   }
 
   public accountLogin(data: interfaces.I_Simple_Object) {

@@ -47,8 +47,11 @@ function _isExcludeLayer(path: string) {
  * ```
  */
 class Layers {
-  public static s_instance: Layers = new Layers();
-  private m_stack_layers: Map<string, cc.Node> = new Map();
+  private static s_instance: Layers = null;
+  public static getInstance(): Layers {
+    return (this.s_instance = this.s_instance || new Layers());
+  }
+  private m_stack_layers: Map<string, cc.Node>;
   private m_root: cc.Node = null;
 
   /**
@@ -63,7 +66,7 @@ class Layers {
     return (
       path.startsWith("Prefab") &&
       path.endsWith("Layer") &&
-      res.isTypeOf(path, "cc.Prefab")
+      res.getInstance().isTypeOf(path, "cc.Prefab")
     );
   }
 
@@ -72,8 +75,8 @@ class Layers {
    * - 监听场景加载完成事件，场景加载完成后初始化UI根节点
    */
   private constructor() {
-    this.m_stack_layers.clear();
-    cc.director.on(cc.Director.EVENT_AFTER_SCENE_LAUNCH, this._init, this);
+    this.m_stack_layers = new Map();
+    this._init();
   }
 
   /**
@@ -139,16 +142,19 @@ class Layers {
       if (!this._isValidPath(path)) {
         return resolve(logger.warn("打开视图失败，视图路径无效", path));
       }
-      res.use(path).then(node => {
-        let layer: layerBase = node.getComponent(layerBase);
-        layer.setAssetPath(path);
-        this.m_stack_layers.set(path, node);
-        this.m_root.addChild(node);
-        node.setPosition(0, 0);
-        this._reorder();
-        this.dump();
-        resolve();
-      });
+      res
+        .getInstance()
+        .use(path)
+        .then(node => {
+          let layer: layerBase = node.getComponent(layerBase);
+          layer.setAssetPath(path);
+          this.m_stack_layers.set(path, node);
+          this.m_root.addChild(node);
+          node.setPosition(0, 0);
+          this._reorder();
+          this.dump();
+          resolve();
+        });
     });
   }
 
@@ -163,7 +169,7 @@ class Layers {
     if (!node) return logger.warn("关闭视图失败，视图不存在", path);
     this.m_stack_layers.delete(path);
     node.destroy();
-    res.unUseThenUnload(path);
+    res.getInstance().unUseThenUnload(path);
     this._reorder();
     this.dump();
   }
@@ -177,7 +183,7 @@ class Layers {
       if (useExclude ? !_isExcludeLayer(path) : true) {
         this.m_stack_layers.delete(path);
         node.destroy();
-        res.unUseThenUnload(path);
+        res.getInstance().unUseThenUnload(path);
       }
     });
     this._reorder();
@@ -274,4 +280,4 @@ class Layers {
   }
 }
 
-export const layers = Layers.s_instance;
+export { Layers as layers };

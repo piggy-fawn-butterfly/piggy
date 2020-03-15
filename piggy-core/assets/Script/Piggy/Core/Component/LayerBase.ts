@@ -125,7 +125,7 @@ abstract class LayerBase extends cc.Component {
    */
   onEnable() {
     this._dispatch(
-      events.create(LayerBase.EVENT_TYPE_LAYER_OPEN, {
+      events.getInstance().create(LayerBase.EVENT_TYPE_LAYER_OPEN, {
         path: cocos.pathOfNode(this.node),
         com: this
       })
@@ -139,7 +139,7 @@ abstract class LayerBase extends cc.Component {
    */
   onDisable() {
     this._dispatch(
-      events.create(LayerBase.EVENT_TYPE_LAYER_CLOSE, {
+      events.getInstance().create(LayerBase.EVENT_TYPE_LAYER_CLOSE, {
         path: cocos.pathOfNode(this.node),
         com: this
       })
@@ -219,7 +219,9 @@ abstract class LayerBase extends cc.Component {
     let data = event.getUserData();
     data["type"] = event.type;
     data["ui"] = cocos.pathOfNode(this.node);
-    events.dispatch(constants.EVENT_NAME.ON_DISPATCH_UI_EVENT, data);
+    events
+      .getInstance()
+      .dispatch(constants.EVENT_NAME.ON_DISPATCH_UI_EVENT, data);
   }
 
   /**
@@ -233,7 +235,7 @@ abstract class LayerBase extends cc.Component {
     if (!apis) return;
     for (let i = 0; i < apis.length; i++) {
       let api = apis[i];
-      let event = events.create(api, {
+      let event = events.getInstance().create(api, {
         path: cocos.pathOfNode(component.node),
         com: component
       });
@@ -284,7 +286,7 @@ abstract class LayerBase extends cc.Component {
     if (!callback) return;
     if (this.m_events.has(event_name)) return;
     this.m_events.set(event_name, callback);
-    events.on(event_name, callback, this);
+    events.getInstance().on(event_name, callback, this);
   }
 
   /**
@@ -293,7 +295,7 @@ abstract class LayerBase extends cc.Component {
    */
   public delEvent(event_name: string) {
     if (!this.m_events.has(event_name)) return;
-    events.off(event_name, this.m_events.get(event_name), this);
+    events.getInstance().off(event_name, this.m_events.get(event_name), this);
     this.m_events.delete(event_name);
   }
 
@@ -302,7 +304,7 @@ abstract class LayerBase extends cc.Component {
    */
   public delAllEvents() {
     this.m_events.clear();
-    events.targetOff(this);
+    events.getInstance().targetOff(this);
   }
 
   /**
@@ -316,7 +318,7 @@ abstract class LayerBase extends cc.Component {
    * 视图关闭
    */
   public onClose() {
-    layers.close(this.m_asset_path);
+    layers.getInstance().close(this.m_asset_path);
   }
 
   public onEnter(): void {}

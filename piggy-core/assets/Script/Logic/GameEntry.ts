@@ -1,15 +1,14 @@
+import { constants } from "../Piggy/Const/Constant";
 import { assets } from "../Piggy/Const/Assets";
 import { logger } from "../Piggy/Core/Logger";
-import { res } from "../Piggy/Core/Res";
+import { events } from "../Piggy/Core/Events";
 import { sound } from "../Piggy/Core/Sound";
+import { res } from "../Piggy/Core/Res";
 import { app } from "../Piggy/Core/Component/App";
 import { layers } from "../Piggy/Core/Component/Layers";
-import { constants } from "../Piggy/Const/Constant";
-import { events } from "../Piggy/Core/Events";
-import { pool } from "../Piggy/Core/Pool";
 import { webSocket } from "../Piggy/Core/Network/WebSocket";
 import { httpClient } from "../Piggy/Core/Network/HttpClient";
-import { md5 } from "../Piggy/Libs/md5";
+import { pool } from "../Piggy/Core/Pool";
 
 const { ccclass } = cc._decorator;
 
@@ -44,22 +43,26 @@ class GameEntry extends app {
    */
   registerEventListener() {
     super.registerEventListener();
-    events.on(
-      constants.EVENT_NAME.ON_DISPATCH_UI_EVENT,
-      this._onListenUIEvent,
-      this
-    );
+    events
+      .getInstance()
+      .on(
+        constants.EVENT_NAME.ON_DISPATCH_UI_EVENT,
+        this._onListenUIEvent,
+        this
+      );
   }
 
   /**
    * 注销事件
    */
   unregisterEventListener() {
-    events.off(
-      constants.EVENT_NAME.ON_DISPATCH_UI_EVENT,
-      this._onListenUIEvent,
-      this
-    );
+    events
+      .getInstance()
+      .off(
+        constants.EVENT_NAME.ON_DISPATCH_UI_EVENT,
+        this._onListenUIEvent,
+        this
+      );
     super.unregisterEventListener();
   }
 
@@ -71,13 +74,35 @@ class GameEntry extends app {
     let data = event.getUserData();
     if (data.type === "click") {
       let http = httpClient.getInstance();
-      let ws = webSocket.getInstance();
+      // let ws = webSocket.getInstance();
       if (data.com.name.indexOf("LoginBtn") > -1) {
-        ws.connect(constants.SERVER_URL.WSS.BETA);
+        // ws.connect(constants.SERVER_URL.WSS.BETA);
         // http.get("https://192.168.22.222");
         // this.enterFullScreen();
+        if (this["ws"]) return;
+        var ws = new WebSocket("ws://127.0.0.1:8360/ws");
+        this["ws"] = ws;
+        ws.onopen = function() {
+          console.log("open...", ws);
+          ws.onerror = function(evt) {
+            console.log(evt);
+          };
+          ws.onmessage = function(data) {
+            console.log(data);
+          };
+          ws.onclose = function() {
+            delete this["ws"];
+          };
+        };
       } else if (data.com.name.indexOf("LogoutBtn") > -1) {
-        ws.reconnect();
+        this["ws"] &&
+          this["ws"].send(
+            JSON.stringify({
+              event: "addUser",
+              data: { username: "reyn", room: 1 }
+            })
+          );
+        // ws.reconnect();
         // http.post("https://httpbin.org/post", { type: "post_http" });
         // this.exitFullScreen();
       }
@@ -90,8 +115,8 @@ class GameEntry extends app {
    * 1. 加载对象池
    * @example
    * ```js
-   * await pool.load([[assets.Prefab_CanvasAdapterLayer, 1]]);
-   * await pool.get(assets.Prefab_CanvasAdapterLayer).then(node => {
+   * await pool.getInstance().load([[assets.Prefab_CanvasAdapterLayer, 1]]);
+   * await pool.getInstance().get(assets.Prefab_CanvasAdapterLayer).then(node => {
    *   // node && this.node.addChild(node);
    * });
    * ```
@@ -106,16 +131,16 @@ class GameEntry extends app {
       assets.Sound_LoopingBgm1,
       assets.Sound_ButtonClick
     ];
-    await res.load(resources, (c, t) => {
+    await res.getInstance().load(resources, (c, t) => {
       logger.info(`资源加载进度:${((c / t) * 100) | 0}%`);
     });
 
     //打开登录页
-    await layers.open(assets.Prefab_CanvasAdapterLayer);
-    await layers.open(assets.Prefab_LoginLayer);
+    await layers.getInstance().open(assets.Prefab_CanvasAdapterLayer);
+    await layers.getInstance().open(assets.Prefab_LoginLayer);
 
     //播放背景音乐
-    await sound.play(assets.Sound_LoopingBgm1, true, true);
+    await sound.getInstance().play(assets.Sound_LoopingBgm1, true, true);
   }
 }
 

@@ -32,7 +32,10 @@ const RAW_STRING = "{}";
  * ```
  */
 class UserData {
-  public static s_instance: UserData = new UserData();
+  private static s_instance: UserData = null;
+  public static getInstance(): UserData {
+    return (this.s_instance = this.s_instance || new UserData());
+  }
   private m_raw_string: string = null;
   public m_raw_schemas: interfaces.I_Schema_Database;
 
@@ -49,7 +52,7 @@ class UserData {
     !raw_string && (raw_string = RAW_STRING);
     if (raw_string && !strings.isJsonString(raw_string)) {
       //json解析失败意味着数据被修改
-      events.dispatch(constants.EVENT_NAME.ON_GAME_CHEATING);
+      events.getInstance().dispatch(constants.EVENT_NAME.ON_GAME_CHEATING);
       this.reset();
       throw i18n.I.text(i18n.K.player_cheating_detected);
     }
@@ -179,4 +182,4 @@ namespace storage {
   }
 }
 
-export const userdata = UserData.s_instance;
+export { UserData as userdata };

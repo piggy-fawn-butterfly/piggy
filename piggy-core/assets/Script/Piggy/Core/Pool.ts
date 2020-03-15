@@ -19,7 +19,10 @@ import { constants } from "../Const/Constant";
  * ```
  */
 class Pool {
-  public static s_instance: Pool = new Pool();
+  private static s_instance: Pool = null;
+  public static getInstance(): Pool {
+    return (this.s_instance = this.s_instance || new Pool());
+  }
   private m_pools: Map<string, NodePool> = null;
 
   /**
@@ -41,8 +44,8 @@ class Pool {
     let pipeline = [];
     for (let item of pools) {
       let [path, size] = item;
-      await res.load(path);
-      if (!this.m_pools.has(path) && res.has(path)) {
+      await res.getInstance().load(path);
+      if (!this.m_pools.has(path) && res.getInstance().has(path)) {
         let pool = new NodePool(path, path, size);
         this.m_pools.set(path, pool);
         pipeline = pipeline.concat(new Array(size).fill(path));
@@ -55,13 +58,15 @@ class Pool {
     for (let path of pipeline) {
       setTimeout(async () => {
         ++current;
-        let item = await res.use(path);
+        let item = await res.getInstance().use(path);
         this.m_pools.get(path).put(item);
         onprogress && onprogress(current, total, item);
-        res.dispatch(ON_RESOURCES_LOADING, current, total, path);
+        res.getInstance().dispatch(ON_RESOURCES_LOADING, current, total, path);
         if (current >= total) {
           oncomplete && oncomplete(pools);
-          res.dispatch(ON_RESOURCES_LOADED, current, total, pipeline);
+          res
+            .getInstance()
+            .dispatch(ON_RESOURCES_LOADED, current, total, pipeline);
         }
       }, 0);
     }
@@ -74,7 +79,7 @@ class Pool {
   public unload(pool: string) {
     if (this.m_pools.has(pool)) {
       this.clear(pool);
-      res.unload(pool);
+      res.getInstance().unload(pool);
       this.m_pools.delete(pool);
     }
   }
@@ -164,7 +169,7 @@ class NodePool {
    * @param size 加载数量
    */
   public async load(size: number = 1): Promise<void> {
-    let node = await res.use(this.m_prefab);
+    let node = await res.getInstance().use(this.m_prefab);
     if (node) {
       this.put(node);
       this.m_capacity += size;
@@ -176,9 +181,9 @@ class NodePool {
    * @param size
    */
   private async _extend(): Promise<void> {
-    if (!res.has(this.m_prefab)) return;
+    if (!res.getInstance().has(this.m_prefab)) return;
     for (let i = 0; i < this.m_extend; i++) {
-      this.put(await res.use(this.m_prefab));
+      this.put(await res.getInstance().use(this.m_prefab));
     }
     this.m_capacity += this.m_extend;
   }
@@ -231,9 +236,9 @@ class NodePool {
    * 清空对象池
    */
   public clear() {
-    res.unUse(this.m_prefab, this.m_capacity);
+    res.getInstance().unUse(this.m_prefab, this.m_capacity);
     this.m_pool.clear();
   }
 }
 
-export const pool = Pool.s_instance;
+export { Pool as pool };

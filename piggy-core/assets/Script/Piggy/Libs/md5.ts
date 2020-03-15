@@ -28,7 +28,7 @@ class Md5Digest {
   /**
    * 缓存
    */
-  private m_cache: Map<string, string> = new Map();
+  private m_cache: Map<string, string>;
 
   /**
    * 获取静态单例

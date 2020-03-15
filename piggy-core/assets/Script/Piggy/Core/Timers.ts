@@ -20,7 +20,10 @@ import { enums } from "../Const/Declare/Enums";
  * ```
  */
 class Timers {
-  public static s_instance: Timers = new Timers();
+  private static s_instance: Timers = null;
+  public static getInstance(): Timers {
+    return (this.s_instance = this.s_instance || new Timers());
+  }
   private m_timers: Map<string, Timer> = null;
 
   /**
@@ -188,4 +191,4 @@ class Timers {
   }
 }
 
-export const timers = Timers.s_instance;
+export { Timers as timers };

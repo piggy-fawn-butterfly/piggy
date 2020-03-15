@@ -70,7 +70,7 @@ class Touchable extends cc.Component {
    * 播放点击音效
    */
   public playClick() {
-    sound.play(assets.Sound_ButtonClick, false, false);
+    sound.getInstance().play(assets.Sound_ButtonClick, false, false);
   }
 
   /**

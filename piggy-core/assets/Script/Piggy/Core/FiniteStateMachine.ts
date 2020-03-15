@@ -189,7 +189,7 @@ export namespace fsm {
         logger.error(strings.render(i18n.I.text(i18n.K.fsm_tip_6), context));
       } else {
         this.m_current_state = target.to;
-        events.dispatch(this.m_category, target);
+        events.getInstance().dispatch(this.m_category, target);
       }
       return this;
     }

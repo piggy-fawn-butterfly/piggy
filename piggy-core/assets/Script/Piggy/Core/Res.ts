@@ -22,7 +22,10 @@ import { strings } from "../Utils/Strings";
  * ```
  */
 class Res {
-  public static s_instance: Res = new Res();
+  private static s_instance: Res = null;
+  public static getInstance(): Res {
+    return (this.s_instance = this.s_instance || new Res());
+  }
 
   private m_path_type: Map<string, string>;
   private m_cache_asset: Map<string, interfaces.I_Res_Cache_Asset>;
@@ -113,7 +116,7 @@ class Res {
     total: number,
     asset: string | string[]
   ) {
-    events.dispatch(event_name, {
+    events.getInstance().dispatch(event_name, {
       current: current,
       total: total,
       asset: asset
@@ -443,4 +446,4 @@ class Res {
   }
 }
 
-export const res = Res.s_instance;
+export { Res as res };

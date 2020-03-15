@@ -26,7 +26,10 @@ import { interfaces } from "../Const/Declare/Interfaces";
  * ```
  */
 class Sound {
-  public static s_instance: Sound = new Sound();
+  private static s_instance: Sound = null;
+  public static getInstance(): Sound {
+    return (this.s_instance = this.s_instance || new Sound());
+  }
   private m_volume: number;
   private m_music_on: boolean;
   private m_caches: Map<string, interfaces.I_Sound_Info>;
@@ -44,8 +47,8 @@ class Sound {
    * 初始化音频管理器
    */
   public init() {
-    this.setVolume(userdata.m_raw_schemas.sound.volume.val);
-    this.switchMusic(userdata.m_raw_schemas.sound.music.val);
+    this.setVolume(userdata.getInstance().m_raw_schemas.sound.volume.val);
+    this.switchMusic(userdata.getInstance().m_raw_schemas.sound.music.val);
   }
 
   /**
@@ -64,7 +67,7 @@ class Sound {
     if (typeof state === "boolean") return;
     this.m_music_on = state;
     !this.m_music_on && this.setVolume(0);
-    userdata.m_raw_schemas.sound.music.val = this.m_music_on;
+    userdata.getInstance().m_raw_schemas.sound.music.val = this.m_music_on;
   }
 
   /**
@@ -86,7 +89,7 @@ class Sound {
     this.m_caches.forEach(sound => {
       cc.audioEngine.setVolume(sound.audio, this.m_volume);
     });
-    userdata.m_raw_schemas.sound.volume.val =
+    userdata.getInstance().m_raw_schemas.sound.volume.val =
       this.m_volume * constants.VOLUME_VALUE.MAX;
   }
 
@@ -96,7 +99,7 @@ class Sound {
    */
   public unload(path: string) {
     this.stop(path);
-    res.unload(path);
+    res.getInstance().unload(path);
   }
 
   /**
@@ -106,20 +109,27 @@ class Sound {
    * @param music 是否音乐类型
    */
   public async play(path: string, loop: boolean, music?: boolean) {
-    if (!path || !res.isTypeOf(path, "cc.AudioClip")) {
+    if (!path || !res.getInstance().isTypeOf(path, "cc.AudioClip")) {
       return logger.error(i18n.I.text(i18n.K.audio_resource_no_found), path);
     }
-    await res.load([path]).then(async () => {
-      let clip: cc.AudioClip = await res.use(path);
-      let audio = cc.audioEngine.play(clip, loop, music ? this.m_volume : 1.0);
-      let type = music ? enums.E_Sound_Type.Music : enums.E_Sound_Type.Effect;
-      this.m_caches.set(path, { audio: audio, type: type });
-      if (!loop) {
-        cc.audioEngine.setFinishCallback(audio, () => {
-          this.stop(path);
-        });
-      }
-    });
+    await res
+      .getInstance()
+      .load([path])
+      .then(async () => {
+        let clip: cc.AudioClip = await res.getInstance().use(path);
+        let audio = cc.audioEngine.play(
+          clip,
+          loop,
+          music ? this.m_volume : 1.0
+        );
+        let type = music ? enums.E_Sound_Type.Music : enums.E_Sound_Type.Effect;
+        this.m_caches.set(path, { audio: audio, type: type });
+        if (!loop) {
+          cc.audioEngine.setFinishCallback(audio, () => {
+            this.stop(path);
+          });
+        }
+      });
   }
 
   /**
@@ -196,4 +206,4 @@ class Sound {
   }
 }
 
-export const sound: Sound = Sound.s_instance;
+export { Sound as sound };

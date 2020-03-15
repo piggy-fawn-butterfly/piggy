@@ -16,7 +16,11 @@ import { fsm } from "./FiniteStateMachine";
  * ```
  */
 class Machines {
-  public static s_instance: Machines = new Machines();
+  private static s_instance: Machines = null;
+  public static getInstance(): Machines {
+    return (this.s_instance = this.s_instance || new Machines());
+  }
+
   private m_machines: Map<string, fsm.StateMachine>;
   private constructor() {
     this.m_machines = new Map();
@@ -70,4 +74,4 @@ class Machines {
   }
 }
 
-export const machines = Machines.s_instance;
+export { Machines as machines };

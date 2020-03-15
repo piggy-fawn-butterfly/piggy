@@ -33,14 +33,18 @@ class CanvasAdapter extends cc.Component {
    */
   onEnable() {
     this.adapt();
-    events.on(constants.EVENT_NAME.ON_CANVAS_RESIZE, this.adapt, this);
+    events
+      .getInstance()
+      .on(constants.EVENT_NAME.ON_CANVAS_RESIZE, this.adapt, this);
   }
 
   /**
    * 禁用
    */
   onDisable() {
-    events.off(constants.EVENT_NAME.ON_CANVAS_RESIZE, this.adapt, this);
+    events
+      .getInstance()
+      .off(constants.EVENT_NAME.ON_CANVAS_RESIZE, this.adapt, this);
   }
 
   /**

@@ -85,9 +85,6 @@
       },
       {
         "__id__": 84
-      },
-      {
-        "__id__": 85
       }
     ],
     "_prefab": null,
@@ -1357,15 +1354,5 @@
     "p_version_state": 0,
     "p_auto_resize_for_browser": true,
     "_id": "4dHHbG74RKdZM3WvKShnkm"
-  },
-  {
-    "__type__": "3c3c5fsHdZAVoo3C/fVatvw",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 2
-    },
-    "_enabled": true,
-    "_id": "641zs0tdJGTp+IZs66ojQ3"
   }
 ]

@@ -14,7 +14,10 @@
  * ```
  */
 class Events {
-  public static s_instance: Events = new Events();
+  private static s_instance: Events = null;
+  public static getInstance(): Events {
+    return (this.s_instance = this.s_instance || new Events());
+  }
   private m_events: Set<string>;
   private m_target: cc.EventTarget = null;
 
@@ -139,4 +142,4 @@ class Events {
   }
 }
 
-export const events = Events.s_instance;
+export { Events as events };

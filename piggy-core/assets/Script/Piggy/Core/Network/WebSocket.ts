@@ -32,11 +32,6 @@ export class webSocket {
   private m_heart_beat_tid: any = null;
 
   /**
-   * 上次消息到达时间
-   */
-  private m_last_arrive_at: number = 0;
-
-  /**
    * websocket实例对象
    */
   private m_socket: WebSocket = null;
@@ -78,7 +73,6 @@ export class webSocket {
    */
   public connect(server: string) {
     if (this.m_socket) return;
-    this.m_last_arrive_at = Date.now();
     this.m_server_addr = server;
     this.m_socket = new WebSocket(this.m_server_addr);
     this.m_socket.onopen = this._onopen.bind(this);
@@ -182,7 +176,6 @@ export class webSocket {
    * 重置心跳
    */
   private _resetHeartBeat() {
-    this.m_last_arrive_at = Date.now();
     clearTimeout(this.m_heart_beat_tid);
     this.m_heart_beat_tid = setTimeout(
       this._sendHeartBeat.bind(this),
@@ -226,7 +219,7 @@ export class webSocket {
             this._resetHeartBeat();
             this._resetReconnect();
           } else {
-            events.dispatch(type, msg);
+            events.getInstance().dispatch(type, msg);
           }
         } catch (err) {
           logger.error("@WS消息错误", raw_data, err);

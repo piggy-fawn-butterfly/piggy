@@ -155,12 +155,15 @@ abstract class App extends cc.Component {
     logger.setLevel(level);
 
     //创建游戏状态机
-    machines.create(states.app).then(async machine => {
-      logger.info(`[FSM] ${machine.m_category}: ${machine.current()}`);
-      this.m_app_fsm = machine;
-      await this.onAppInit();
-      this.m_app_fsm.transitTo(states.app.transition.start);
-    });
+    machines
+      .getInstance()
+      .create(states.app)
+      .then(async machine => {
+        logger.info(`[FSM] ${machine.m_category}: ${machine.current()}`);
+        this.m_app_fsm = machine;
+        await this.onAppInit();
+        this.m_app_fsm.transitTo(states.app.transition.start);
+      });
   }
 
   /**
@@ -211,9 +214,9 @@ abstract class App extends cc.Component {
       this.lockCanvasAdapter();
 
       //模块初始化
-      userdata.init();
-      res.init();
-      sound.init();
+      userdata.getInstance().init();
+      res.getInstance().init();
+      sound.getInstance().init();
 
       //注册事件
       this.registerEventListener();
@@ -223,9 +226,9 @@ abstract class App extends cc.Component {
         assets.Prefab_BackgroundLayer,
         assets.Prefab_LoadingLayer
       ];
-      await res.load(resources);
-      await layers.open(assets.Prefab_BackgroundLayer);
-      await layers.open(assets.Prefab_LoadingLayer);
+      await res.getInstance().load(resources);
+      await layers.getInstance().open(assets.Prefab_BackgroundLayer);
+      await layers.getInstance().open(assets.Prefab_LoadingLayer);
       resolve();
     });
   }
@@ -235,7 +238,7 @@ abstract class App extends cc.Component {
    */
   async onAppStart(): Promise<void> {
     await this.onStart();
-    tick.start();
+    tick.getInstance().start();
     this.dump();
   }
   public abstract async onStart(): Promise<void>;
@@ -244,11 +247,11 @@ abstract class App extends cc.Component {
    * 输出App信息
    */
   public dump() {
-    machines.dump();
-    userdata.dump();
-    res.dump();
-    sound.dump();
-    timers.dump();
+    machines.getInstance().dump();
+    userdata.getInstance().dump();
+    res.getInstance().dump();
+    sound.getInstance().dump();
+    timers.getInstance().dump();
   }
 
   /**
@@ -262,7 +265,7 @@ abstract class App extends cc.Component {
       Math.floor(frameSize.height - clientHeight) !== 0
     ) {
       cc.view.setFrameSize(clientWidth, clientHeight);
-      events.dispatch(constants.EVENT_NAME.ON_CANVAS_RESIZE);
+      events.getInstance().dispatch(constants.EVENT_NAME.ON_CANVAS_RESIZE);
     }
   }
 
@@ -291,13 +294,13 @@ abstract class App extends cc.Component {
    */
   onDealWithAppReset(): Promise<void> {
     return new Promise(async resolve => {
-      layers.closeAll();
+      layers.getInstance().closeAll();
       this.unregisterEventListener();
-      userdata.save();
-      tick.reset();
-      timers.del();
-      sound.stop();
-      events.reset();
+      userdata.getInstance().save();
+      tick.getInstance().reset();
+      timers.getInstance().del();
+      sound.getInstance().stop();
+      events.getInstance().reset();
       this.registerEventListener();
       this.m_app_fsm.transitTo(states.app.transition.start);
       resolve();
@@ -319,9 +322,9 @@ abstract class App extends cc.Component {
    */
   onDealWithAppPause(): Promise<void> {
     return new Promise(resolve => {
-      userdata.save();
-      sound.pause();
-      tick.interrupt();
+      userdata.getInstance().save();
+      sound.getInstance().pause();
+      tick.getInstance().interrupt();
       resolve();
     });
   }
@@ -331,8 +334,8 @@ abstract class App extends cc.Component {
    */
   onDealWithAppResume(): Promise<void> {
     return new Promise(resolve => {
-      sound.resume();
-      tick.recover();
+      sound.getInstance().resume();
+      tick.getInstance().recover();
       resolve();
     });
   }
@@ -353,7 +356,7 @@ abstract class App extends cc.Component {
   private async onFsmTransitTo(event: cc.Event.EventCustom): Promise<any> {
     let { name, from, to } = <fsm.I_FSM_TRANSITION>event.getUserData();
     logger.info(`[FSM] ${event.type}: ${from} > ${to}`);
-    let machine = machines.get(event.type);
+    let machine = machines.getInstance().get(event.type);
     if (machine && states[machine.name()]) {
       let transition = name.split("_").pop();
       let api = this[`onDealWithApp${strings.capitalize(transition)}`];
@@ -372,7 +375,9 @@ abstract class App extends cc.Component {
     cc.game.on(ON_APP_HIDE, this.onAppHide, this);
 
     //监听App状态机事件
-    events.on(this.m_app_fsm.m_category, this.onFsmTransitTo, this);
+    events
+      .getInstance()
+      .on(this.m_app_fsm.m_category, this.onFsmTransitTo, this);
 
     //监听Canvas尺寸变化事件
     if (this.p_auto_resize_for_browser && cc.sys.isBrowser) {
@@ -392,19 +397,21 @@ abstract class App extends cc.Component {
     const { ON_APP_SHOW, ON_APP_HIDE, ON_CANVAS_RESIZE } = constants.EVENT_NAME;
     cc.game.off(ON_APP_SHOW, this.onAppShow, this);
     cc.game.off(ON_APP_HIDE, this.onAppHide, this);
-    events.off(this.m_app_fsm.m_category, this.onFsmTransitTo, this);
+    events
+      .getInstance()
+      .off(this.m_app_fsm.m_category, this.onFsmTransitTo, this);
     if (this.p_auto_resize_for_browser && cc.sys.isBrowser) {
       return this.unschedule(this.refreshFrameSize);
     }
     cc.view.off(ON_CANVAS_RESIZE, this.onCanvasResize, this);
-    events.targetOff(this);
+    events.getInstance().targetOff(this);
   }
 
   /**
    * Canvas尺寸变化事件
    */
   onCanvasResize() {
-    events.dispatch(constants.EVENT_NAME.ON_CANVAS_RESIZE);
+    events.getInstance().dispatch(constants.EVENT_NAME.ON_CANVAS_RESIZE);
   }
 
   /**

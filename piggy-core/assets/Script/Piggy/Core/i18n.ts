@@ -29,7 +29,10 @@ const locales = {
  * ```
  */
 class i18n {
-  public static s_instance: i18n = new i18n();
+  private static s_instance: i18n = null;
+  public static getInstance(): i18n {
+    return (this.s_instance = this.s_instance || new i18n());
+  }
 
   //默认国际化语言是中文
   private m_lang: enums.E_Language_Choice = enums.E_Language_Choice.CN;
@@ -75,7 +78,7 @@ namespace i18n {
   /**
    * 国际化方案实现实例
    */
-  export const I = i18n.s_instance;
+  export const I = i18n.getInstance();
 }
 
 export { i18n };

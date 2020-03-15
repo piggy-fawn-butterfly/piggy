@@ -24,7 +24,10 @@ import { constants } from "../Const/Constant";
  * 游戏时间计时器
  */
 class Tick {
-  public static s_instance: Tick = new Tick();
+  private static s_instance: Tick = null;
+  public static getInstance(): Tick {
+    return (this.s_instance = this.s_instance || new Tick());
+  }
   private m_timer_id: string = null;
   private m_tick_count: number = 0;
 
@@ -43,15 +46,15 @@ class Tick {
     if (!timer || !timer.isRunning()) return;
     let interval = constants.AUTO_SAVE_INTERVAL * constants.SEC_TO_MS;
     timer.elapse > 0 && timer.elapse % interval === 0 && this._autoSave();
-    userdata.m_raw_schemas.time.game.val += 1;
+    userdata.getInstance().m_raw_schemas.time.game.val += 1;
   }
 
   /**
    * 自动保存
    */
   private _autoSave() {
-    events.dispatch(constants.EVENT_NAME.ON_AUTO_SAVE_USER_DATA);
-    userdata.save();
+    events.getInstance().dispatch(constants.EVENT_NAME.ON_AUTO_SAVE_USER_DATA);
+    userdata.getInstance().save();
   }
 
   /**
@@ -75,7 +78,7 @@ class Tick {
    * 获取定时器实例
    */
   private _timer(): timer {
-    return timers.get(this.m_timer_id);
+    return timers.getInstance().get(this.m_timer_id);
   }
 
   /**
@@ -83,9 +86,15 @@ class Tick {
    */
   public start() {
     if (this.m_timer_id) return;
-    let timer = timers.new(this._tick.bind(this), 1, constants.MAX_TIME);
-    events.on(constants.EVENT_NAME.ON_PAUSE_GAME_TIMER, this._onPause, this);
-    events.on(constants.EVENT_NAME.ON_RESUME_GAME_TIMER, this._onResume, this);
+    let timer = timers
+      .getInstance()
+      .new(this._tick.bind(this), 1, constants.MAX_TIME);
+    events
+      .getInstance()
+      .on(constants.EVENT_NAME.ON_RESUME_GAME_TIMER, this._onResume, this);
+    events
+      .getInstance()
+      .on(constants.EVENT_NAME.ON_PAUSE_GAME_TIMER, this._onPause, this);
     this.m_timer_id = timer.m_category;
     timer.start();
   }
@@ -111,11 +120,15 @@ class Tick {
    */
   public reset() {
     this.m_tick_count = 0;
-    events.off(constants.EVENT_NAME.ON_PAUSE_GAME_TIMER, this._onPause, this);
-    events.off(constants.EVENT_NAME.ON_PAUSE_GAME_TIMER, this._onResume, this);
-    this.m_timer_id && timers.del(this.m_timer_id);
+    events
+      .getInstance()
+      .off(constants.EVENT_NAME.ON_PAUSE_GAME_TIMER, this._onPause, this);
+    events
+      .getInstance()
+      .off(constants.EVENT_NAME.ON_PAUSE_GAME_TIMER, this._onResume, this);
+    this.m_timer_id && timers.getInstance().del(this.m_timer_id);
     this.m_timer_id = null;
   }
 }
 
-export const tick = Tick.s_instance;
+export { Tick as tick };
