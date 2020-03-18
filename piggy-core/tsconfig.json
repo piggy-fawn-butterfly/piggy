@@ -17,6 +17,7 @@
     "settings",
     "server",
     "tools",
-    "static"
+    "static",
+    "./assets/Script/Piggy/Libs/buffer.js"
   ]
 }
