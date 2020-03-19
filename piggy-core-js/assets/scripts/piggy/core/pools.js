@@ -5,15 +5,6 @@ import { piggy } from "../piggy";
  * @description 对象池管理器
  * @author DoooReyn <jl88744653@gmail.com>
  * @license MIT
- * @identifier
- * ```
- *             ╥━━━┳━━━━━━━━━╭━━╮━━━┳━━━╥
- *             ╢━D━┣ ╭╮╭━━━━━┫┃▋▋━▅ ┣━R━╢
- *             ╢━O━┣ ┃╰┫┈┈┈┈┈┃┃┈┈╰┫ ┣━E━╢
- *             ╢━O━┣ ╰━┫┈┈┈┈┈╰╯╰┳━╯ ┣━Y━╢
- *             ╢━O━┣ ┊┊┃┏┳┳━━┓┏┳┫┊┊ ┣━N━╢
- *             ╨━━━┻━━━┗┛┗┛━━┗┛┗┛━━━┻━━━╨
- * ```
  */
 export class pools {
   /**
