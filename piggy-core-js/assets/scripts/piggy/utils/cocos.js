@@ -7,8 +7,8 @@ export const cocos = {
    * @param {cc.Node} referenceNode 参考节点
    * @returns {cc.Node}
    */
-  findNode(path, referenceNode) {
-    return cc.find(path, referenceNode);
+  findNode( path, referenceNode ) {
+    return cc.find( path, referenceNode );
   },
 
   /**
@@ -17,24 +17,24 @@ export const cocos = {
    * @param {cc.Node} referenceNode 参考节点
    * @returns {cc.Node[]}
    */
-  findNodes(path, referenceNode = null) {
+  findNodes( path, referenceNode = null ) {
     let match = [];
-    if (path == null) return match;
-    if (referenceNode && !referenceNode.isValid) return match;
-    if (!referenceNode) {
+    if ( path == null ) return match;
+    if ( referenceNode && !referenceNode.isValid ) return match;
+    if ( !referenceNode ) {
       let scene = cc.director.getScene();
-      if (!scene) return match;
-      if (!scene.isValid) return match;
+      if ( !scene ) return match;
+      if ( !scene.isValid ) return match;
       referenceNode = scene;
     }
-    let startIndex = path[0] !== "/" ? 0 : 1;
-    let nameList = path.split("/");
-    for (let n = startIndex; n < nameList.length; n++) {
-      let name = nameList[n];
-      let children = referenceNode["_children"];
-      for (let t = 0, len = children.length; t < len; ++t) {
-        let subChild = children[t];
-        subChild.name === name && match.push(subChild);
+    let startIndex = path[ 0 ] !== "/" ? 0 : 1;
+    let nameList = path.split( "/" );
+    for ( let n = startIndex; n < nameList.length; n++ ) {
+      let name = nameList[ n ];
+      let children = referenceNode[ "_children" ];
+      for ( let t = 0, len = children.length; t < len; ++t ) {
+        let subChild = children[ t ];
+        subChild.name === name && match.push( subChild );
       }
     }
 
@@ -48,10 +48,10 @@ export const cocos = {
    * @param {cc.Node} referenceNode 参考节点
    * @returns {cc.Component}
    */
-  findComponent(path, component, referenceNode) {
-    let node = cc.find(path, referenceNode);
-    if (!node) return null;
-    return node.getComponent(component);
+  findComponent( path, component, referenceNode ) {
+    let node = cc.find( path, referenceNode );
+    if ( !node ) return null;
+    return node.getComponent( component );
   },
 
   /**
@@ -61,10 +61,10 @@ export const cocos = {
    * @param {cc.Node} referenceNode 参考节点
    * @returns {cc.Component}
    */
-  findComponentByName(path, component, referenceNode) {
-    let node = cc.find(path, referenceNode);
-    if (!node) return null;
-    return node.getComponent(component);
+  findComponentByName( path, component, referenceNode = null ) {
+    let node = cc.find( path, referenceNode );
+    if ( !node ) return null;
+    return node.getComponent( component );
   },
 
   /**
@@ -73,17 +73,17 @@ export const cocos = {
    * @param {string} component 目标组件
    * @returns {cc.Component}
    */
-  getOrAddComponent(node, component) {
-    return node.getComponent(component) || node.addComponent(component);
+  getOrAddComponent( node, component ) {
+    return node.getComponent( component ) || node.addComponent( component );
   },
 
   /**
    * 获得组件类型
    * @param {cc.Component} component 组件
    */
-  instanceOfComponent(component) {
-    if (component && component.isValid) {
-      return component["__proto__"]["__classname__"];
+  instanceOfComponent( component ) {
+    if ( component && component.isValid ) {
+      return component[ "__proto__" ][ "__classname__" ];
     }
     return "undefined";
   },
@@ -95,17 +95,17 @@ export const cocos = {
    * @param {boolean} outFullPath 是否输出完整路径
    * @returns {string}
    */
-  pathOfNode(node, referenceNode, outFullPath = true) {
-    if (!referenceNode) referenceNode = cc.find("Canvas");
-    let walk = (from, url) => {
-      url.push(from.parent.name);
-      from.parent !== referenceNode && walk(from.parent, url);
+  pathOfNode( node, referenceNode, outFullPath = true ) {
+    if ( !referenceNode ) referenceNode = cc.find( "Canvas" );
+    let walk = ( from, url ) => {
+      url.push( from.parent.name );
+      from.parent !== referenceNode && walk( from.parent, url );
     };
     let path = [];
-    walk(node, path);
+    walk( node, path );
     !outFullPath && path.pop();
-    path.unshift(node.name);
-    return path.reverse().join("/");
+    path.unshift( node.name );
+    return path.reverse().join( "/" );
   },
 
   /**
@@ -114,17 +114,17 @@ export const cocos = {
    * @param {boolean} sound 是否触发点击音效
    * @returns 是否触发按钮点击事件
    */
-  onClickEvent(e) {
-    if (e) {
+  onClickEvent( e ) {
+    if ( e ) {
       let target = null;
-      if (e.target) {
+      if ( e.target ) {
         target = e.target;
         e.stopPropagation();
       } else {
         target = e;
       }
 
-      if (target && !this.isButtonAvailable(target)) {
+      if ( target && !this.isButtonAvailable( target ) ) {
         return false;
       }
     }
@@ -134,10 +134,10 @@ export const cocos = {
    * 按钮是否有效
    * @param {cc.Node} node 按钮节点
    */
-  isButtonAvailable(node) {
-    let button = node.getComponent("Button");
+  isButtonAvailable( node ) {
+    let button = node.getComponent( "Button" );
     let available = true;
-    button && (available = button.available()) && button.click();
+    button && ( available = button.available() ) && button.click();
     return available;
   },
 
@@ -146,8 +146,8 @@ export const cocos = {
    * @param {cc.Node} node 目标节点
    * @returns {cc.Vec3} point 世界坐标
    */
-  getWorldPosition(node) {
-    return node.parent.convertToWorldSpaceAR(node.position);
+  getWorldPosition( node ) {
+    return node.parent.convertToWorldSpaceAR( node.position );
   },
 
   /**
@@ -156,44 +156,44 @@ export const cocos = {
    * @param {cc.Sprite} sprite 精灵
    * @param {boolean} gray 是否置灰
    */
-  setGray(sprite, gray = true) {
+  setGray( sprite, gray = true ) {
     let builtin = gray ? "2d-gray-sprite" : "2d-sprite";
-    let material = cc.Material["getBuiltinMaterial"](builtin);
-    material = cc.Material["getInstantiatedMaterial"](material, sprite);
-    sprite.setMaterial(0, material);
+    let material = cc.Material[ "getBuiltinMaterial" ]( builtin );
+    material = cc.Material[ "getInstantiatedMaterial" ]( material, sprite );
+    sprite.setMaterial( 0, material );
   },
 
   /**
    * 停止所有动作
    * @param {cc.Node} node 目标节点
    */
-  stopNode(node) {
+  stopNode( node ) {
     node.stopAllActions();
-    node.children.forEach(v => {
-      this.stopNode(v);
-    });
+    node.children.forEach( v => {
+      this.stopNode( v );
+    } );
   },
 
   /**
    * 暂停所有动作
    * @param {cc.Node} node 目标节点
    */
-  pauseNode(node) {
+  pauseNode( node ) {
     node.stopAllActions();
-    node.children.forEach(v => {
-      this.pauseNode(v);
-    });
+    node.children.forEach( v => {
+      this.pauseNode( v );
+    } );
   },
 
   /**
    * 恢复所有动作
    * @param {cc.Node} node 目标节点
    */
-  resumeNode(node) {
+  resumeNode( node ) {
     node.stopAllActions();
-    node.children.forEach(v => {
-      this.resumeNode(v);
-    });
+    node.children.forEach( v => {
+      this.resumeNode( v );
+    } );
   },
 
   /**
@@ -205,9 +205,9 @@ export const cocos = {
     let sc = cc.view.getDevicePixelRatio();
     let scx = cc.view.getScaleX();
     let scy = cc.view.getScaleY();
-    let width = Math.ceil((fs.width / scx) * sc);
-    let height = Math.ceil((fs.height / scy) * sc);
-    return cc.size(width, height);
+    let width = Math.ceil( ( fs.width / scx ) * sc );
+    let height = Math.ceil( ( fs.height / scy ) * sc );
+    return cc.size( width, height );
   },
 
   /**
@@ -216,9 +216,9 @@ export const cocos = {
    * @param {boolean} enabled 是否开启抗锯齿
    * @since 2.3.0
    */
-  enableAntiAtlas(tex, enabled) {
+  enableAntiAtlas( tex, enabled ) {
     const { LINEAR, NEAREST } = cc.Texture2D.Filter;
     let filter = enabled ? LINEAR : NEAREST;
-    tex && tex.setFilters(filter, filter);
+    tex && tex.setFilters( filter, filter );
   }
 };
