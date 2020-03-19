@@ -61,7 +61,20 @@ export const piggy = {
     name: "piggy",
     mail: "jl88744653@gmail.com",
     github: "https://github.com/DoooReyn",
-    repository: "https://github.com/piggy-fawn-butterfly/piggy"
+    repository: "https://github.com/piggy-fawn-butterfly/piggy",
+  },
+
+  /**
+   * 开发模式
+   * - debug: -1
+   * - beta: 0
+   * - release: 1
+   */
+  mode: {
+    code: 0,
+    isRelease() { return piggy.mode.code = 1; },
+    isBeta() { return piggy.mode.code === 0; },
+    isDebug() { return piggy.mode.code === -1; },
   },
 
   //常量、枚举
@@ -129,6 +142,7 @@ export const piggy = {
     unreadable: unreadable,
     userdata: userdata
   },
+
   //核心库实例
   events: new events(),
   http: new http(),
@@ -149,7 +163,7 @@ export const piggy = {
   tick: new tick(),
   machines: new machines(),
   timers: new timers(),
-  unreadable: new unreadable(),
+  unreadable: unreadable,
   userdata: new userdata()
 };
 
