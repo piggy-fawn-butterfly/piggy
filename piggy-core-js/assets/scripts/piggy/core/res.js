@@ -49,7 +49,7 @@ export class res {
   /**
    * 获得缓存中的资源
    * @param {string} path 资源路径
-   * @return {cc.Asset}
+   * @return {typeof cc.Asset | cc.Prefab}
    */
   get( path ) {
     let asset_info = this._get( path );
@@ -165,9 +165,7 @@ export class res {
     //资源不存在
     if ( !asset_info ) {
       let info = piggy.i18n.t( piggy.i18nK.unload_failed_for_non_exist );
-      let warn = piggy.strings.render( info, {
-        path: path
-      } );
+      let warn = piggy.strings.render( info, { path: path } );
       return piggy.logger.warn( warn );
     }
     //资源正在使用中
@@ -194,7 +192,7 @@ export class res {
   /**
    * 使用资源
    * @param {string} path 资源路径
-   * @returns {cc.Node | cc.Asset}
+   * @returns {cc.Node | cc.Prefab | typeof cc.Asset}
    */
   use( path ) {
     let loaded = false;
@@ -202,7 +200,7 @@ export class res {
       loaded = true;
       return this._use( loaded, path );
     } else if ( path && this.m_path_type.has( path ) ) {
-      this.load( path ).then( assets => {
+      this.load( path, null, assets => {
         loaded = assets.length > 0;
       } );
       return this._use( loaded, path );
@@ -213,7 +211,7 @@ export class res {
    * 使用资源
    * @param {boolean} loaded 是否已加载
    * @param {string} path 资源路径
-   * @returns {cc.Node | cc.Asset}
+   * @returns {cc.Node | cc.Prefab | typeof cc.Asset}
    */
   _use( loaded, path ) {
     if ( !loaded ) {
@@ -246,7 +244,7 @@ export class res {
 
   /**
    * 实例化 Prefab
-   * @param {cc.Prefab | cc.Asset} prefab 资源
+   * @param {cc.Prefab | typeof cc.Asset} prefab 资源
    * @returns {cc.Node}
    */
   _instantiate( prefab ) {
@@ -351,7 +349,7 @@ export class res {
   /**
    * 获得缓存中的资源
    * @param { string } path 资源路径
-   * @returns { {asset:cc.Asset; use:number;} }
+   * @returns { {asset:typeof cc.Asset | cc.Prefab; use:number;} }
    */
   _get( path ) {
     return this.m_cache_asset.get( path );
