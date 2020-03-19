@@ -4,7 +4,7 @@ export const strings = {
   /**
    * 模板字符串插值实现
    * @param {string} template 模板字符串
-   * @param {string} context 字符串插值
+   * @param {object} context 字符串插值
    */
   render( template, context ) {
     return template.replace(
