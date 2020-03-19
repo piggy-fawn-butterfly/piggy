@@ -1,3 +1,5 @@
+import { enums } from "../data/enums";
+import { colors } from "../data/colors";
 import { piggy } from "../piggy";
 
 /**
@@ -8,26 +10,22 @@ import { piggy } from "../piggy";
  * @author DoooReyn <jl88744653@gmail.com>
  * @license MIT
  */
-
 export class logger {
-  ctor() {
-    /** 默认日志等级 */
-    this.setLevel( piggy.enums.E_Log_Level.Trace );
+  static s_call_methods = [ enums.E_Log_Method.Trace, enums.E_Log_Method.Info, enums.E_Log_Method.Warn, enums.E_Log_Method.Error ];
 
-    /**
-     * console一般方法
-     */
-    this.s_call_methods = [ piggy.enums.E_Log_Method.Trace, piggy.enums.E_Log_Method.Info, piggy.enums.E_Log_Method.Warn, piggy.enums.E_Log_Method.Error ];
+  /**
+ * 需要展示调用链的方法
+ */
+  static s_call_chains = [ enums.E_Log_Level.Trace, enums.E_Log_Level.Warn, enums.E_Log_Level.Error ];
 
-    /**
-     * 需要展示调用链的方法
-     */
-    this.s_call_chains = [ piggy.enums.E_Log_Level.Trace, piggy.enums.E_Log_Level.Warn, piggy.enums.E_Log_Level.Error ];
+  /**
+   * console一般方法对应的颜色
+   */
+  static s_method_colors = [ colors.Purple.Z200, colors.Green.A100, colors.Yellow.Z300, colors.Red.Z200 ];
 
-    /**
-     * console一般方法对应的颜色
-     */
-    this.s_method_colors = [ piggy.colors.Purple.Z200, piggy.colors.Green.A100, piggy.colors.Yellow.Z300, piggy.colors.Red.Z200 ];
+  constructor() {
+    // /** 默认日志等级 */
+    this.setLevel( enums.E_Log_Level.Trace );
   }
 
   /**
@@ -51,7 +49,7 @@ export class logger {
    * @returns {boolean}
    */
   isFullOpen() {
-    return this.m_log_level === piggy.enums.E_Log_Level.Trace;
+    return this.m_log_level === enums.E_Log_Level.Trace;
   }
 
   /**
@@ -59,7 +57,7 @@ export class logger {
    * @returns {boolean}
    */
   isSilence() {
-    return this.m_log_level === piggy.enums.E_Log_Level.Silence;
+    return this.m_log_level === enums.E_Log_Level.Silence;
   }
 
   /**
@@ -81,8 +79,8 @@ export class logger {
   _applyGroup( level, label, ...groups ) {
     if ( !this._isValid( level ) ) return;
 
-    let method = this.s_call_methods[ level ];
-    let color = this.s_method_colors[ level ];
+    let method = logger.s_call_methods[ level ];
+    let color = logger.s_method_colors[ level ];
     let unfold = label.indexOf( "@" ) === 0;
     label = unfold ? label.slice( 1 ) : label;
     let args = [];
@@ -98,7 +96,7 @@ export class logger {
     if ( groups.length > 0 ) {
       unfold ? console.group( ...args ) : console.groupCollapsed( ...args );
       groups.forEach( e => console.log( e ) );
-      this.s_call_chains.includes( level ) && console[ method ]( "chains" );
+      logger.s_call_chains.includes( level ) && console[ method ]( "chains" );
       console.groupEnd();
     } else {
       console[ method ]( ...args );
@@ -111,7 +109,7 @@ export class logger {
    * @param {any[]} args
    */
   trace( label, ...args ) {
-    this._isValid( piggy.enums.E_Log_Level.Trace ) && this._applyGroup( piggy.enums.E_Log_Level.Trace, label, ...args );
+    this._isValid( enums.E_Log_Level.Trace ) && this._applyGroup( enums.E_Log_Level.Trace, label, ...args );
   }
 
   /**
@@ -120,7 +118,7 @@ export class logger {
    * @param {any[]} args
    */
   info( label, ...args ) {
-    this._isValid( piggy.enums.E_Log_Level.Info ) && this._applyGroup( piggy.enums.E_Log_Level.Info, label, ...args );
+    this._isValid( enums.E_Log_Level.Info ) && this._applyGroup( enums.E_Log_Level.Info, label, ...args );
   }
 
   /**
@@ -129,7 +127,7 @@ export class logger {
    * @param {any[]} args
    */
   warn( label, ...args ) {
-    this._isValid( piggy.enums.E_Log_Level.Warn ) && this._applyGroup( piggy.enums.E_Log_Level.Warn, label, ...args );
+    this._isValid( enums.E_Log_Level.Warn ) && this._applyGroup( enums.E_Log_Level.Warn, label, ...args );
   }
 
   /**
@@ -138,6 +136,6 @@ export class logger {
    * @param {any[]} args
    */
   error( label, ...args ) {
-    this._isValid( piggy.enums.E_Log_Level.Error ) && this._applyGroup( piggy.enums.E_Log_Level.Error, label, ...args );
+    this._isValid( enums.E_Log_Level.Error ) && this._applyGroup( enums.E_Log_Level.Error, label, ...args );
   }
 }
