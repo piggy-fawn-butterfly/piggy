@@ -10,7 +10,7 @@ export class http {
   /**
    * 隐藏构造器
    */
-  ctor() {
+  constructor() {
     this.m_requests = new Map();
   }
 
