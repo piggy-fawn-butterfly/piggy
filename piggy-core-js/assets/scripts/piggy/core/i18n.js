@@ -1,4 +1,5 @@
 import { piggy } from "../piggy";
+import { enums } from "../data/enums";
 
 /**
  * @format
@@ -8,9 +9,9 @@ import { piggy } from "../piggy";
  * @license MIT
  */
 export class i18n {
-  ctor() {
+  constructor() {
     //默认国际化语言是中文
-    this.m_lang = piggy.enums.E_Language_Choice.SC;
+    this.m_lang = enums.E_Language_Choice.SC;
   }
 
   /**
