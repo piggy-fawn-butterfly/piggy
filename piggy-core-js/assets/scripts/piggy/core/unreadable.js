@@ -1,5 +1,3 @@
-import { piggy } from "../piggy";
-
 /**
  * @class
  * @file unreadable

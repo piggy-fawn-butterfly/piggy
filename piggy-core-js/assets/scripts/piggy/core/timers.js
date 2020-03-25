@@ -1,5 +1,4 @@
-import { piggy } from "../piggy";
-import { timer } from "./timer";
+import {timer} from "./timer";
 
 /**
  * @file timers
@@ -12,23 +11,27 @@ export class timers {
    * 隐藏构造器
    */
   constructor() {
+    /**
+     * 定时器列表
+     * @type {Map<string, timer>}
+     */
     this.m_timers = new Map();
   }
-
+  
   /**
    * 执行定时器指令
    * @param {string} command 定时器指令
    * @param {string} timer_id 定时器标识
    * @returns {any}
    */
-  _sendCommand( command, timer_id = null ) {
-    if ( !timer_id ) {
-      this.m_timers.forEach( timer => {
-        timer[ command ]();
-      } );
-      return;
+  _sendCommand(command, timer_id) {
+    if (!timer_id) {
+      this.m_timers.forEach(timer => {
+        timer[command]();
+      });
+      return null;
     }
-    if ( this.m_timers.has( timer_id ) ) return this.get( timer_id )[ command ]();
+    if (this.m_timers.has(timer_id)) return this.get(timer_id)[command]();
   }
 
   /**
@@ -37,7 +40,7 @@ export class timers {
    * @returns {boolean}
    */
   isRunning( timer_id ) {
-    return this._sendCommand( piggy.enums.E_Timer_API.isRunning, timer_id );
+    return !!this._sendCommand(piggy.enums.E_Timer_API.isRunning, timer_id);
   }
 
   /**
@@ -46,7 +49,7 @@ export class timers {
    * @returns {boolean}
    */
   isPaused( timer_id ) {
-    return this._sendCommand( piggy.enums.E_Timer_API.isPaused, timer_id );
+    return !!this._sendCommand(piggy.enums.E_Timer_API.isPaused, timer_id);
   }
 
   /**
@@ -55,7 +58,7 @@ export class timers {
    * @returns {boolean}
    */
   isInterrupt( timer_id ) {
-    return this._sendCommand( piggy.enums.E_Timer_API.isInterrupt, timer_id );
+    return !!this._sendCommand(piggy.enums.E_Timer_API.isInterrupt, timer_id);
   }
 
   /**
@@ -64,9 +67,9 @@ export class timers {
    * @returns {boolean}
    */
   isStopped( timer_id ) {
-    return this._sendCommand( piggy.enums.E_Timer_API.isStopped, timer_id );
+    return !!this._sendCommand(piggy.enums.E_Timer_API.isStopped, timer_id);
   }
-
+  
   /**
    * 新建定时器
    * @summary 构造时使用秒为单位，实际会转换成毫秒
@@ -75,6 +78,7 @@ export class timers {
    * @param {number} stop_after 停止时间:小于等于0表示不停止，需手动停止
    * @param {number} call_after 延迟时间
    * @param {Function} stop_callback 定时器停止回调
+   * @returns {timer}
    */
   new(
     tick_callback,
@@ -90,7 +94,7 @@ export class timers {
       call_after,
       stop_callback
     );
-    this.m_timers.set( _timer.m_category, _timer );
+    this.m_timers.set(timer.m_category, _timer);
     return _timer;
   }
 
@@ -102,64 +106,64 @@ export class timers {
   get( timer_id ) {
     return this.m_timers.get( timer_id );
   }
-
+  
   /**
    * 删除定时器
    * - 不指定标识，则删除全部定时器
    * @param {string} timer_id 定时器标识
    */
-  del( timer_id = null ) {
+  del(timer_id) {
     //删除指定定时器
-    if ( timer_id && this.m_timers.has( timer_id ) ) {
-      this.m_timers.get( timer_id ).stop();
-      this.m_timers.delete( timer_id );
+    if (timer_id && this.m_timers.has(timer_id)) {
+      this.m_timers.get(timer_id).stop();
+      this.m_timers.delete(timer_id);
       return;
     }
     //删除全部定时器
-    this.m_timers.forEach( timer => {
+    this.m_timers.forEach(timer => {
       timer.stop();
-    } );
+    });
     this.m_timers.clear();
   }
-
+  
   /**
    * 中断定时器
    * @param {string} timer_id 定时器标识
    */
-  interrupt( timer_id = null ) {
-    this._sendCommand( piggy.enums.E_Timer_API.interrupt, timer_id );
+  interrupt(timer_id) {
+    this._sendCommand(piggy.enums.E_Timer_API.interrupt, timer_id);
   }
-
+  
   /**
    * 恢复中断的定时器
    * @param {string} timer_id 定时器标识
    */
-  recover( timer_id = null ) {
-    this._sendCommand( piggy.enums.E_Timer_API.recover, timer_id );
+  recover(timer_id) {
+    this._sendCommand(piggy.enums.E_Timer_API.recover, timer_id);
   }
-
+  
   /**
    * 暂停定时器
    * @param {string} timer_id 定时器标识
    */
-  pause( timer_id = null ) {
-    this._sendCommand( piggy.enums.E_Timer_API.pause, timer_id );
+  pause(timer_id) {
+    this._sendCommand(piggy.enums.E_Timer_API.pause, timer_id);
   }
-
+  
   /**
    * 恢复定时器
    * @param {string} timer_id 定时器标识
    */
-  resume( timer_id = null ) {
-    this._sendCommand( piggy.enums.E_Timer_API.resume, timer_id );
+  resume(timer_id) {
+    this._sendCommand(piggy.enums.E_Timer_API.resume, timer_id);
   }
-
+  
   /**
    * 停止定时器
    * @param {string} timer_id 定时器标识
    */
-  stop( timer_id = null ) {
-    this._sendCommand( piggy.enums.E_Timer_API.stop, timer_id );
+  stop(timer_id) {
+    this._sendCommand(piggy.enums.E_Timer_API.stop, timer_id);
   }
 
   /**
@@ -169,10 +173,10 @@ export class timers {
     let data = [];
     this.m_timers.forEach( ( timer ) => {
       let context = {
-        name: timer.m_category,
-        state: timer.getState(),
-        elapse: timer.elapse,
-        rest: timer.rest
+        name: timer["m_category"],
+        state: timer["getState"](),
+        elapse: timer["elapse"],
+        rest: timer["rest"]
       };
       data.push( piggy.strings.render( piggy.i18n.t( piggy.i18nK.timer_information ), context ) );
     } );

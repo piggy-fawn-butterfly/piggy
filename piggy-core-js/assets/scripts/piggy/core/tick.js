@@ -1,5 +1,4 @@
-import { piggy } from "../piggy";
-import { timer } from "./timer";
+import {timer} from "./timer";
 
 /**
  * @file tick

@@ -7,6 +7,15 @@
  */
 export const enums = {
   /**
+   * 开发模式
+   */
+  E_Dev_Mode: cc.Enum({
+    Debug: 0,
+    Beta: 1,
+    Release: 2
+  }),
+  
+  /**
    * 国际化选项
    * - SC: 简体中文
    * - TC: 繁体中文
@@ -16,13 +25,13 @@ export const enums = {
    * - FR: 法文
    */
   E_Language_Choice: cc.Enum({
-    SC: "sc", //简体中文
-    TC: "tc", //繁体中文
-    EN: "en", //英文
-    JP: "jp", //日文
-    KR: "kr", //韩文
-    FR: "fr", //法文
-    ES: "es" //西文
+    SC: 0, //简体中文
+    TC: 1, //繁体中文
+    EN: 2, //英文
+    JP: 3, //日文
+    KR: 4, //韩文
+    FR: 5, //法文
+    ES: 6 //西文
   }),
 
   /**

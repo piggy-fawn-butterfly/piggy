@@ -1,4 +1,4 @@
-import { piggy } from "../piggy";
+import {pool as PoolClass} from "./pool";
 
 /**
  * @file pools
@@ -26,7 +26,7 @@ export class pools {
       let [ path, size ] = item;
       piggy.res.load( path );
       if ( !this.m_pools.has( path ) && piggy.res.has( path ) ) {
-        let pool = new piggy.class.pool( path, path, size );
+        let pool = new PoolClass(path, path, size);
         this.m_pools.set( path, pool );
         pipeline = pipeline.concat( new Array( size ).fill( path ) );
       }

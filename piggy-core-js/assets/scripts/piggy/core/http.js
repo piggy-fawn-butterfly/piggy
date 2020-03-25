@@ -1,5 +1,3 @@
-import { piggy } from "../piggy";
-
 /**
  * @file HttpClient
  * @description HTTP网络模块
@@ -51,6 +49,7 @@ export class http {
   /**
    * 请求超时
    * @param {XMLHttpRequest} xhr
+   * @param {string} url
    */
   _onTimeout( xhr, url ) {
     piggy.logger.warn( "@HTTP请求超时", url, xhr );

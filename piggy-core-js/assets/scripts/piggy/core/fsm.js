@@ -1,5 +1,3 @@
-import { piggy } from "../piggy";
-
 /**
  * @format
  * @file fsm

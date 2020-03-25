@@ -1,23 +1,22 @@
-import { piggy } from "../piggy";
-
 export const strings = {
   /**
    * 模板字符串插值实现
    * @param {string} template 模板字符串
    * @param {object} context 字符串插值
+   * @strings {string}
    */
-  render( template, context ) {
+  render: function (template, context) {
     return template.replace(
       /\{\{(.*?)\}\}/g,
-      ( match, key ) => context[ key.trim() ]
+      (match, key) => context[key.trim()]
     );
   },
-
+  
   /**
    * 字符串高位补零
    * @param {string} str 原字符串
    * @param {number} len 设定默认字符串长度，长度不够时进行高位补零
-   * @returns {string} 高位补零后的字符串
+   * @returns {string}
    */
   prefixZero( str, len = 1 ) {
     let n = String( str ).length;
@@ -63,7 +62,7 @@ export const strings = {
    * @returns {boolean}
    */
   isEmpty( input ) {
-    return input == null || input == "";
+    return input == null || input === "";
   },
 
   /**
@@ -127,7 +126,7 @@ export const strings = {
    * @returns {boolean}
    */
   equals( input1, input2 ) {
-    return input1 == input2;
+    return input1 === input2;
   },
 
   /**
@@ -137,7 +136,7 @@ export const strings = {
    * @returns {boolean}
    */
   equalsIgnoreCase( input1, input2 ) {
-    return input1.toLocaleLowerCase() == input2.toLocaleLowerCase();
+    return input1.toLocaleLowerCase() === input2.toLocaleLowerCase();
   },
 
   /**
@@ -200,7 +199,7 @@ export const strings = {
    * @returns {string}
    */
   capitalize( input ) {
-    if ( input === null || input.length === 0 ) {
+    if (input == null || input.length === 0) {
       return input;
     }
     return input.replace( /^[a-z]/, function( matchStr ) {
@@ -214,7 +213,7 @@ export const strings = {
    * @returns {string}
    */
   unCapitalize( input ) {
-    if ( input === null || input.length === 0 ) {
+    if (input == null || input.length === 0) {
       return input;
     }
     return input.replace( /^[A-Z]/, function( matchStr ) {
@@ -249,7 +248,7 @@ export const strings = {
     }
     let count = 0;
     let index = 0;
-    while ( ( index = input.indexOf( sub, index ) ) != -1 ) {
+    while ((index = input.indexOf(sub, index)) !== -1) {
       index += sub.length;
       count++;
     }
@@ -423,17 +422,17 @@ export const strings = {
   isSpecialCharacterAlphanumeric( input ) {
     return /^[!-~]+$/.test( input );
   },
-
+  
   /**
    * 消息格式化
    * @param {string} message
    * @param {any[]} arr
    * @returns {string}
    */
-  format( message, arr ) {
-    return message.replace( /{(\d+)}/g, function( _, group ) {
-      return arr[ group ];
-    } );
+  format: function (message, arr) {
+    return message.replace(/{(\d+)}/g, (val, group) => {
+      return arr[group];
+    });
   },
 
   /**

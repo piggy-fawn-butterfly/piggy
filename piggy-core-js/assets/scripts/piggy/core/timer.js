@@ -1,5 +1,3 @@
-import { piggy } from "../piggy";
-
 /**
  * @file timer
  * @description 基于本地时间的定时器
@@ -134,10 +132,10 @@ export class timer {
 
   /**
    * 获得当前计时(ms)
-   * @returns {number} 当前计时(ms)
+   * @returns {number}
    */
   get elapse() {
-    let elapse = 0;
+    let elapse;
     if ( this.m_state === piggy.enums.E_Timer_State.Running ) {
       elapse = this.m_time_elapse + this._now() - this.m_start_at;
     } else {
@@ -145,10 +143,10 @@ export class timer {
     }
     return Math.min( elapse, this.m_stop_after );
   }
-
+  
   /**
    * 获得剩余计时(ms)
-   * @returns {number} 剩余计时(ms)
+   * @returns {number}
    */
   get rest() {
     return this.m_stop_after - this.elapse;

@@ -250,7 +250,6 @@ export const constants = {
 
   /**
    * 默认数据库格式
-   * @requires interfaces.I_Schema_Database
    */
   DATABASE_SCHEMA: {
     time: {

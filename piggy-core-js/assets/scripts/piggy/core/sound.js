@@ -1,11 +1,6 @@
-import { piggy } from "../piggy";
-
 /**
  * @file Sound
  * @description 音频管理器
- * @requires
- *  - `Res`
- *  - `Userdata`
  * @author DoooReyn <jl88744653@gmail.com>
  * @license MIT
  */
@@ -158,7 +153,7 @@ class Sound {
   /**
    * 获得音频状态
    * @param {string} path
-   * @returns {cc.audioEngine.AudioState}
+   * @returns {cc.audioEngine.AudioState | number}
    */
   getState( path ) {
     if ( !this.has( path ) ) return cc.audioEngine.AudioState.ERROR;

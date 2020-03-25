@@ -1,5 +1,3 @@
-import { piggy } from "../piggy";
-
 /**
  * 原始数据
  */
@@ -101,9 +99,9 @@ class storage {
   static get( name ) {
     let val = cc.sys.localStorage.getItem( name );
     if ( !!val && typeof val === "string" ) {
-      return piggy.mode.isRelease() ? piggy.unreadable.decode( val ) : val;
+      return piggy.mode.is(piggy.enums.E_Dev_Mode.Release) ? piggy.unreadable.decode(val.toString()) : val;
     }
-    return val;
+    return "";
   }
 
   /**
@@ -112,7 +110,7 @@ class storage {
    * @param {string} val 存储字符串
    */
   static set( name, val ) {
-    val = piggy.mode.isRelease() ? piggy.unreadable.encode( val ) : val;
-    cc.sys.localStorage.setItem( name, val );
+    val = piggy.mode.is(piggy.enums.E_Dev_Mode.Release) ? piggy.unreadable.encode(val) : val;
+    cc.sys.localStorage.setItem(name, val);
   }
 }

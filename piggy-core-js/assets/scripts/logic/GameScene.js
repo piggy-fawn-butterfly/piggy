@@ -1,5 +1,3 @@
-import { piggy } from "../piggy/piggy";
-
 cc.Class( {
   extends: cc.Component,
 

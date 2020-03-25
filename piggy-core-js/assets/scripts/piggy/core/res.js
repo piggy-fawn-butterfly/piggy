@@ -1,5 +1,3 @@
-import { piggy } from "../piggy";
-
 /**
  * @file res
  * @description 资源管理器
@@ -11,7 +9,7 @@ export class res {
    * 隐藏构造器
    */
   constructor() {
-    this.m_builtin_res = new Array();
+    this.m_builtin_res = new Array(0);
     this.m_path_type = new Map();
     this.m_cache_asset = new Map();
   }
@@ -99,12 +97,12 @@ export class res {
       asset: asset
     } );
   }
-
+  
   /**
    * 加载资源
    * @param {string | string[]}paths 资源路径
-   * @param {(current:number, total:number, asset: typeof cc.Asset) => void} onprogress 资源加载进度回调
-   * @param {(assets: cc.Asset[]) => void} oncomplete
+   * @param {Function} onprogress 资源加载进度回调
+   * @param {Function} oncomplete
    */
   load( paths, onprogress = function() { }, oncomplete = function() { } ) {
     paths = Array.prototype.concat( paths );
@@ -180,7 +178,7 @@ export class res {
     this.m_cache_asset.forEach( ( asset_info, url ) => {
       if ( url !== path ) {
         let asset_deps = this._getAssetDependUrls( asset_info.asset );
-        asset_deps.forEach( res => piggy.arrays.removeFrom( deps, res ) );
+        asset_deps.forEach(asset => piggy.arrays.removeFrom(deps, asset));
       }
     } );
     //释放处理后的资源
@@ -214,27 +212,26 @@ export class res {
    * @returns {cc.Node | cc.Prefab | typeof cc.Asset}
    */
   _use( loaded, path ) {
-    if ( !loaded ) {
-      piggy.logger.error( piggy.i18n.t( piggy.i18nK.invalid_resource_path ) );
-      return;
+    if (!loaded) {
+      piggy.logger.error(piggy.i18n.t(piggy.i18nK.invalid_resource_path));
+      return null;
     }
-    let asset_type = this.m_path_type.get( path );
-    let asset_info = this._get( path );
+    let asset_type = this.m_path_type.get(path);
+    let asset_info = this._get(path);
     let asset = asset_info.asset;
     asset_info.use++;
-    switch ( asset_type ) {
-      case "cc.Prefab":
-        return this._instantiate( asset );
-      default:
-        return asset;
+    if (asset_type === "cc.Prefab") {
+      return this._instantiate(asset);
+    } else {
+      return asset;
     }
   }
-
+  
   /**
    * 加载
    * @param {string} path 资源路径
    * @param {typeof cc.Asset} type 资源类型
-   * @param {(asset:typeof cc.Asset) => void} oncomplete
+   * @param {Function} oncomplete
    */
   _loadRes( path, type, oncomplete ) {
     cc.loader.loadRes( path, type, ( err, asset ) => {
@@ -255,10 +252,11 @@ export class res {
     }
     return null;
   }
-
+  
   /**
    * 解除资源占用
    * @param {string} path 资源
+   * @param {number} count
    */
   unUse( path, count = 1 ) {
     count = Math.max( 1, count );
@@ -327,6 +325,7 @@ export class res {
     let assets = cc.loader[ "_assetTables" ][ "assets" ][ "_pathToUuid" ];
     let _types = new Set();
     for ( let path in assets ) {
+      if (!assets.hasOwnProperty(path)) continue;
       let entries = [];
       let _entries = assets[ path ];
       _entries instanceof Array
@@ -396,21 +395,23 @@ export class res {
     }
     return [];
   }
-
+  
   /**
    * 获得cc.loader._cache中排除脚本资源的资源总数
    * 排除：js
-   * @returns {{refers:number; excludes: number;}}
+   * @returns {{refers:number, excludes: number}}
    */
   _getCCLoaderCacheCount() {
     let refers = 0;
     let excludes = 0;
-    let cache = cc.loader[ "_cache" ];
+    let cache = cc.loader._cache;
     for ( let url in cache ) {
-      let res_type = cache[ url ].type;
-      piggy.constants.RES_TYPE_IN_CACHE_TO_EXCLUDES.has( res_type )
-        ? excludes++
-        : refers++;
+      if (cache.hasOwnProperty(url)) {
+        let res_type = cache[url].type;
+        piggy.constants.RES_TYPE_IN_CACHE_TO_EXCLUDES.has(res_type)
+          ? excludes++
+          : refers++;
+      }
     }
     return { refers: refers, excludes: excludes };
   }
