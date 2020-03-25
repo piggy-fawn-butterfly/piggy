@@ -348,7 +348,7 @@ export class res {
   /**
    * 获得缓存中的资源
    * @param { string } path 资源路径
-   * @returns { {asset:typeof cc.Asset | cc.Prefab; use:number;} }
+   * @returns { {asset:typeof cc.Asset | cc.Prefab, use:number} }
    */
   _get( path ) {
     return this.m_cache_asset.get( path );
@@ -402,17 +402,17 @@ export class res {
    * @returns {{refers:number, excludes: number}}
    */
   _getCCLoaderCacheCount() {
-    let refers = 0;
-    let excludes = 0;
     let cache = cc.loader._cache;
+    let data = { refers: 0, excludes: 0 };
     for ( let url in cache ) {
       if (cache.hasOwnProperty(url)) {
         let res_type = cache[url].type;
         piggy.constants.RES_TYPE_IN_CACHE_TO_EXCLUDES.has(res_type)
-          ? excludes++
-          : refers++;
+          ? data.excludes++
+          : data.refers++;
       }
     }
-    return { refers: refers, excludes: excludes };
+    return data;
   }
 }
+
