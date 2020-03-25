@@ -1,5 +1,4 @@
 /**
- * @format
  * @file constants
  * @description 常量
  * @author DoooReyn <jl88744653@gmail.com>

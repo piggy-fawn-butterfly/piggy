@@ -1,47 +1,49 @@
 // 常量、枚举
-import {constants} from "./data/constants";
-import {colors} from "./data/colors";
-import {assets} from "./data/assets";
-import {enums} from "./data/enums";
-import {i18nK} from "./data/i18nK";
-import {states} from "./data/states";
-import {sc} from "./data/locales/sc";
-import {tc} from "./data/locales/tc";
-import {en} from "./data/locales/en";
-import {es} from "./data/locales/es";
-import {jp} from "./data/locales/jp";
-import {fr} from "./data/locales/fr";
+import { events } from "./core/events";
+import { fsm, machine } from "./core/fsm";
+import { http } from "./core/http";
+import { i18n } from "./core/i18n";
+import { ids } from "./core/ids";
+// 核心库
+import { logger } from "./core/logger";
+import { machines } from "./core/machines";
+import { pool } from "./core/pool";
+import { pools } from "./core/pools";
+import { res } from "./core/res";
+import { sound } from "./core/sound";
+import { tick } from "./core/tick";
+import { timer } from "./core/timer";
+import { timers } from "./core/timers";
+import { unreadable } from "./core/unreadable";
+import { userdata } from "./core/userdata";
+import { assets } from "./data/assets";
+import { colors } from "./data/colors";
+import { constants } from "./data/constants";
+import { enums } from "./data/enums";
+import { i18nK } from "./data/i18nK";
+import { en } from "./data/locales/en";
+import { es } from "./data/locales/es";
+import { fr } from "./data/locales/fr";
+import { jp } from "./data/locales/jp";
+import { sc } from "./data/locales/sc";
+import { tc } from "./data/locales/tc";
+import { states } from "./data/states";
+
 // 第三方库
 import md5 from "./libs/md5";
 import buffer from "./libs/buffer";
 import * as luxon from "./libs/luxon";
+
 // 辅助库
-import {arrays} from "./utils/arrays";
-import {cocos} from "./utils/cocos";
-import {datetime} from "./utils/datetime";
-import {kindof} from "./utils/kindof";
-import {maths} from "./utils/maths";
-import {objects} from "./utils/objects";
-import {prando} from "./utils/prando";
-import {strings} from "./utils/strings";
-import {urls} from "./utils/urls";
-// 核心库
-import {logger} from "./core/logger";
-import * as fsm from "./core/fsm";
-import {http} from "./core/http";
-import {i18n} from "./core/i18n";
-import {events} from "./core/events";
-import {ids} from "./core/ids";
-import {res} from "./core/res";
-import {pool} from "./core/pool";
-import {pools} from "./core/pools";
-import {sound} from "./core/sound";
-import {machines} from "./core/machines";
-import {tick} from "./core/tick";
-import {timer} from "./core/timer";
-import {timers} from "./core/timers";
-import {unreadable} from "./core/unreadable";
-import {userdata} from "./core/userdata";
+import { arrays } from "./utils/arrays";
+import { cocos } from "./utils/cocos";
+import { datetime } from "./utils/datetime";
+import { kindof } from "./utils/kindof";
+import { maths } from "./utils/maths";
+import { objects } from "./utils/objects";
+import { prando } from "./utils/prando";
+import { strings } from "./utils/strings";
+import { urls } from "./utils/urls";
 
 // 游戏配置
 // import { xxx } from "./data/config/xxx";
@@ -53,7 +55,7 @@ piggy.assets = assets;
 piggy.enums = enums;
 piggy.i18nK = i18nK;
 piggy.states = states;
-piggy.locales = {sc: sc, tc: tc, en: en, es: es, jp: jp, fr: fr};
+piggy.locales = { sc: sc, tc: tc, en: en, es: es, jp: jp, fr: fr };
 piggy.constants.RES_TYPE_LIST = new Set(piggy.constants.RES_TYPE_FALLBACKS);
 
 // piggy.config.xxx = xxx;
@@ -63,7 +65,7 @@ piggy.constants.RES_TYPE_LIST = new Set(piggy.constants.RES_TYPE_FALLBACKS);
  * @param {piggy.enums.E_Dev_Mode} mode
  * @returns {boolean}
  */
-piggy.mode.is = (mode) => {
+piggy.mode.is = mode => {
   return piggy.mode.code === mode;
 };
 
@@ -84,9 +86,10 @@ piggy.strings = strings;
 piggy.urls = urls;
 
 piggy.class = {
-  Fsm: fsm,
-  Pool: pool,
-  Timer: timer
+  fsm: fsm,
+  machine: machine,
+  pool: pool,
+  timer: timer
 };
 
 piggy.ids = {
@@ -108,6 +111,5 @@ piggy.sound = new sound();
 piggy.tick = new tick();
 piggy.machines = new machines();
 piggy.timers = new timers();
-piggy.unreadable = unreadable;
+piggy.unreadable = new unreadable();
 piggy.userdata = new userdata();
-

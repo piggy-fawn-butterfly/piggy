@@ -1,5 +1,5 @@
 /**
- * @file HttpClient
+ * @file http
  * @description HTTP网络模块
  * @author DoooReyn <jl88744653@gmail.com>
  * @license MIT
@@ -9,6 +9,10 @@ export class http {
    * 隐藏构造器
    */
   constructor() {
+    /**
+     * http请求列表
+     * @type {Map<string, string>}
+     */
     this.m_requests = new Map();
   }
 
@@ -17,12 +21,12 @@ export class http {
    * @param {object} params 参数
    * @returns {string}
    */
-  _getQueryString( params ) {
-    let keys = Object.keys( params );
+  _getQueryString(params) {
+    let keys = Object.keys(params);
     let walk = key => {
-      return `${ key }=${ params[ key ] }`;
+      return `${key}=${params[key]}`;
     };
-    return Array.prototype.map.call( keys, walk ).join( "&" );
+    return Array.prototype.map.call(keys, walk).join("&");
   }
 
   /**
@@ -30,9 +34,9 @@ export class http {
    * @param {XMLHttpRequest} xhr XMLHttpRequest
    * @param {object} headers HTTP请求头
    */
-  _setRequestHeader( xhr, headers ) {
-    for ( let key in headers ) {
-      xhr.setRequestHeader( key, headers[ key ] );
+  _setRequestHeader(xhr, headers) {
+    for (let key in headers) {
+      xhr.setRequestHeader(key, headers[key]);
     }
   }
 
@@ -40,10 +44,10 @@ export class http {
    * 移除HTTP实例事件监听
    * @param {XMLHttpRequest} xhr XMLHttpRequest
    */
-  _removeRequestEvent( xhr ) {
+  _removeRequestEvent(xhr) {
     xhr.onload = xhr.onloadstart = xhr.onloadend = xhr.onprogress = null;
     xhr.ontimeout = xhr.onerror = xhr.onabort = xhr.onreadystatechange = null;
-    this.m_requests.delete( xhr[ "http_request_id" ] );
+    this.m_requests.delete(xhr["http_request_id"]);
   }
 
   /**
@@ -51,9 +55,9 @@ export class http {
    * @param {XMLHttpRequest} xhr
    * @param {string} url
    */
-  _onTimeout( xhr, url ) {
-    piggy.logger.warn( "@HTTP请求超时", url, xhr );
-    this._removeRequestEvent( xhr );
+  _onTimeout(xhr, url) {
+    piggy.logger.warn("@HTTP请求超时", url, xhr);
+    this._removeRequestEvent(xhr);
   }
 
   /**
@@ -61,9 +65,9 @@ export class http {
    * @param {XMLHttpRequest} xhr
    * @param {string} url
    */
-  _onError( xhr, url ) {
-    piggy.logger.error( "@HTTP请求错误", url, xhr );
-    this._removeRequestEvent( xhr );
+  _onError(xhr, url) {
+    piggy.logger.error("@HTTP请求错误", url, xhr);
+    this._removeRequestEvent(xhr);
   }
 
   /**
@@ -71,9 +75,9 @@ export class http {
    * @param {XMLHttpRequest} xhr
    * @param {string} url
    */
-  _onAbort( xhr, url ) {
-    piggy.logger.error( "@HTTP请求终止", url, xhr );
-    this._removeRequestEvent( xhr );
+  _onAbort(xhr, url) {
+    piggy.logger.error("@HTTP请求终止", url, xhr);
+    this._removeRequestEvent(xhr);
   }
 
   /**
@@ -81,16 +85,16 @@ export class http {
    * @param {XMLHttpRequest} xhr
    * @param {string} url
    */
-  _onChange( xhr, url ) {
-    if ( xhr.readyState === 4 && xhr.status >= 200 && xhr.status < 300 ) {
+  _onChange(xhr, url) {
+    if (xhr.readyState === 4 && xhr.status >= 200 && xhr.status < 300) {
       try {
-        const rep = JSON.parse( xhr.responseText );
-        rep && rep.type && piggy.events.dispatch( rep.type, rep.msg );
-        piggy.logger.info( "@HTTP消息内容", url, rep );
-      } catch ( err ) {
-        piggy.logger.error( "@HTTP消息错误", url, err, xhr );
+        const rep = JSON.parse(xhr.responseText);
+        rep && rep.type && piggy.events.dispatch(rep.type, rep.msg);
+        piggy.logger.info("@HTTP消息内容", url, rep);
+      } catch (err) {
+        piggy.logger.error("@HTTP消息错误", url, err, xhr);
       }
-      this._removeRequestEvent( xhr );
+      this._removeRequestEvent(xhr);
     }
   }
 
@@ -101,32 +105,32 @@ export class http {
    * @param {object} params 参数
    * @param {object} headers HTTP请求头
    */
-  _send( method, url, params, headers ) {
+  _send(method, url, params, headers) {
     let xhr = cc.loader.getXMLHttpRequest();
 
     //设置请求头
     headers = headers || {};
-    cc.sys.isNative && ( headers[ "Accept-Encoding" ] = "gzip,deflate" );
-    this._setRequestHeader( xhr, headers );
+    cc.sys.isNative && (headers["Accept-Encoding"] = "gzip,deflate");
+    this._setRequestHeader(xhr, headers);
 
     //构造请求ID
-    xhr[ "http_request_id" ] = piggy.ids.http.next();
-    this.m_requests.set( xhr[ "http_request_id" ], url );
+    xhr["http_request_id"] = piggy.ids.http.next();
+    this.m_requests.set(xhr["http_request_id"], url);
 
     //构造请求体
-    let body = params instanceof Object ? JSON.stringify( params ) : "";
+    let body = params instanceof Object ? JSON.stringify(params) : "";
 
     //监听事件
-    xhr.onreadystatechange = this._onChange.bind( this, xhr, url );
-    xhr.ontimeout = this._onTimeout.bind( this, xhr, url );
-    xhr.onerror = this._onError.bind( this, xhr, url );
-    xhr.onabort = this._onAbort.bind( this, xhr, url );
+    xhr.onreadystatechange = this._onChange.bind(this, xhr, url);
+    xhr.ontimeout = this._onTimeout.bind(this, xhr, url);
+    xhr.onerror = this._onError.bind(this, xhr, url);
+    xhr.onabort = this._onAbort.bind(this, xhr, url);
 
     //发送请求
     xhr.timeout = piggy.constants.HTTP_REQUEST_TIMEOUT;
     xhr.responseType = "text";
-    xhr.open( method, url, true );
-    xhr.send( body );
+    xhr.open(method, url, true);
+    xhr.send(body);
   }
 
   /**
@@ -135,12 +139,12 @@ export class http {
    * @param {object} params 参数
    * @param {object} headers HTTP请求头
    */
-  get( url, params, headers ) {
-    if ( params ) {
-      url += url.indexOf( "?" ) === -1 ? "?" : "";
-      url += this._getQueryString( params );
+  get(url, params, headers) {
+    if (params) {
+      url += url.indexOf("?") === -1 ? "?" : "";
+      url += this._getQueryString(params);
     }
-    this._send( piggy.enums.E_Http_Method.Get, url, params, headers );
+    this._send(piggy.enums.E_Http_Method.Get, url, params, headers);
   }
 
   /**
@@ -149,8 +153,8 @@ export class http {
    * @param {object} params 参数
    * @param {object} headers HTTP请求头
    */
-  post( url, params, headers ) {
-    this._send( piggy.enums.E_Http_Method.Post, url, params, headers );
+  post(url, params, headers) {
+    this._send(piggy.enums.E_Http_Method.Post, url, params, headers);
   }
 
   /**
@@ -165,6 +169,6 @@ export class http {
    * 输出数据
    */
   dump() {
-    piggy.logger.info( "@HTTP服务", this.m_requests );
+    piggy.logger.info("@HTTP服务", this.m_requests);
   }
 }

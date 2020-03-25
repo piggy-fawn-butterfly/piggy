@@ -1,3 +1,9 @@
+/**
+ * @file strings
+ * @description 字符串扩展库
+ * @author DoooReyn <jl88744653@gmail.com>
+ * @license MIT
+ */
 export const strings = {
   /**
    * 模板字符串插值实现
@@ -5,24 +11,21 @@ export const strings = {
    * @param {object} context 字符串插值
    * @strings {string}
    */
-  render: function (template, context) {
-    return template.replace(
-      /\{\{(.*?)\}\}/g,
-      (match, key) => context[key.trim()]
-    );
+  render: function(template, context) {
+    return template.replace(/\{\{(.*?)\}\}/g, (match, key) => context[key.trim()]);
   },
-  
+
   /**
    * 字符串高位补零
    * @param {string} str 原字符串
    * @param {number} len 设定默认字符串长度，长度不够时进行高位补零
    * @returns {string}
    */
-  prefixZero( str, len = 1 ) {
-    let n = String( str ).length;
-    let t = Math.max( 0, len - n );
-    t > 0 && ( str = "0".repeat( t ) + str );
-    return String( str );
+  prefixZero(str, len = 1) {
+    let n = String(str).length;
+    let t = Math.max(0, len - n);
+    t > 0 && (str = "0".repeat(t) + str);
+    return String(str);
   },
 
   /**
@@ -31,14 +34,14 @@ export const strings = {
    * @param {number} len
    * @returns {string}
    */
-  getCharCodes( str, len = str.length - 1 ) {
+  getCharCodes(str, len = str.length - 1) {
     return str
-      .split( "" )
-      .slice( 0, len )
-      .map( ( v ) => {
-        return v.charCodeAt( 0 );
-      } )
-      .join( "" );
+      .split("")
+      .slice(0, len)
+      .map(v => {
+        return v.charCodeAt(0);
+      })
+      .join("");
   },
 
   /**
@@ -46,12 +49,12 @@ export const strings = {
    * @param {string} raw 字符串
    * @returns {boolean}
    */
-  isJsonString( raw ) {
+  isJsonString(raw) {
     try {
-      let obj = JSON.parse( raw );
-      if ( !!obj && typeof obj === "object" ) return true;
-    } catch ( e ) {
-      console.error( e );
+      let obj = JSON.parse(raw);
+      if (!!obj && typeof obj === "object") return true;
+    } catch (e) {
+      console.error(e);
     }
     return false;
   },
@@ -61,7 +64,7 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isEmpty( input ) {
+  isEmpty(input) {
     return input == null || input === "";
   },
 
@@ -70,8 +73,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isNotEmpty( input ) {
-    return !this.isEmpty( input );
+  isNotEmpty(input) {
+    return !this.isEmpty(input);
   },
 
   /**
@@ -79,8 +82,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isBlank( input ) {
-    return input == null || /^\s*$/.test( input );
+  isBlank(input) {
+    return input == null || /^\s*$/.test(input);
   },
 
   /**
@@ -88,8 +91,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isNotBlank( input ) {
-    return !this.isBlank( input );
+  isNotBlank(input) {
+    return !this.isBlank(input);
   },
 
   /**
@@ -97,16 +100,16 @@ export const strings = {
    * @param {string} input
    * @returns {string}
    */
-  trim( input ) {
-    return input.replace( /^\s+|\s+$/, "" );
+  trim(input) {
+    return input.replace(/^\s+|\s+$/, "");
   },
 
   /**
    * 删除两边空格
    * @param {string} input
    */
-  trimToEmpty( input ) {
-    return input == null ? "" : this.trim( input );
+  trimToEmpty(input) {
+    return input == null ? "" : this.trim(input);
   },
 
   /**
@@ -115,8 +118,8 @@ export const strings = {
    * @param {string} searchSeq
    * @returns {boolean}
    */
-  contains( input, searchSeq ) {
-    return input.indexOf( searchSeq ) >= 0;
+  contains(input, searchSeq) {
+    return input.indexOf(searchSeq) >= 0;
   },
 
   /**
@@ -125,7 +128,7 @@ export const strings = {
    * @param {string} input2
    * @returns {boolean}
    */
-  equals( input1, input2 ) {
+  equals(input1, input2) {
     return input1 === input2;
   },
 
@@ -135,7 +138,7 @@ export const strings = {
    * @param {string} input2
    * @returns {boolean}
    */
-  equalsIgnoreCase( input1, input2 ) {
+  equalsIgnoreCase(input1, input2) {
     return input1.toLocaleLowerCase() === input2.toLocaleLowerCase();
   },
 
@@ -144,8 +147,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  containsWhitespace( input ) {
-    return this.contains( input, " " );
+  containsWhitespace(input) {
+    return this.contains(input, " ");
   },
 
   /**
@@ -154,9 +157,9 @@ export const strings = {
    * @param {number} repeatTimes
    * @returns {string}
    */
-  repeat( ch, repeatTimes ) {
+  repeat(ch, repeatTimes) {
     let result = "";
-    for ( let i = 0; i < repeatTimes; i++ ) {
+    for (let i = 0; i < repeatTimes; i++) {
       result += ch;
     }
     return result;
@@ -167,8 +170,8 @@ export const strings = {
    * @param {string} input
    * @returns {string}
    */
-  deleteWhitespace( input ) {
-    return input.replace( /\s+/g, "" );
+  deleteWhitespace(input) {
+    return input.replace(/\s+/g, "");
   },
 
   /**
@@ -178,8 +181,8 @@ export const strings = {
    * @param {string} padStr
    * @returns {string}
    */
-  rightPad( input, size, padStr ) {
-    return input + this.repeat( padStr, size );
+  rightPad(input, size, padStr) {
+    return input + this.repeat(padStr, size);
   },
 
   /**
@@ -189,8 +192,8 @@ export const strings = {
    * @param {string} padStr
    * @returns {string}
    */
-  leftPad( input, size, padStr ) {
-    return this.repeat( padStr, size ) + input;
+  leftPad(input, size, padStr) {
+    return this.repeat(padStr, size) + input;
   },
 
   /**
@@ -198,13 +201,13 @@ export const strings = {
    * @param {string} input
    * @returns {string}
    */
-  capitalize( input ) {
+  capitalize(input) {
     if (input == null || input.length === 0) {
       return input;
     }
-    return input.replace( /^[a-z]/, function( matchStr ) {
+    return input.replace(/^[a-z]/, function(matchStr) {
       return matchStr.toLocaleUpperCase();
-    } );
+    });
   },
 
   /**
@@ -212,13 +215,13 @@ export const strings = {
    * @param {string} input
    * @returns {string}
    */
-  unCapitalize( input ) {
+  unCapitalize(input) {
     if (input == null || input.length === 0) {
       return input;
     }
-    return input.replace( /^[A-Z]/, function( matchStr ) {
+    return input.replace(/^[A-Z]/, function(matchStr) {
       return matchStr.toLocaleLowerCase();
-    } );
+    });
   },
 
   /**
@@ -226,14 +229,14 @@ export const strings = {
    * @param {string} input
    * @returns {string}
    */
-  swapCase( input ) {
-    return input.replace( /[a-z]/gi, function( matchStr ) {
-      if ( matchStr >= "A" && matchStr <= "Z" ) {
+  swapCase(input) {
+    return input.replace(/[a-z]/gi, function(matchStr) {
+      if (matchStr >= "A" && matchStr <= "Z") {
         return matchStr.toLocaleLowerCase();
-      } else if ( matchStr >= "a" && matchStr <= "z" ) {
+      } else if (matchStr >= "a" && matchStr <= "z") {
         return matchStr.toLocaleUpperCase();
       }
-    } );
+    });
   },
 
   /**
@@ -242,8 +245,8 @@ export const strings = {
    * @param {string} sub
    * @returns {number}
    */
-  countMatches( input, sub ) {
-    if ( this.isEmpty( input ) || this.isEmpty( sub ) ) {
+  countMatches(input, sub) {
+    if (this.isEmpty(input) || this.isEmpty(sub)) {
       return 0;
     }
     let count = 0;
@@ -260,8 +263,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isAlpha( input ) {
-    return /^[a-z]+$/i.test( input );
+  isAlpha(input) {
+    return /^[a-z]+$/i.test(input);
   },
 
   /**
@@ -269,8 +272,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isAlphaSpace( input ) {
-    return /^[a-z\s]*$/i.test( input );
+  isAlphaSpace(input) {
+    return /^[a-z\s]*$/i.test(input);
   },
 
   /**
@@ -278,8 +281,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isAlphanumeric( input ) {
-    return /^[a-z0-9]+$/i.test( input );
+  isAlphanumeric(input) {
+    return /^[a-z0-9]+$/i.test(input);
   },
 
   /**
@@ -287,8 +290,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isAlphanumericSpace( input ) {
-    return /^[a-z0-9\s]*$/i.test( input );
+  isAlphanumericSpace(input) {
+    return /^[a-z0-9\s]*$/i.test(input);
   },
 
   /**
@@ -296,8 +299,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isNumeric( input ) {
-    return /^(?:[1-9]\d*|0)(?:\.\d+)?$/.test( input );
+  isNumeric(input) {
+    return /^(?:[1-9]\d*|0)(?:\.\d+)?$/.test(input);
   },
 
   /**
@@ -305,8 +308,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isDecimal( input ) {
-    return /^[-+]?(?:0|[1-9]\d*)\.\d+$/.test( input );
+  isDecimal(input) {
+    return /^[-+]?(?:0|[1-9]\d*)\.\d+$/.test(input);
   },
 
   /**
@@ -314,8 +317,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isNegativeDecimal( input ) {
-    return /^\-(?:0|[1-9]\d*)\.\d+$/.test( input );
+  isNegativeDecimal(input) {
+    return /^\-(?:0|[1-9]\d*)\.\d+$/.test(input);
   },
 
   /**
@@ -323,8 +326,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isPositiveDecimal( input ) {
-    return /^\+?(?:0|[1-9]\d*)\.\d+$/.test( input );
+  isPositiveDecimal(input) {
+    return /^\+?(?:0|[1-9]\d*)\.\d+$/.test(input);
   },
 
   /**
@@ -332,8 +335,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isInteger( input ) {
-    return /^[-+]?(?:0|[1-9]\d*)$/.test( input );
+  isInteger(input) {
+    return /^[-+]?(?:0|[1-9]\d*)$/.test(input);
   },
 
   /**
@@ -341,8 +344,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isPositiveInteger( input ) {
-    return /^\+?(?:0|[1-9]\d*)$/.test( input );
+  isPositiveInteger(input) {
+    return /^\+?(?:0|[1-9]\d*)$/.test(input);
   },
 
   /**
@@ -350,8 +353,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isNegativeInteger( input ) {
-    return /^\-(?:0|[1-9]\d*)$/.test( input );
+  isNegativeInteger(input) {
+    return /^\-(?:0|[1-9]\d*)$/.test(input);
   },
 
   /**
@@ -359,8 +362,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isNumericSpace( input ) {
-    return /^[\d\s]*$/.test( input );
+  isNumericSpace(input) {
+    return /^[\d\s]*$/.test(input);
   },
 
   /**
@@ -368,8 +371,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isWhitespace( input ) {
-    return /^\s*$/.test( input );
+  isWhitespace(input) {
+    return /^\s*$/.test(input);
   },
 
   /**
@@ -377,8 +380,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isAllLowerCase( input ) {
-    return /^[a-z]+$/.test( input );
+  isAllLowerCase(input) {
+    return /^[a-z]+$/.test(input);
   },
 
   /**
@@ -386,8 +389,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isAllUpperCase( input ) {
-    return /^[A-Z]+$/.test( input );
+  isAllUpperCase(input) {
+    return /^[A-Z]+$/.test(input);
   },
 
   /**
@@ -395,14 +398,14 @@ export const strings = {
    * @param {string} input
    * @returns {string}
    */
-  reverse( input ) {
-    if ( this.isBlank( input ) ) {
+  reverse(input) {
+    if (this.isBlank(input)) {
       input;
     }
     return input
-      .split( "" )
+      .split("")
       .reverse()
-      .join( "" );
+      .join("");
   },
 
   /**
@@ -410,8 +413,8 @@ export const strings = {
    * @param {string} input
    * @returns {string}
    */
-  removeSpecialCharacter( input ) {
-    return input.replace( /[!-/:-@\[-`{-~]/g, "" );
+  removeSpecialCharacter(input) {
+    return input.replace(/[!-/:-@\[-`{-~]/g, "");
   },
 
   /**
@@ -419,17 +422,17 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isSpecialCharacterAlphanumeric( input ) {
-    return /^[!-~]+$/.test( input );
+  isSpecialCharacterAlphanumeric(input) {
+    return /^[!-~]+$/.test(input);
   },
-  
+
   /**
    * 消息格式化
    * @param {string} message
    * @param {any[]} arr
    * @returns {string}
    */
-  format: function (message, arr) {
+  format: function(message, arr) {
     return message.replace(/{(\d+)}/g, (val, group) => {
       return arr[group];
     });
@@ -441,11 +444,11 @@ export const strings = {
    * @param {boolean} ignoreCase
    * @returns {string}
    */
-  compressRepeatedStr( input, ignoreCase ) {
-    let pattern = new RegExp( "([a-z])\\1+", ignoreCase ? "ig" : "g" );
-    return input.replace( pattern, function( matchStr, group1 ) {
+  compressRepeatedStr(input, ignoreCase) {
+    let pattern = new RegExp("([a-z])\\1+", ignoreCase ? "ig" : "g");
+    return input.replace(pattern, function(matchStr, group1) {
       return matchStr.length + group1;
-    } );
+    });
   },
 
   /**
@@ -453,8 +456,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isChinese( input ) {
-    return /^[\u4E00-\u9FA5]+$/.test( input );
+  isChinese(input) {
+    return /^[\u4E00-\u9FA5]+$/.test(input);
   },
 
   /**
@@ -462,8 +465,8 @@ export const strings = {
    * @param {string} input
    * @returns {string}
    */
-  removeChinese( input ) {
-    return input.replace( /[\u4E00-\u9FA5]+/gm, "" );
+  removeChinese(input) {
+    return input.replace(/[\u4E00-\u9FA5]+/gm, "");
   },
 
   /**
@@ -471,9 +474,9 @@ export const strings = {
    * @param {string} input
    * @returns {string}
    */
-  escapeMetaCharacter( input ) {
+  escapeMetaCharacter(input) {
     let metaCharacter = "^$()*+.[]|\\-?{}";
-    if ( metaCharacter.indexOf( input ) >= 0 ) {
+    if (metaCharacter.indexOf(input) >= 0) {
       input = "\\" + input;
     }
     return input;
@@ -484,8 +487,8 @@ export const strings = {
    * @param {string} input
    * @returns {string}
    */
-  escapeMetaCharacterOfStr( input ) {
-    return input.replace( /[-$^()*+.\[\]|\\?{}]/gm, "\\$&" );
+  escapeMetaCharacterOfStr(input) {
+    return input.replace(/[-$^()*+.\[\]|\\?{}]/gm, "\\$&");
   },
 
   /**
@@ -493,10 +496,10 @@ export const strings = {
    * @param {string} input
    * @returns {string}
    */
-  chineseToUnicode( input ) {
-    return input.replace( /[\u4E00-\u9FA5]/g, function( matchStr ) {
-      return "\\u" + matchStr.charCodeAt( 0 ).toString( 16 );
-    } );
+  chineseToUnicode(input) {
+    return input.replace(/[\u4E00-\u9FA5]/g, function(matchStr) {
+      return "\\u" + matchStr.charCodeAt(0).toString(16);
+    });
   },
 
   /**
@@ -505,28 +508,28 @@ export const strings = {
    * @param {string} str
    * @returns {boolean}
    */
-  isNest( rule, str ) {
-    if ( !( rule && str ) ) {
+  isNest(rule, str) {
+    if (!(rule && str)) {
       return false;
     }
     let keys = [];
     let values = [];
-    for ( let key in rule ) {
-      if ( rule.hasOwnProperty( key ) ) {
-        keys.push( key );
-        values.push( rule[ key ] );
+    for (let key in rule) {
+      if (rule.hasOwnProperty(key)) {
+        keys.push(key);
+        values.push(rule[key]);
       }
     }
-    let chs = str.split( "" );
+    let chs = str.split("");
     let len = chs.length;
     let stack = [];
-    for ( let i = 0; i < len; i++ ) {
-      if ( keys.indexOf( chs[ i ] ) > -1 ) {
-        stack.push( rule[ chs[ i ] ] );
+    for (let i = 0; i < len; i++) {
+      if (keys.indexOf(chs[i]) > -1) {
+        stack.push(rule[chs[i]]);
       } else {
-        if ( chs[ i ] === stack[ stack.length - 1 ] ) {
+        if (chs[i] === stack[stack.length - 1]) {
           stack.pop();
-        } else if ( values.indexOf( chs[ i ] ) > -1 ) {
+        } else if (values.indexOf(chs[i]) > -1) {
           return false;
         }
       }
@@ -539,8 +542,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isPhoneNumber( input ) {
-    return piggy.constants.PHONE_PATTERNS.PHONE_SIMPLE.test( input );
+  isPhoneNumber(input) {
+    return piggy.constants.PHONE_PATTERNS.PHONE_SIMPLE.test(input);
   },
 
   /**
@@ -548,8 +551,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isPhoneMobile( input ) {
-    return piggy.constants.PHONE_PATTERNS.PHONE_MOBILE.test( input );
+  isPhoneMobile(input) {
+    return piggy.constants.PHONE_PATTERNS.PHONE_MOBILE.test(input);
   },
 
   /**
@@ -557,8 +560,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isPhoneCall( input ) {
-    return piggy.constants.PHONE_PATTERNS.PHONE_CALL.test( input );
+  isPhoneCall(input) {
+    return piggy.constants.PHONE_PATTERNS.PHONE_CALL.test(input);
   },
 
   /**
@@ -566,8 +569,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isChinaTelecom( input ) {
-    return piggy.constants.PHONE_PATTERNS.CHINA_TELECOM.test( input );
+  isChinaTelecom(input) {
+    return piggy.constants.PHONE_PATTERNS.CHINA_TELECOM.test(input);
   },
 
   /**
@@ -575,8 +578,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isChinaUnicom( input ) {
-    return piggy.constants.PHONE_PATTERNS.CHINA_UNICOM.test( input );
+  isChinaUnicom(input) {
+    return piggy.constants.PHONE_PATTERNS.CHINA_UNICOM.test(input);
   },
 
   /**
@@ -584,8 +587,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isChinaMobile( input ) {
-    return piggy.constants.PHONE_PATTERNS.CHINA_MOBILE.test( input );
+  isChinaMobile(input) {
+    return piggy.constants.PHONE_PATTERNS.CHINA_MOBILE.test(input);
   },
 
   /**
@@ -593,8 +596,8 @@ export const strings = {
    * @param {string} input
    * @returns {boolean}
    */
-  isEmail( input ) {
-    return piggy.constants.PHONE_PATTERNS.EMAIL_ADDRESS.test( input );
+  isEmail(input) {
+    return piggy.constants.PHONE_PATTERNS.EMAIL_ADDRESS.test(input);
   },
 
   /**
@@ -602,8 +605,8 @@ export const strings = {
    * @param {string} idCard
    * @returns {boolean}
    */
-  isSimpleIdCard18( idCard ) {
-    return piggy.constants.PHONE_PATTERNS.ID_CARD_18_SIMPLE.test( idCard );
+  isSimpleIdCard18(idCard) {
+    return piggy.constants.PHONE_PATTERNS.ID_CARD_18_SIMPLE.test(idCard);
   },
 
   /**
@@ -611,18 +614,18 @@ export const strings = {
    * @param {string} idCard
    * @returns {boolean}
    */
-  checkIdCardCode( idCard ) {
-    let multiplier = [ 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2 ];
-    let idData = idCard.split( "" );
+  checkIdCardCode(idCard) {
+    let multiplier = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
+    let idData = idCard.split("");
     let len = 17;
     let sum = 0;
-    for ( let i = 0; i < len; i++ ) {
-      sum += parseInt( idData[ i ] ) * multiplier[ i ];
+    for (let i = 0; i < len; i++) {
+      sum += parseInt(idData[i]) * multiplier[i];
     }
     let remainder = sum % 11;
-    let checkCodeArr = [ "1", "0", "X", "9", "8", "7", "6", "5", "4", "3", "2" ];
-    let checkCode = checkCodeArr[ remainder ];
-    return checkCode === idCard[ 17 ];
+    let checkCodeArr = ["1", "0", "X", "9", "8", "7", "6", "5", "4", "3", "2"];
+    let checkCode = checkCodeArr[remainder];
+    return checkCode === idCard[17];
   },
 
   /**
@@ -630,16 +633,16 @@ export const strings = {
    * @param {string} idCard
    * @returns {boolean}
    */
-  isIdCard18( idCard ) {
+  isIdCard18(idCard) {
     //先校验格式
-    if ( this.isSimpleIdCard18( idCard ) ) {
+    if (this.isSimpleIdCard18(idCard)) {
       //校验日期时间是否合法
-      let dateStr = idCard.substr( 6, 8 );
-      let dateStrNew = dateStr.replace( /(\d{4})(\d{2})(\d{2})/, "$1/$2/$3" );
-      let dateObj = new Date( dateStrNew );
+      let dateStr = idCard.substr(6, 8);
+      let dateStrNew = dateStr.replace(/(\d{4})(\d{2})(\d{2})/, "$1/$2/$3");
+      let dateObj = new Date(dateStrNew);
       let month = dateObj.getMonth() + 1;
-      if ( parseInt( dateStr.substr( 4, 2 ) ) === month ) {
-        return this.checkIdCardCode( idCard );
+      if (parseInt(dateStr.substr(4, 2)) === month) {
+        return this.checkIdCardCode(idCard);
       }
     }
     return false;

@@ -1,5 +1,4 @@
 /**
- * @format
  * @file states
  * @description 状态配置
  * @author DoooReyn <jl88744653@gmail.com>

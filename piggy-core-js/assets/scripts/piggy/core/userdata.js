@@ -4,7 +4,7 @@
 const RAW_STRING = "{}";
 
 /**
- * @file Userdata
+ * @file userdata
  * @description 玩家本地数据
  * @author DoooReyn <jl88744653@gmail.com>
  * @license MIT

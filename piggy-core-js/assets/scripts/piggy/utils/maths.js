@@ -1,3 +1,9 @@
+/**
+ * @file maths
+ * @description 数学扩展库
+ * @author DoooReyn <jl88744653@gmail.com>
+ * @license MIT
+ */
 export const maths = {
   /**
    * 随机整数 [min, max]
@@ -5,8 +11,8 @@ export const maths = {
    * @param {number} max 上限
    * @returns {number}
    */
-  randomInt( min, max ) {
-    return Math.floor( Math.random() * ( max - min + 1 ) + min );
+  randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
   },
 
   /**
@@ -15,7 +21,7 @@ export const maths = {
    * @param {number} max 上限
    * @returns {number}
    */
-  randomFloat( min, max ) {
-    return Math.random() * ( max - min + 1 ) + min;
+  randomFloat(min, max) {
+    return Math.random() * (max - min + 1) + min;
   }
 };

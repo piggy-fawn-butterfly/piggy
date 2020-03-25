@@ -1,5 +1,4 @@
 /**
- * @format
  * @file enums
  * @description 枚举定义
  * @author DoooReyn <jl88744653@gmail.com>
@@ -14,7 +13,7 @@ export const enums = {
     Beta: 1,
     Release: 2
   }),
-  
+
   /**
    * 国际化选项
    * - SC: 简体中文

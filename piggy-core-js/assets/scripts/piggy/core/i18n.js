@@ -1,6 +1,6 @@
 /**
  * @file i18n
- * @description 国际化方案
+ * @description i18n国际化
  * @author DoooReyn <jl88744653@gmail.com>
  * @license MIT
  */
@@ -9,7 +9,7 @@ export class i18n {
     //默认国际化语言是中文
     this.m_lang = piggy.enums.E_Language_Choice.SC;
   }
-  
+
   /**
    * 获得当前语言
    * @returns {piggy.enums.E_Language_Choice}
@@ -17,7 +17,7 @@ export class i18n {
   get() {
     return this.m_lang;
   }
-  
+
   /**
    * 设置当前语言
    * @param {piggy.enums.E_Language_Choice} lang
@@ -26,7 +26,7 @@ export class i18n {
     this.m_lang = lang;
     piggy.events.dispatch(piggy.constants.EVENT_NAME.ON_LANGUAGE_CHANGED);
   }
-  
+
   /**
    * 判断当前语言
    * @param {piggy.enums.E_Language_Choice} lang
@@ -34,7 +34,7 @@ export class i18n {
   is(lang) {
     return this.m_lang === lang;
   }
-  
+
   /**
    * 获得语言代码
    * @param {string} lang
@@ -43,7 +43,7 @@ export class i18n {
   code(lang = this.m_lang) {
     return piggy.enums.E_Language_Choice[lang].toLowerCase();
   }
-  
+
   /**
    * @description
    * - cn: 根据key和language获得i18n文本

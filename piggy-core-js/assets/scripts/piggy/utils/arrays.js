@@ -1,5 +1,9 @@
-/** @format */
-
+/**
+ * @file array
+ * @description 数组扩展库
+ * @author DoooReyn <jl88744653@gmail.com>
+ * @license MIT
+ */
 export const arrays = {
   /**
    * 打乱数组后返回新的数组，不会修改原数组
@@ -70,7 +74,7 @@ export const arrays = {
 
   /**
    * Map转数组
-   * @param {Map<string, any> } map Map
+   * @param {Map<string, any>} map
    */
   fromMap(map) {
     return Array.from(map.entries());
@@ -78,7 +82,7 @@ export const arrays = {
 
   /**
    * Map转对象
-   * @param map Map
+   * @param {Map<string, any>} map
    */
   mapToObject(map) {
     let obj = Object.create(null);
@@ -107,7 +111,7 @@ export const arrays = {
   /**
    * 数组合并
    * @param {any[]} arr 第一个数组
-   * @param {any[]} args
+   * @param {...*} args
    */
   union(arr, ...args) {
     if (!Array.isArray(arr)) {

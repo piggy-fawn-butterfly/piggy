@@ -1,7 +1,6 @@
 /**
- * @file Logger
- * @class
- * @description 日志分级系统 低于设定等级的日志不会被输出
+ * @file logger
+ * @description 日志分级系统，低于设定等级的日志不会被输出
  * @author DoooReyn <jl88744653@gmail.com>
  * @license MIT
  */
@@ -13,15 +12,15 @@ export class logger {
     /** 默认日志等级 */
     this.setLevel(piggy.enums.E_Log_Level.Trace);
   }
-  
+
   /**
    * 设置日志等级
    * @param {piggy.enums.E_Log_Level} level
    */
-  setLevel( level ) {
+  setLevel(level) {
     this.m_log_level = level;
   }
-  
+
   /**
    * 获得日志等级
    * @returns {piggy.enums.E_Log_Level}
@@ -51,10 +50,10 @@ export class logger {
    * @param {number} level 日志等级
    * @returns {boolean}
    */
-  _isValid( level ) {
+  _isValid(level) {
     return !this.isSilence() && level >= this.m_log_level;
   }
-  
+
   /**
    * 输出日志内容
    * @description 移动端浏览器控制台不支持CSS
@@ -62,9 +61,9 @@ export class logger {
    * @param {string} label 分组标签
    * @param {...*} groups 分组数据
    */
-  _applyGroup( level, label, ...groups ) {
+  _applyGroup(level, label, ...groups) {
     if (!this._isValid(level)) return;
-    
+
     let method = this.s_call_methods[level];
     let color = this.s_method_colors[level];
     let unfold = label.indexOf("@") === 0;
@@ -88,40 +87,40 @@ export class logger {
       console[method](...args);
     }
   }
-  
+
   /**
    * 打印跟踪日志
    * @param {string} label
    * @param {...*} args
    */
-  trace( label, ...args ) {
+  trace(label, ...args) {
     this._isValid(piggy.enums.E_Log_Level.Trace) && this._applyGroup(piggy.enums.E_Log_Level.Trace, label, ...args);
   }
-  
+
   /**
    * 打印信息日志
    * @param {string} label
    * @param {...*} args
    */
-  info( label, ...args ) {
+  info(label, ...args) {
     this._isValid(piggy.enums.E_Log_Level.Info) && this._applyGroup(piggy.enums.E_Log_Level.Info, label, ...args);
   }
-  
+
   /**
    * 打印警告日志
    * @param {string} label
    * @param {...*} args
    */
-  warn( label, ...args ) {
+  warn(label, ...args) {
     this._isValid(piggy.enums.E_Log_Level.Warn) && this._applyGroup(piggy.enums.E_Log_Level.Warn, label, ...args);
   }
-  
+
   /**
    * 打印错误日志
    * @param {string} label
    * @param {...*} args
    */
-  error( label, ...args ) {
+  error(label, ...args) {
     this._isValid(piggy.enums.E_Log_Level.Error) && this._applyGroup(piggy.enums.E_Log_Level.Error, label, ...args);
   }
 }

@@ -1,5 +1,4 @@
 /**
- * @format
  * @file i18nK
  * @description 国际化文本配置键提取
  * @author DoooReyn <jl88744653@gmail.com>

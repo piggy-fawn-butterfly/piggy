@@ -1,5 +1,4 @@
 /**
- * @format
  * @file colors
  * @description 色值定义
  * @author DoooReyn <jl88744653@gmail.com>

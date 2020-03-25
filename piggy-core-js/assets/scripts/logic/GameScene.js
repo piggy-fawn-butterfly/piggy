@@ -1,16 +1,9 @@
-cc.Class( {
-  extends: cc.Component,
+cc.Class({
+  extends: require("../piggy/components/app"),
 
-  editor: {
-    disallowMultiple: true,
-  },
-
-  properties: {
-
-  },
+  properties: {},
 
   onLoad() {
-    // console.log( JSON.stringify( piggy, null, 2 ) );
-    console.log( piggy );
+    this._super();
   }
-} );
+});

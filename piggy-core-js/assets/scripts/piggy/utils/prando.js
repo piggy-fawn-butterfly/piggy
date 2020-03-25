@@ -1,3 +1,9 @@
+/**
+ * @file prando
+ * @description 可复现的伪随机数生成器
+ * @author DoooReyn <jl88744653@gmail.com>
+ * @license MIT
+ */
 export class prando {
   static random = new prando();
   static MIN = -2147483648; // Int32 min
@@ -10,18 +16,16 @@ export class prando {
    * Generate a new Prando pseudo-random number generator.
    * @param {number | string} seed - A number or string seed that determines which pseudo-random number sequence will be created. Defaults to current time.
    */
-  constructor( seed = null ) {
-    if ( typeof seed === "string" ) {
+  constructor(seed) {
+    if (typeof seed === "string") {
       // String seed
-      this._seed = this.hashCode( seed );
-    } else if ( typeof seed === "number" ) {
+      this._seed = this.hashCode(seed);
+    } else if (typeof seed === "number") {
       // Numeric seed
-      this._seed = this.getSafeSeed( seed );
+      this._seed = this.getSafeSeed(seed);
     } else {
       // Pseudo-random seed
-      this._seed = this.getSafeSeed(
-        prando.MIN + Math.floor( ( prando.MAX - prando.MIN ) * Math.random() )
-      );
+      this._seed = this.getSafeSeed(prando.MIN + Math.floor((prando.MAX - prando.MIN) * Math.random()));
     }
     this.reset();
   }
@@ -36,9 +40,9 @@ export class prando {
    * @param {number} pseudoMax - The maximum number that can be randomly generated (exclusive).
    * @returns {number} The generated pseudo-random number.
    */
-  next( min = 0, pseudoMax = 1 ) {
+  next(min = 0, pseudoMax = 1) {
     this.recalculate();
-    return this.map( this._value, prando.MIN, prando.MAX, min, pseudoMax );
+    return this.map(this._value, prando.MIN, prando.MAX, min, pseudoMax);
   }
 
   /**
@@ -48,11 +52,9 @@ export class prando {
    * @param {number} max - The maximum number that can be randomly generated.
    * @returns {number} The generated pseudo-random number.
    */
-  nextInt( min = 10, max = 100 ) {
+  nextInt(min = 10, max = 100) {
     this.recalculate();
-    return Math.floor(
-      this.map( this._value, prando.MIN, prando.MAX, min, max + 1 )
-    );
+    return Math.floor(this.map(this._value, prando.MIN, prando.MAX, min, max + 1));
   }
 
   /**
@@ -66,13 +68,10 @@ export class prando {
    * @param {string} chars - Characters that are used when creating the random string. Defaults to all alphanumeric chars (A-Z, a-z, 0-9).
    * @returns {string} The generated string sequence.
    */
-  nextString(
-    length = 16,
-    chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-  ) {
+  nextString(length = 16, chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789") {
     let str = "";
-    while ( str.length < length ) {
-      str += this.nextChar( chars );
+    while (str.length < length) {
+      str += this.nextChar(chars);
     }
     return str;
   }
@@ -83,11 +82,9 @@ export class prando {
    * @param {string} chars - Characters that are used when creating the random string. Defaults to all alphanumeric chars (A-Z, a-z, 0-9).
    * @return {string} The generated character.
    */
-  nextChar(
-    chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-  ) {
+  nextChar(chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789") {
     this.recalculate();
-    return chars.substr( this.nextInt( 0, chars.length - 1 ), 1 );
+    return chars.substr(this.nextInt(0, chars.length - 1), 1);
   }
 
   /**
@@ -101,9 +98,9 @@ export class prando {
    * @param {any[]} array - Array of any type containing one or more candidates for random picking.
    * @return {any} An item from the array.
    */
-  nextArrayItem( array ) {
+  nextArrayItem(array) {
     this.recalculate();
-    return array[ this.nextInt( 0, array.length - 1 ) ];
+    return array[this.nextInt(0, array.length - 1)];
   }
 
   /**
@@ -121,8 +118,8 @@ export class prando {
    * new random numbers to a range and return it.
    * @param {number} iterations - The number of items to skip ahead.
    */
-  skip( iterations = 1 ) {
-    while ( iterations-- > 0 ) {
+  skip(iterations = 1) {
+    while (iterations-- > 0) {
       this.recalculate();
     }
   }
@@ -151,14 +148,14 @@ export class prando {
    * recalculate
    */
   recalculate() {
-    this._value = this.xorshift( this._value );
+    this._value = this.xorshift(this._value);
   }
 
   /**
    * xor shift
    * @param {number} value
    */
-  xorshift( value ) {
+  xorshift(value) {
     // Xorshift*32
     // Based on George Marsaglia's work: http://www.jstatsoft.org/v08/i14/paper
     value ^= value << 13;
@@ -175,8 +172,8 @@ export class prando {
    * @param {number} minTo
    * @param {number} maxTo
    */
-  map( val, minFrom, maxFrom, minTo, maxTo ) {
-    return ( ( val - minFrom ) / ( maxFrom - minFrom ) ) * ( maxTo - minTo ) + minTo;
+  map(val, minFrom, maxFrom, minTo, maxTo) {
+    return ((val - minFrom) / (maxFrom - minFrom)) * (maxTo - minTo) + minTo;
   }
 
   /**
@@ -184,17 +181,17 @@ export class prando {
    * @param {string} str
    * @returns {number}
    */
-  hashCode( str ) {
+  hashCode(str) {
     let hash = 0;
-    if ( str ) {
+    if (str) {
       const l = str.length;
-      for ( let i = 0; i < l; i++ ) {
-        hash = ( hash << 5 ) - hash + str.charCodeAt( i );
+      for (let i = 0; i < l; i++) {
+        hash = (hash << 5) - hash + str.charCodeAt(i);
         hash |= 0;
-        hash = this.xorshift( hash );
+        hash = this.xorshift(hash);
       }
     }
-    return this.getSafeSeed( hash );
+    return this.getSafeSeed(hash);
   }
 
   /**
@@ -202,8 +199,8 @@ export class prando {
    * @param {number} seed
    * @returns {number}
    */
-  getSafeSeed( seed ) {
-    if ( seed === 0 ) return 1;
+  getSafeSeed(seed) {
+    if (seed === 0) return 1;
     return seed;
   }
 }
