@@ -9,10 +9,13 @@ import "../piggy";
  * @summary
  * - 请确保 `globals` 已导入为插件
  * - 不要忘了引入 piggy：`import "../piggy"`
- * - 游戏入口文件需继承此类
+ * - 游戏入口文件需继承此类，并且需要在 `onLoad` 中调用 `this._super()`
  * ```javascript
  * cc.Class({
  *  extends: require("path/to/app");
+ *  onLoad() {
+ *    this._super();
+ *  }
  *  ...
  * })
  * ```
@@ -48,6 +51,28 @@ export default app = cc.Class({
     piggy.app = this;
     piggy.mode.code = this.mode;
     piggy.i18n.set(this.lang);
-    console.log(piggy);
+    cc.game.on(cc.game.EVENT_SHOW, this.onAppShow, this);
+    cc.game.on(cc.game.EVENT_HIDE, this.onAppHide, this);
+  },
+
+  /**
+   * 应用进入前台
+   * @fires app#onAppShow
+   */
+  onAppShow() {
+    //TODO
+    piggy.events.dispatch(piggy.constants.EVENT_NAME.ON_APP_SHOW);
+  },
+
+  /**
+   * 应用进入后台
+   * @fires app#onAppHide
+   */
+  onAppHide() {
+    //TODO
+    /**
+     * @events app#piggy.constants.EVENT_NAME.ON_APP_HIDE
+     */
+    piggy.events.dispatch(piggy.constants.EVENT_NAME.ON_APP_HIDE);
   }
 });

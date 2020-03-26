@@ -4,9 +4,10 @@
  * @author DoooReyn <jl88744653@gmail.com>
  * @license MIT
  */
-export const colors = {
+const colors = {
   /**
-   * 红色   */
+   * 红色
+   */
   Red: {
     Z50: "#ffebee",
     Z100: "#ffcdd2",
@@ -368,10 +369,61 @@ export const colors = {
   },
 
   /**
+   * 日志颜色
+   * @type {string[]}
+   */
+  Logger: [],
+
+  /**
    * 将十六进制色值转换为 `cc.Color`
    * @param  {string} hex_string 十六进制色值
+   * @returns {cc.Color}
    */
   toCCColor(hex_string) {
     return cc.Color.BLACK.fromHEX(hex_string);
+  },
+
+  /**
+   * 将 `cc.Color` 转换为十六进制色值
+   * @param  {cc.Color} ccColor
+   * @returns {string}
+   */
+  toHexColor(ccColor) {
+    return ccColor.toHEX("#rrggbb");
+  },
+
+  /**
+   * 将RGBA色值转换为`cc.Color`
+   * @param  {number} r
+   * @param  {number} g
+   * @param  {number} b
+   * @param  {number} a
+   * @returns {cc.Color}
+   */
+  fromRgba(r, g, b, a = 255) {
+    let c = cc.Color.BLACK.clone();
+    c.setA(a), c.setB(b), c.setG(g), c.setR(r);
+    return c;
+  },
+
+  __init() {
+    /**
+     * 日志颜色
+     * @description 排除 `Blue, BlueGrey, Brown`，因为色彩不明显
+     * @type {{keys: string[], excludes: string[]}}
+     */
+    let color_for_logger = {
+      keys: ["Z200", "A100"],
+      excludes: ["__init", "Logger", "fromRgba", "toCCColor", "Blue", "BlueGrey", "Brown"]
+    };
+    for (let [key, val] of Object.entries(colors)) {
+      if (color_for_logger.excludes.includes(key)) continue;
+      color_for_logger.keys.forEach(k => {
+        val[k] && colors.Logger.push(val[k]);
+      });
+    }
   }
 };
+colors.__init();
+
+export { colors };

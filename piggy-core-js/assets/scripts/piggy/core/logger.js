@@ -70,16 +70,13 @@ export class logger {
     label = unfold ? label.slice(1) : label;
     let args = [];
     if (cc.sys.isBrowser) {
-      args.push(
-        `%c${label} %c${piggy.datetime.shortDay()}`,
-        `font-weight:bold;background:${color};`,
-        `font-weight:bold;background:${piggy.colors.Yellow.Z200};`
-      );
+      let style = randomStyle();
+      args.push(`%c ${style.icon} ${label} ${piggy.datetime.shortDay()}`, style.color);
     } else {
       args.push(`${label} ${piggy.datetime.shortDay()}`);
     }
     if (groups.length > 0) {
-      unfold ? console.group(args.pop(), ...args) : console.groupCollapsed(args.pop(), ...args);
+      unfold ? console.group(...args) : console.groupCollapsed(...args);
       groups.forEach(e => console.log(e));
       this.s_call_chains.includes(level) && console[method]("chains");
       console.groupEnd();
@@ -123,4 +120,15 @@ export class logger {
   error(label, ...args) {
     this._isValid(piggy.enums.E_Log_Level.Error) && this._applyGroup(piggy.enums.E_Log_Level.Error, label, ...args);
   }
+}
+
+/**
+ * 随机日志输出风格
+ * @returns {{color: string, icon: string}}
+ */
+function randomStyle() {
+  return {
+    color: `font-size:12px;background-color:${piggy.arrays.randomFrom(piggy.colors.Logger)};color:#112233;`,
+    icon: piggy.arrays.randomFrom(piggy.emoji)
+  };
 }

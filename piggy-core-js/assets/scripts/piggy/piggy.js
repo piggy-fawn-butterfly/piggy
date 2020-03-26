@@ -28,6 +28,7 @@ import { jp } from "./data/locales/jp";
 import { sc } from "./data/locales/sc";
 import { tc } from "./data/locales/tc";
 import { states } from "./data/states";
+import { emoji } from "./data/emoji";
 
 // 第三方库
 import md5 from "./libs/md5";
@@ -50,6 +51,7 @@ import { urls } from "./utils/urls";
 
 // 赋值
 piggy.constants = constants;
+piggy.emoji = emoji;
 piggy.colors = colors;
 piggy.assets = assets;
 piggy.enums = enums;
