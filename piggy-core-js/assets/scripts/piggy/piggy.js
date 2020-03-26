@@ -1,3 +1,4 @@
+//----------------------------------------------------------
 // 常量、枚举
 import { assets } from "./data/assets";
 import { colors } from "./data/colors";
@@ -13,11 +14,17 @@ import { tc } from "./data/locales/tc";
 import { states } from "./data/states";
 import { emoji } from "./data/emoji";
 
+//----------------------------------------------------------
+// 游戏配置
+import { hex } from "./data/config/hex";
+
+//----------------------------------------------------------
 // 第三方库
 import md5 from "./libs/md5";
 import buffer from "./libs/buffer";
 import * as luxon from "./libs/luxon";
 
+//----------------------------------------------------------
 // 辅助库
 import { arrays } from "./utils/arrays";
 import { cocos } from "./utils/cocos";
@@ -29,9 +36,7 @@ import { prando } from "./utils/prando";
 import { strings } from "./utils/strings";
 import { urls } from "./utils/urls";
 
-// 游戏配置
-// import { xxx } from "./data/config/xxx";
-
+//----------------------------------------------------------
 // 核心库
 import { events } from "./core/events";
 import { i18n } from "./core/i18n";
@@ -51,7 +56,8 @@ import { unreadable } from "./core/unreadable";
 import { userdata } from "./core/userdata";
 import { layers } from "./core/layers";
 
-// 赋值
+//----------------------------------------------------------
+// 常量
 piggy.constants = constants;
 piggy.emoji = emoji;
 piggy.colors = colors;
@@ -61,9 +67,9 @@ piggy.i18nK = i18nK;
 piggy.states = states;
 piggy.locales = { sc: sc, tc: tc, en: en, es: es, jp: jp, fr: fr };
 piggy.constants.RES_TYPE_LIST = new Set(piggy.constants.RES_TYPE_FALLBACKS);
+piggy.config.hex = hex;
 
-// piggy.config.xxx = xxx;
-
+//----------------------------------------------------------
 /**
  * 判断开发模式
  * @param {piggy.enums.E_Dev_Mode} mode
@@ -73,11 +79,13 @@ piggy.mode.is = mode => {
   return piggy.mode.code === mode;
 };
 
+//----------------------------------------------------------
 // 第三方库
 piggy.md5 = md5;
 piggy.buffer = buffer;
 piggy.luxon = luxon;
 
+//----------------------------------------------------------
 // 辅助库
 piggy.arrays = arrays;
 piggy.cocos = cocos;
@@ -89,6 +97,8 @@ piggy.prando = prando;
 piggy.strings = strings;
 piggy.urls = urls;
 
+//----------------------------------------------------------
+// 核心库
 piggy.class = {
   fsm: fsm,
   machine: machine,
@@ -96,6 +106,8 @@ piggy.class = {
   timer: timer
 };
 
+//----------------------------------------------------------
+// 核心实例
 piggy.ids = {
   event: new ids("event"),
   global: new ids("global"),

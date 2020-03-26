@@ -23,7 +23,12 @@ const __piggy__ = {
    */
   mode: {
     code: 0
-  }
+  },
+
+  /**
+   * 游戏配置
+   */
+  config: {}
 };
 
 piggy = __piggy__;
