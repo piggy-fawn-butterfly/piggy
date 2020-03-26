@@ -1,21 +1,4 @@
 // 常量、枚举
-import { events } from "./core/events";
-import { fsm, machine } from "./core/fsm";
-import { http } from "./core/http";
-import { i18n } from "./core/i18n";
-import { ids } from "./core/ids";
-// 核心库
-import { logger } from "./core/logger";
-import { machines } from "./core/machines";
-import { pool } from "./core/pool";
-import { pools } from "./core/pools";
-import { res } from "./core/res";
-import { sound } from "./core/sound";
-import { tick } from "./core/tick";
-import { timer } from "./core/timer";
-import { timers } from "./core/timers";
-import { unreadable } from "./core/unreadable";
-import { userdata } from "./core/userdata";
 import { assets } from "./data/assets";
 import { colors } from "./data/colors";
 import { constants } from "./data/constants";
@@ -48,6 +31,25 @@ import { urls } from "./utils/urls";
 
 // 游戏配置
 // import { xxx } from "./data/config/xxx";
+
+// 核心库
+import { events } from "./core/events";
+import { i18n } from "./core/i18n";
+import { ids } from "./core/ids";
+import { logger } from "./core/logger";
+import { fsm, machine } from "./core/fsm";
+import { machines } from "./core/machines";
+import { http } from "./core/http";
+import { pool } from "./core/pool";
+import { pools } from "./core/pools";
+import { res } from "./core/res";
+import { sound } from "./core/sound";
+import { tick } from "./core/tick";
+import { timer } from "./core/timer";
+import { timers } from "./core/timers";
+import { unreadable } from "./core/unreadable";
+import { userdata } from "./core/userdata";
+import { layers } from "./core/layers";
 
 // 赋值
 piggy.constants = constants;
@@ -106,6 +108,7 @@ piggy.ids = {
 piggy.events = new events();
 piggy.i18n = new i18n();
 piggy.http = new http();
+piggy.layers = new layers();
 piggy.logger = new logger();
 piggy.res = new res();
 piggy.pools = new pools();
