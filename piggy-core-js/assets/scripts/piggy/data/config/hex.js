@@ -195,5 +195,5 @@ export const hex = {
         ]
       ]
     }
-  ];
+  ]
 };

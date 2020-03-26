@@ -130,3 +130,5 @@ piggy.machines = new machines();
 piggy.timers = new timers();
 piggy.unreadable = new unreadable();
 piggy.userdata = new userdata();
+
+piggy.logger.info("logger", piggy);
