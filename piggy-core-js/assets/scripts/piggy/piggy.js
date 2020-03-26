@@ -131,4 +131,4 @@ piggy.timers = new timers();
 piggy.unreadable = new unreadable();
 piggy.userdata = new userdata();
 
-piggy.logger.info("logger", piggy);
+piggy.logger.info("piggy", piggy);
