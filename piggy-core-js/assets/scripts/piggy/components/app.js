@@ -51,6 +51,7 @@ export default app = cc.Class({
     piggy.app = this;
     piggy.mode.code = this.mode;
     piggy.i18n.set(this.lang);
+    piggy.layers.init();
     cc.game.on(cc.game.EVENT_SHOW, this.onAppShow, this);
     cc.game.on(cc.game.EVENT_HIDE, this.onAppHide, this);
   },
